@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard - National Healthcare UK</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="script.js"></script>
+</head>
+
+<body>
+
+<header class="top-banner">
+  <img src="images/logo.png" class="banner-logo" alt="Logo">
+
+  <div class="banner-title">NATIONAL HEALTHCARE UK</div>
+
+  <div class="profile-wrapper">
+    <img src="images/profile.png" class="profile-icon" id="profileBtn" alt="Profile">
+
+    <div class="profile-menu" id="profileMenu">
+      <div onclick="location.href='manage-appointments.html'">Manage Appointment</div>
+      <div onclick="location.href='index.html'">Log Out</div>
+    </div>
+  </div>
+</header>
+
+<div class="app-shell">
+
+  <main class="app-main">
+    <div class="dashboard">
+
+      <h1 class="dashboard-title">Welcome to the National Healthcare UK Web Services</h1>
+      <p class="dashboard-subtitle">Find information and services to help you manage your health</p>
+
+      <div class="dashboard-cards">
+
+        <div class="dashboard-card" onclick="location.href='book-appointment.html'">
+          <img src="images/book.png" class="dashboard-card-img" alt="Book Appointment">
+          <div class="dashboard-card-title">BOOK AN APPOINTMENT</div>
+        </div>
+
+        <div class="dashboard-card" onclick="location.href='health-record.html'">
+          <img src="images/healthrecord.png" class="dashboard-card-img" alt="Health Record">
+          <div class="dashboard-card-title">HEALTH RECORD</div>
+        </div>
+
+        <div class="dashboard-card" onclick="location.href='prescription.html'">
+          <img src="images/prescription.png" class="dashboard-card-img" alt="Prescription">
+          <div class="dashboard-card-title">PRESCRIPTION</div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <footer class="app-footer">
+    © 2026 National Healthcare. All rights reserved.
+  </footer>
+
+</div>
+
+</body>
+</html>
+

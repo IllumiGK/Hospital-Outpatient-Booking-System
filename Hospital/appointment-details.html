@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Appointment Details - National Healthcare UK</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="script.js"></script>
+</head>
+
+<body>
+
+<header class="top-banner">
+  <img src="images/logo.png" class="banner-logo" alt="Logo">
+  <div class="banner-title">NATIONAL HEALTHCARE UK</div>
+
+  <div class="profile-wrapper">
+    <img src="images/profile.png" class="profile-icon" id="profileBtn" alt="Profile">
+    <div class="profile-menu" id="profileMenu">
+      <div onclick="location.href='dashboard.html'">Home</div>
+      <div onclick="location.href='manage-appointments.html'">Manage Appointment</div>
+      <div onclick="location.href='index.html'">Log Out</div>
+    </div>
+  </div>
+</header>
+
+<div class="app-shell">
+
+  <main class="app-main">
+    <div class="card" style="max-width: 600px;">
+
+      <h1 class="section-title">Appointment Details</h1>
+      <p class="section-subtitle">
+        Please enter your details before choosing an appointment date.
+      </p>
+
+      <form>
+
+        <div class="form-group">
+          <label class="form-label">Full Name</label>
+          <input type="text" class="form-input" placeholder="Enter your full name">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Date of Birth</label>
+          <input type="date" class="form-input">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">NHS Number</label>
+          <input type="text" class="form-input" placeholder="e.g. 123 456 7890">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Reason for Booking</label>
+          <input type="text" class="form-input" placeholder="e.g. Regular Check Up">
+        </div>
+
+        <button type="button"
+                class="btn btn-primary btn-block"
+                onclick="location.href='book-appointment.html'">
+          CONTINUE
+        </button>
+
+      </form>
+
+    </div>
+  </main>
+
+  <footer class="app-footer">
+    © 2026 National Healthcare. All rights reserved.
+  </footer>
+
+</div>
+
+</body>
+</html>

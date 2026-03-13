@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Manage Appointments - National Healthcare UK</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="script.js"></script>
+</head>
+
+<body>
+
+<header class="top-banner">
+  <img src="images/logo.png" class="banner-logo" alt="Logo">
+  <div class="banner-title">NATIONAL HEALTHCARE UK</div>
+
+  <div class="profile-wrapper">
+    <img src="images/profile.png" class="profile-icon" id="profileBtn" alt="Profile">
+    <div class="profile-menu" id="profileMenu">
+      <div onclick="location.href='dashboard.html'">Home</div>
+      <div onclick="location.href='manage-appointments.html'">Manage Appointment</div>
+      <div onclick="location.href='index.html'">Log Out</div>
+    </div>
+  </div>
+</header>
+
+<div class="app-shell">
+
+  <main class="app-main">
+    <div class="card" style="max-width: 700px;">
+      <h1 class="section-title">Manage Appointments</h1>
+      <p class="section-subtitle">View or modify your upcoming appointments.</p>
+
+      <div class="appointment-item">
+        <div class="detail-label">APPOINTMENT:</div>
+        <div class="detail-value">03.12.2024 — 10:00</div>
+
+        <button class="btn btn-primary"
+                onclick="location.href='change.html'">
+          CHANGE
+        </button>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="app-footer">
+    © 2026 National Healthcare. All rights reserved.
+  </footer>
+
+</div>
+
+</body>
+</html>

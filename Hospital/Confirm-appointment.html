@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Confirm Appointment - National Healthcare UK</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="script.js"></script>
+</head>
+
+<body>
+
+<header class="top-banner">
+  <img src="images/logo.png" class="banner-logo" alt="Logo">
+  <div class="banner-title">NATIONAL HEALTHCARE UK</div>
+
+  <div class="profile-wrapper">
+    <img src="images/profile.png" class="profile-icon" id="profileBtn" alt="Profile">
+    <div class="profile-menu" id="profileMenu">
+      <div onclick="location.href='dashboard.html'">Home</div>
+      <div onclick="location.href='manage-appointments.html'">Manage Appointment</div>
+      <div onclick="location.href='index.html'">Log Out</div>
+    </div>
+  </div>
+</header>
+
+<div class="app-shell">
+
+  <main class="app-main">
+    <div class="card" style="max-width: 720px;">
+      <h1 class="section-title">Confirm Appointment Page</h1>
+      <p class="section-subtitle">
+        Use this page to review your appointment details.
+      </p>
+
+      <div class="details-grid">
+        <div>
+          <div class="detail-label">PATIENT NAME :-</div>
+          <div class="detail-value">Alex Smith</div>
+        </div>
+        <div>
+          <div class="detail-label">DOB :-</div>
+          <div class="detail-value">10/December/2000</div>
+        </div>
+        <div>
+          <div class="detail-label">NHUK No :-</div>
+          <div class="detail-value">10123901</div>
+        </div>
+        <div>
+          <div class="detail-label">REASON FOR VISIT :-</div>
+          <div class="detail-value">Regular Check Up</div>
+        </div>
+        <div>
+          <div class="detail-label">HOSPITAL :-</div>
+          <div class="detail-value">Imperial College Healthcare NHS Trust</div>
+        </div>
+      </div>
+
+      <button type="button" class="btn btn-primary btn-block"
+              onclick="location.href='dashboard.html'">
+        CONFIRM
+      </button>
+
+    </div>
+  </main>
+
+  <footer class="app-footer">
+    © 2026 National Healthcare. All rights reserved.
+  </footer>
+
+</div>
+
+</body>
+</html>
