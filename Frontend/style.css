@@ -13,6 +13,7 @@
     --success: #38a169;
     --warning: #d69e2e;
     --no-slot: #e53e3e;
+    --footer-blue: #081F5C;
     --font-main: "Segoe UI", system-ui, sans-serif;
     --shadow-soft: 0 3px 12px rgba(0, 0, 0, 0.08);
     --shadow-medium: 0 4px 12px rgba(0, 0, 0, 0.12);
@@ -27,11 +28,19 @@
     box-sizing: border-box;
 }
 
+html,
 body {
     margin: 0;
+    padding: 0;
+    min-height: 100%;
+}
+
+body {
     font-family: var(--font-main);
-    background-color: var(--bg-light);
+    background-color: #F7F2EB;
     color: var(--nhs-dark-text);
+    display: flex;
+    flex-direction: column;
 }
 
 img {
@@ -52,33 +61,51 @@ textarea {
 .top-banner {
     background-color: var(--nhs-blue);
     color: white;
-    padding: 20px 32px;
+    padding: 40px 64px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 20px;
+    gap: 40px;
+    flex-wrap: wrap;
 }
 
 .banner-logo {
-    height: 48px;
+    height: 96px;
     width: auto;
 }
 
 .banner-title {
     flex: 1;
     text-align: center;
-    font-size: 1.9rem;
+    font-size: 4rem;
     font-weight: 700;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.04em;
+    line-height: 1.2;
 }
+
+.banner-title-link {
+    flex: 1;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+    .banner-title-link:hover .banner-title {
+        opacity: 0.92;
+        transform: scale(1.01);
+        transition: all 0.2s ease;
+        cursor: pointer;
+    }
 
 .profile-wrapper {
     position: relative;
 }
 
 .profile-icon {
-    height: 48px;
-    width: 48px;
+    height: 96px;
+    width: 96px;
     border-radius: 50%;
     cursor: pointer;
 }
@@ -86,8 +113,8 @@ textarea {
 .profile-menu {
     position: absolute;
     right: 0;
-    top: 60px;
-    width: 200px;
+    top: 110px;
+    width: 240px;
     background: var(--white);
     color: #000;
     border-radius: 8px;
@@ -115,22 +142,27 @@ textarea {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    width: 100%;
 }
 
 .app-main {
     flex: 1;
     display: flex;
     justify-content: center;
+    align-items: flex-start;
     padding: 60px 20px;
+    width: 100%;
 }
 
 .app-footer {
     text-align: center;
     padding: 20px;
     font-size: 0.9rem;
-    color: var(--nhs-muted);
-    background-color: var(--white);
-    border-top: 1px solid var(--border);
+    color: white;
+    background-color: var(--footer-blue);
+    border-top: 1px solid var(--footer-blue);
+    width: 100%;
+    margin-top: auto;
 }
 
 /* =========================
@@ -314,7 +346,7 @@ textarea {
 ========================= */
 .dashboard {
     width: 100%;
-    max-width: 1100px;
+    max-width: 1200px;
 }
 
 .dashboard-title {
@@ -373,8 +405,9 @@ textarea {
     display: grid;
     grid-template-columns: 2fr 3fr;
     gap: 24px;
-    max-width: 1100px;
+    max-width: 1250px;
     width: 100%;
+    align-items: start;
 }
 
 .calendar-header {
@@ -490,6 +523,7 @@ textarea {
 
 /* =========================
    CHATBOT
+   KEPT UNCHANGED
 ========================= */
 .chatbot-container {
     position: fixed;
@@ -503,7 +537,7 @@ textarea {
     height: 60px;
     border: none;
     border-radius: 50%;
-    background-color: var(--nhs-blue);
+    background-color: #003087;
     color: white;
     font-size: 1.5rem;
     cursor: pointer;
@@ -528,7 +562,7 @@ textarea {
     }
 
 .chatbot-header {
-    background: var(--nhs-blue);
+    background: #003087;
     color: white;
     padding: 14px 16px;
     display: flex;
@@ -567,7 +601,7 @@ textarea {
     }
 
     .chatbot-message.user {
-        background: var(--nhs-blue);
+        background: #003087;
         color: white;
         margin-left: auto;
     }
@@ -590,17 +624,13 @@ textarea {
 
 .chatbot-send {
     border: none;
-    background: var(--nhs-light-blue);
+    background: #005eb8;
     color: white;
     padding: 10px 14px;
     border-radius: 8px;
     cursor: pointer;
     font-weight: 600;
 }
-
-    .chatbot-send:hover {
-        background: #004a94;
-    }
 
 /* =========================
    RESPONSIVE
@@ -609,12 +639,28 @@ textarea {
     .top-banner {
         flex-wrap: wrap;
         text-align: center;
+        padding: 24px 20px;
+        gap: 20px;
     }
 
     .banner-title {
         order: 3;
         width: 100%;
-        font-size: 1.5rem;
+        font-size: 2.2rem;
+        white-space: normal;
+    }
+
+    .banner-logo {
+        height: 64px;
+    }
+
+    .profile-icon {
+        height: 64px;
+        width: 64px;
+    }
+
+    .profile-menu {
+        top: 78px;
     }
 
     .details-grid {
@@ -650,6 +696,15 @@ textarea {
         font-size: 1.7rem;
     }
 
+    .banner-logo {
+        height: 56px;
+    }
+
+    .profile-icon {
+        height: 56px;
+        width: 56px;
+    }
+
     .chatbot-window {
         width: calc(100vw - 30px);
         right: 0;
@@ -658,5 +713,21 @@ textarea {
     .chatbot-container {
         right: 15px;
         bottom: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .banner-logo {
+        height: 48px;
+        width: auto;
+    }
+
+    .profile-icon {
+        height: 48px;
+        width: 48px;
+    }
+
+    .banner-title {
+        font-size: 1.8rem;
     }
 }
