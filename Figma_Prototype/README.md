@@ -9,7 +9,7 @@ The design was created using Figma and shows the main user flow of the applicati
 
 ## Figma Design Link
 
-[View Figma Prototype](https://your-figma-link-here)
+[View Figma Prototype](https://www.figma.com/proto/fMKG8hIGVpnAXfC5VEcEhe/Figma-basics?node-id=2651-12&t=PIIxvjmrwI02AKTK-1&scaling=scale-down&content-scaling=fixed&page-id=2609%3A1557&starting-point-node-id=2651%3A12&show-proto-sidebar=1)
 
 ---
 
