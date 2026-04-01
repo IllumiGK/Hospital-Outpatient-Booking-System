@@ -1,117 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Change Appointment - National Healthcare UK</title>
-    <link rel="stylesheet" href="style.css">
-    <script defer src="script.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Change Appointment - National Healthcare UK</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="script.js"></script>
 </head>
 
 <body>
+  <header class="top-banner">
+    <img src="images/logo.png" class="banner-logo" alt="National Healthcare UK Logo">
 
-    <header class="top-banner">
-        <img src="images/logo.png" class="banner-logo" alt="National Healthcare UK Logo">
-        <div class="banner-title">NATIONAL HEALTHCARE UK</div>
+    <a href="index.html" class="banner-title-link">
+      <div class="banner-title">NATIONAL HEALTHCARE UK</div>
+    </a>
 
-        <div class="profile-wrapper">
-            <img src="images/profile.png" class="profile-icon" id="profileBtn" alt="Profile">
-            <div class="profile-menu" id="profileMenu">
-                <div onclick="window.location.href='dashboard.html'">Home</div>
-                <div onclick="window.location.href='manage-appointments.html'">Manage Appointment</div>
-                <div onclick="logout()">Log Out</div>
-            </div>
-        </div>
-    </header>
-
-    <div class="app-shell">
-        <main class="app-main">
-            <div class="card" style="max-width: 560px;">
-                <h1 class="section-title">Change Appointment</h1>
-                <p class="section-subtitle">
-                    Update the date, time, or hospital for your selected appointment.
-                </p>
-
-                <div class="form-group">
-                    <label class="form-label" for="change-date">Select New Date</label>
-                    <input type="date"
-                           id="change-date"
-                           class="form-input"
-                           required>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label" for="change-time">Select New Time</label>
-                    <select id="change-time" class="form-select" required>
-                        <option value="09:00">09:00</option>
-                        <option value="10:00">10:00</option>
-                        <option value="10:30">10:30</option>
-                        <option value="11:00">11:00</option>
-                        <option value="13:00">13:00</option>
-                        <option value="13:30">13:30</option>
-                        <option value="15:00">15:00</option>
-                        <option value="15:30">15:30</option>
-                        <option value="16:00">16:00</option>
-                        <option value="16:30">16:30</option>
-                        <option value="17:00">17:00</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label" for="change-hospital">Hospital</label>
-                    <select id="change-hospital" class="form-select" required>
-                        <option value="Imperial College Healthcare NHS Trust">Imperial College Healthcare NHS Trust</option>
-                        <option value="St Mary's Hospital">St Mary's Hospital</option>
-                        <option value="Chelsea and Westminster Hospital">Chelsea and Westminster Hospital</option>
-                        <option value="Royal London Hospital">Royal London Hospital</option>
-                        <option value="Guy's and St Thomas' Hospital">Guy's and St Thomas' Hospital</option>
-                    </select>
-                </div>
-
-                <button type="button" class="btn btn-primary btn-block" onclick="updateAppointment()">
-                    CHANGE
-                </button>
-
-                <button type="button"
-                        class="btn btn-secondary btn-block"
-                        onclick="window.location.href='manage-appointments.html'">
-                    BACK
-                </button>
-            </div>
-        </main>
-
-        <footer class="app-footer">
-            © 2026 National Healthcare. All rights reserved.
-        </footer>
+    <div class="profile-wrapper">
+      <img src="images/profile.png" class="profile-icon" id="profileBtn" alt="Profile">
+      <div class="profile-menu" id="profileMenu">
+        <div onclick="window.location.href='dashboard.html'">Home</div>
+        <div onclick="window.location.href='manage-appointments.html'">Manage Appointment</div>
+        <div onclick="logout()">Log Out</div>
+      </div>
     </div>
+  </header>
 
-    <!-- Chatbot -->
-    <div class="chatbot-container">
-        <button class="chatbot-toggle" id="chatbotToggle" aria-label="Open chat assistant">
-            💬
+  <div class="app-shell">
+    <main class="app-main">
+      <div class="card" style="max-width: 560px;">
+        <h1 class="section-title">Change Appointment</h1>
+        <p class="section-subtitle">
+          Update the date, time, or hospital for your selected appointment.
+        </p>
+
+        <div class="form-group">
+          <label class="form-label" for="change-date">Select New Date</label>
+          <input type="date" id="change-date" class="form-input" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="change-time">Select New Time</label>
+          <select id="change-time" class="form-select" required>
+            <option value="09:00">09:00</option>
+            <option value="10:00">10:00</option>
+            <option value="10:30">10:30</option>
+            <option value="11:00">11:00</option>
+            <option value="13:00">13:00</option>
+            <option value="13:30">13:30</option>
+            <option value="15:00">15:00</option>
+            <option value="15:30">15:30</option>
+            <option value="16:00">16:00</option>
+            <option value="16:30">16:30</option>
+            <option value="17:00">17:00</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="change-hospital">Hospital</label>
+          <select id="change-hospital" class="form-select" required>
+            <option value="Imperial College Healthcare NHS Trust">Imperial College Healthcare NHS Trust</option>
+            <option value="St Mary's Hospital">St Mary's Hospital</option>
+            <option value="Chelsea and Westminster Hospital">Chelsea and Westminster Hospital</option>
+            <option value="Royal London Hospital">Royal London Hospital</option>
+            <option value="Guy's and St Thomas' Hospital">Guy's and St Thomas' Hospital</option>
+          </select>
+        </div>
+
+        <button type="button" class="btn btn-primary btn-block" onclick="updateAppointment()">
+          CHANGE
         </button>
 
-        <div class="chatbot-window" id="chatbotWindow">
-            <div class="chatbot-header">
-                <span>Healthcare Assistant</span>
-                <button class="chatbot-close" id="chatbotClose" aria-label="Close chat assistant">×</button>
-            </div>
+        <button type="button" class="btn btn-secondary btn-block" onclick="window.location.href='manage-appointments.html'">
+          BACK
+        </button>
+      </div>
+    </main>
 
-            <div class="chatbot-messages" id="chatbotMessages">
-                <div class="chatbot-message bot">
-                    Use this page to update your appointment details, then click Change to save the new date, time, and hospital.
-                </div>
-            </div>
+    <footer class="app-footer">
+      © 2026 National Healthcare. All rights reserved.
+    </footer>
+  </div>
 
-            <div class="chatbot-input-area">
-                <input type="text"
-                       id="chatbotInput"
-                       class="chatbot-input"
-                       placeholder="Type your message...">
-                <button id="chatbotSend" class="chatbot-send">Send</button>
-            </div>
+  <div class="chatbot-container">
+    <button class="chatbot-toggle" id="chatbotToggle" aria-label="Open chat assistant">💬</button>
+
+    <div class="chatbot-window" id="chatbotWindow">
+      <div class="chatbot-header">
+        <span>Healthcare Assistant</span>
+        <button class="chatbot-close" id="chatbotClose" aria-label="Close chat assistant">×</button>
+      </div>
+
+      <div class="chatbot-messages" id="chatbotMessages">
+        <div class="chatbot-message bot">
+          Use this page to update your appointment details, then click Change to save the new date, time, and hospital.
         </div>
-    </div>
+      </div>
 
+      <div class="chatbot-input-area">
+        <input type="text" id="chatbotInput" class="chatbot-input" placeholder="Type your message...">
+        <button id="chatbotSend" class="chatbot-send">Send</button>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
