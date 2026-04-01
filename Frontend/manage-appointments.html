@@ -1,79 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Appointments - National Healthcare UK</title>
-    <link rel="stylesheet" href="style.css">
-    <script defer src="script.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Appointments - National Healthcare UK</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="script.js"></script>
 </head>
 
 <body>
+  <header class="top-banner">
+    <img src="images/logo.png" class="banner-logo" alt="National Healthcare UK Logo">
 
-    <header class="top-banner">
-        <img src="images/logo.png" class="banner-logo" alt="National Healthcare UK Logo">
-        <div class="banner-title">NATIONAL HEALTHCARE UK</div>
+    <a href="index.html" class="banner-title-link">
+      <div class="banner-title">NATIONAL HEALTHCARE UK</div>
+    </a>
 
-        <div class="profile-wrapper">
-            <img src="images/profile.png" class="profile-icon" id="profileBtn" alt="Profile">
-            <div class="profile-menu" id="profileMenu">
-                <div onclick="window.location.href='dashboard.html'">Home</div>
-                <div onclick="window.location.href='manage-appointments.html'">Manage Appointment</div>
-                <div onclick="logout()">Log Out</div>
-            </div>
-        </div>
-    </header>
-
-    <div class="app-shell">
-        <main class="app-main">
-            <div class="card" style="max-width: 760px;">
-                <h1 class="section-title">Manage Appointments</h1>
-                <p class="section-subtitle">View, change, or cancel your upcoming appointments.</p>
-
-                <div id="appointments-list">
-                    <p>Loading appointments...</p>
-                </div>
-
-                <button type="button"
-                        class="btn btn-secondary btn-block"
-                        onclick="window.location.href='dashboard.html'">
-                    BACK TO DASHBOARD
-                </button>
-            </div>
-        </main>
-
-        <footer class="app-footer">
-            © 2026 National Healthcare. All rights reserved.
-        </footer>
+    <div class="profile-wrapper">
+      <img src="images/profile.png" class="profile-icon" id="profileBtn" alt="Profile">
+      <div class="profile-menu" id="profileMenu">
+        <div onclick="window.location.href='dashboard.html'">Home</div>
+        <div onclick="window.location.href='manage-appointments.html'">Manage Appointment</div>
+        <div onclick="logout()">Log Out</div>
+      </div>
     </div>
+  </header>
 
-    <!-- Chatbot -->
-    <div class="chatbot-container">
-        <button class="chatbot-toggle" id="chatbotToggle" aria-label="Open chat assistant">
-            💬
+  <div class="app-shell">
+    <main class="app-main">
+      <div class="card" style="max-width: 760px;">
+        <h1 class="section-title">Manage Appointments</h1>
+        <p class="section-subtitle">View, change, or cancel your upcoming appointments.</p>
+
+        <div id="appointments-list">
+          <p>Loading appointments...</p>
+        </div>
+
+        <button type="button" class="btn btn-secondary btn-block" onclick="window.location.href='dashboard.html'">
+          BACK TO DASHBOARD
         </button>
+      </div>
+    </main>
 
-        <div class="chatbot-window" id="chatbotWindow">
-            <div class="chatbot-header">
-                <span>Healthcare Assistant</span>
-                <button class="chatbot-close" id="chatbotClose" aria-label="Close chat assistant">×</button>
-            </div>
+    <footer class="app-footer">
+      © 2026 National Healthcare. All rights reserved.
+    </footer>
+  </div>
 
-            <div class="chatbot-messages" id="chatbotMessages">
-                <div class="chatbot-message bot">
-                    This page allows you to review your appointments and choose to change or cancel them.
-                </div>
-            </div>
+  <div class="chatbot-container">
+    <button class="chatbot-toggle" id="chatbotToggle" aria-label="Open chat assistant">💬</button>
 
-            <div class="chatbot-input-area">
-                <input type="text"
-                       id="chatbotInput"
-                       class="chatbot-input"
-                       placeholder="Type your message...">
-                <button id="chatbotSend" class="chatbot-send">Send</button>
-            </div>
+    <div class="chatbot-window" id="chatbotWindow">
+      <div class="chatbot-header">
+        <span>Healthcare Assistant</span>
+        <button class="chatbot-close" id="chatbotClose" aria-label="Close chat assistant">×</button>
+      </div>
+
+      <div class="chatbot-messages" id="chatbotMessages">
+        <div class="chatbot-message bot">
+          This page allows you to review your appointments and choose to change or cancel them.
         </div>
-    </div>
+      </div>
 
+      <div class="chatbot-input-area">
+        <input type="text" id="chatbotInput" class="chatbot-input" placeholder="Type your message...">
+        <button id="chatbotSend" class="chatbot-send">Send</button>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
