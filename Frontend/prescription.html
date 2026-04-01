@@ -9,10 +9,12 @@
 </head>
 
 <body>
-
   <header class="top-banner">
     <img src="images/logo.png" class="banner-logo" alt="National Healthcare UK Logo">
-    <div class="banner-title">NATIONAL HEALTHCARE UK</div>
+
+    <a href="index.html" class="banner-title-link">
+      <div class="banner-title">NATIONAL HEALTHCARE UK</div>
+    </a>
 
     <div class="profile-wrapper">
       <img src="images/profile.png" class="profile-icon" id="profileBtn" alt="Profile">
@@ -55,19 +57,11 @@
           <div class="detail-value">Open: Mon-Fri, 9:00 AM - 6:00 PM</div>
         </div>
 
-        <button
-          type="button"
-          class="btn btn-primary btn-block"
-          onclick="alert('Prescription request submitted successfully.')"
-        >
+        <button type="button" class="btn btn-primary btn-block" onclick="alert('Prescription request submitted successfully.')">
           REQUEST REPEAT PRESCRIPTION
         </button>
 
-        <button
-          type="button"
-          class="btn btn-secondary btn-block"
-          onclick="window.location.href='dashboard.html'"
-        >
+        <button type="button" class="btn btn-secondary btn-block" onclick="window.location.href='dashboard.html'">
           BACK TO DASHBOARD
         </button>
       </div>
@@ -78,11 +72,8 @@
     </footer>
   </div>
 
-  <!-- Chatbot -->
   <div class="chatbot-container">
-    <button class="chatbot-toggle" id="chatbotToggle" aria-label="Open chat assistant">
-      💬
-    </button>
+    <button class="chatbot-toggle" id="chatbotToggle" aria-label="Open chat assistant">💬</button>
 
     <div class="chatbot-window" id="chatbotWindow">
       <div class="chatbot-header">
@@ -97,16 +88,10 @@
       </div>
 
       <div class="chatbot-input-area">
-        <input
-          type="text"
-          id="chatbotInput"
-          class="chatbot-input"
-          placeholder="Type your message..."
-        >
+        <input type="text" id="chatbotInput" class="chatbot-input" placeholder="Type your message...">
         <button id="chatbotSend" class="chatbot-send">Send</button>
       </div>
     </div>
   </div>
-
 </body>
 </html>
