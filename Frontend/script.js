@@ -107,7 +107,16 @@ function generateAppointmentId() {
   return Date.now();
 }
 
-function register() {
+function showMessage(message, type = "error") {
+  const msgBox = document.getElementById("form-message");
+  if (!msgBox) return;
+
+  msgBox.textContent = message;
+  msgBox.className = type; // "error" or "success"
+  msgBox.style.display = "block";
+}
+
+async function register() {
   const name = document.getElementById("name")?.value.trim() || "";
   const dob = document.getElementById("dob")?.value || "";
   const gender = document.getElementById("gender")?.value || "";
@@ -115,25 +124,56 @@ function register() {
   const email = document.getElementById("email")?.value.trim() || "";
   const password = document.getElementById("password")?.value || "";
 
+  // Validation
   if (!name || !dob || !gender || !address || !email || !password) {
-    alert("Please fill in all fields.");
+    showMessage("Please fill in all fields.");
     return;
   }
 
   if (!email.includes("@") || !email.includes(".")) {
-    alert("Please enter a valid email address.");
+    showMessage("Please enter a valid email address.");
     return;
   }
 
   if (password.length < 6) {
-    alert("Password must be at least 6 characters long.");
+    showMessage("Password must be at least 6 characters long.");
     return;
   }
 
-  const user = { name, dob, gender, address, email, password };
-  localStorage.setItem("registeredUser", JSON.stringify(user));
-  alert("Registration successful. You can now log in.");
-  window.location.href = "login.html";
+  try {
+    const response = await fetch("http://localhost:5000/api/auth/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        name,
+        email,
+        password
+        // backend currently only accepts these
+      })
+    });
+
+    const result = await response.text();
+
+    if (response.ok) {
+      // SAFE localStorage usage (no password)
+      localStorage.setItem("registeredEmail", email);
+
+      showMessage("Registration successful. Redirecting...", "success");
+
+      setTimeout(() => {
+        window.location.href = "login.html";
+      }, 1500);
+
+    } else {
+      showMessage(result || "Registration failed.");
+    }
+
+  } catch (err) {
+    console.error(err);
+    showMessage("Could not connect to server.");
+  }
 }
 
 function login() {
