@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - National Healthcare UK</title>
+    <link rel="stylesheet" href="style.css">
+    <script defer src="script.js"></script>
+</head>
+
+<body>
+
+    <header class="top-banner">
+        <img src="images/logo.png" class="banner-logo" alt="National Healthcare UK Logo">
+
+        <div class="banner-title">NATIONAL HEALTHCARE UK</div>
+
+        <div class="profile-wrapper">
+            <img src="images/profile.png" class="profile-icon" id="profileBtn" alt="Profile">
+
+            <div class="profile-menu" id="profileMenu">
+                <div onclick="window.location.href='manage-appointments.html'">Manage Appointment</div>
+                <div onclick="logout()">Log Out</div>
+            </div>
+        </div>
+    </header>
+
+    <div class="app-shell">
+
+        <main class="app-main">
+            <div class="dashboard">
+
+                <h1 class="dashboard-title">
+                    Welcome,
+                    <span id="user-name">User</span>
+                </h1>
+
+                <p class="dashboard-subtitle">
+                    Find information and services to help you manage your health
+                </p>
+
+                <div class="dashboard-cards">
+
+                    <div class="dashboard-card" onclick="window.location.href='appointment-details.html'">
+                        <img src="images/book.png" class="dashboard-card-img" alt="Book Appointment">
+                        <div class="dashboard-card-title">BOOK AN APPOINTMENT</div>
+                    </div>
+
+                    <div class="dashboard-card" onclick="window.location.href='health-record.html'">
+                        <img src="images/healthrecord.png" class="dashboard-card-img" alt="Health Record">
+                        <div class="dashboard-card-title">HEALTH RECORD</div>
+                    </div>
+
+                    <div class="dashboard-card" onclick="window.location.href='prescription.html'">
+                        <img src="images/prescription.png" class="dashboard-card-img" alt="Prescription">
+                        <div class="dashboard-card-title">PRESCRIPTION</div>
+                    </div>
+
+                </div>
+
+                <!-- Back button -->
+                <div style="margin-top: 30px; text-align: center;">
+                    <button type="button"
+                            class="btn btn-secondary"
+                            onclick="window.location.href='index.html'">
+                        BACK TO HOME
+                    </button>
+                </div>
+
+            </div>
+        </main>
+
+        <footer class="app-footer">
+            © 2026 National Healthcare. All rights reserved.
+        </footer>
+
+    </div>
+
+    <!-- Chatbot -->
+    <div class="chatbot-container">
+        <button class="chatbot-toggle" id="chatbotToggle" aria-label="Open chat assistant">
+            💬
+        </button>
+
+        <div class="chatbot-window" id="chatbotWindow">
+            <div class="chatbot-header">
+                <span>Healthcare Assistant</span>
+                <button class="chatbot-close" id="chatbotClose">×</button>
+            </div>
+
+            <div class="chatbot-messages" id="chatbotMessages">
+                <div class="chatbot-message bot">
+                    Hello! You can book appointments, view health records, or manage prescriptions from this dashboard.
+                </div>
+            </div>
+
+            <div class="chatbot-input-area">
+                <input type="text" id="chatbotInput" class="chatbot-input" placeholder="Type your message...">
+                <button id="chatbotSend" class="chatbot-send">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Show logged-in user name -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const name = localStorage.getItem("loggedInName");
+            if (name) {
+                document.getElementById("user-name").innerText = name;
+            }
+        });
+    </script>
+
+</body>
+</html>
