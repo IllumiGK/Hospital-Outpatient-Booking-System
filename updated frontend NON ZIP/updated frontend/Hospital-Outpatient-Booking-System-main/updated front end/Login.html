@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Log In - National Healthcare UK</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="script.js"></script>
+</head>
+
+<body>
+
+<header class="top-banner">
+  <img src="images/logo.png" class="banner-logo" alt="Logo">
+
+  <div class="banner-title">NATIONAL HEALTHCARE UK</div>
+
+  <div class="profile-wrapper">
+    <img src="images/profile.png" class="profile-icon" id="profileBtn" alt="Profile">
+
+    <div class="profile-menu" id="profileMenu">
+      <div onclick="location.href='index.html'">Home</div>
+      <div onclick="location.href='register.html'">Register</div>
+    </div>
+  </div>
+</header>
+
+<div class="app-shell">
+
+  <main class="app-main">
+    <div class="card">
+      <h1 class="card-title">Log In</h1>
+      <p class="card-subtitle">Access your healthcare services</p>
+
+      <form onsubmit="event.preventDefault(); login();">
+        <div class="form-group">
+          <label class="form-label" for="login-email">Email</label>
+          <input class="form-input" id="login-email" type="email" placeholder="email@example.com">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="login-password">Password</label>
+          <input class="form-input" id="login-password" type="password" placeholder="Password">
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block">
+          LOG IN
+        </button>
+      </form>
+    </div>
+  </main>
+
+  <footer class="app-footer">
+    © 2026 National Healthcare. All rights reserved.
+  </footer>
+
+</div>
+
+</body>
+</html>
