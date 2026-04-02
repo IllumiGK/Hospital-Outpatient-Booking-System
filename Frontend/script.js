@@ -52,7 +52,7 @@ function setupTimeSelection() {
     }
 }
 
-function setupCalendar() {
+async function setupCalendar() {
     const days = document.querySelectorAll(".calendar-day");
     const dateOutput = document.getElementById("selected-date");
     const calendarTitle = document.getElementById("calendar-title");
@@ -72,22 +72,73 @@ function setupCalendar() {
     }
 
     if (dateOutput) {
-        const defaultDate = `${String(currentDay).padStart(2, "0")}.${String(currentMonth + 1).padStart(2, "0")}.${currentYear}`;
+        const defaultDate = `${String(currentDay).padStart(2,"0")}.${String(currentMonth+1).padStart(2,"0")}.${currentYear}`;
         dateOutput.textContent = defaultDate;
     }
 
+    // **Fetch booked dates from backend**
+    let bookedDates = [];
+    try {
+        const res = await fetch(`https://localhost:7156/api/appointments/booked?year=${currentYear}&month=${currentMonth+1}`);
+        if (res.ok) bookedDates = await res.json(); // returns ["03.04.2026", "10.04.2026", ...]
+    } catch (err) {
+        console.error("Could not fetch booked dates", err);
+    }
+
+    // Add click handlers & mark unavailable
     if (days.length > 0 && dateOutput) {
         days.forEach((day) => {
-            day.addEventListener("click", () => {
-                const dayNumber = day.textContent.trim();
-                if (!dayNumber) return;
+            const dayNumber = day.textContent.trim();
+            if (!dayNumber) return;
 
-                days.forEach((d) => d.classList.remove("selected"));
+            const formatted = `${String(dayNumber).padStart(2,"0")}.${String(currentMonth+1).padStart(2,"0")}.${currentYear}`;
+
+            if (bookedDates.includes(formatted)) {
+                day.classList.add("slot-none"); // mark fully booked
+            } else {
+                day.classList.add("slot-available");
+            }
+
+            day.addEventListener("click", async () => {
+                if (day.classList.contains("slot-none")) return; // can't select
+
+                days.forEach(d => d.classList.remove("selected"));
                 day.classList.add("selected");
 
-                dateOutput.textContent = `${String(dayNumber).padStart(2, "0")}.${String(currentMonth + 1).padStart(2, "0")}.${currentYear}`;
+                dateOutput.textContent = formatted;
+
+                // **Update available times**
+                await updateAvailableTimes(formatted);
             });
         });
+
+        // Load default date times
+        await updateAvailableTimes(dateOutput.textContent);
+    }
+}
+
+async function updateAvailableTimes(date) {
+    const timeButtons = document.querySelectorAll(".slot-time");
+
+    // reset all buttons
+    timeButtons.forEach(btn => {
+        btn.disabled = false;
+        btn.classList.remove("slot-none");
+    });
+
+    try {
+        const res = await fetch(`https://localhost:7156/api/appointments/times/${encodeURIComponent(date)}`);
+        if (!res.ok) return;
+
+        const bookedTimes = await res.json(); // ["10:00", "15:00", ...]
+        timeButtons.forEach(btn => {
+            if (bookedTimes.includes(btn.innerText)) {
+                btn.disabled = true;
+                btn.classList.add("slot-none");
+            }
+        });
+    } catch (err) {
+        console.error("Could not fetch booked times", err);
     }
 }
 
