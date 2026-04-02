@@ -11,10 +11,8 @@ public class DatabaseService
 
     public void RegisterUser(string name, string email, string password)
     {
-        using (SqlConnection conn = new SqlConnection(_connectionString))
         {
-            conn.Open();
-
+            using (SqlConnection conn = new SqlConnection(_connectionString))
             string query = "INSERT INTO Users (Name, Email, Password) VALUES (@Name, @Email, @Password)";
 
             SqlCommand cmd = new SqlCommand(query, conn);
@@ -22,6 +20,7 @@ public class DatabaseService
             cmd.Parameters.AddWithValue("@Email", email);
             cmd.Parameters.AddWithValue("@Password", password);
 
+            conn.Open();
             cmd.ExecuteNonQuery();
         }
     }
