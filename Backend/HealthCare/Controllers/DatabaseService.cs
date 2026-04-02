@@ -41,6 +41,37 @@ public class DatabaseService
         }
     }
 
+    public List<string> GetBookedDates(int year, int month)
+    {
+        var dates = new List<string>();
+        using SqlConnection conn = new SqlConnection(_connectionString);
+        string query = "SELECT DISTINCT Date FROM dbo.Appointments WHERE YEAR(CONVERT(date, Date, 104)) = @Year AND MONTH(CONVERT(date, Date, 104)) = @Month";
+        
+        using SqlCommand cmd = new SqlCommand(query, conn);
+        cmd.Parameters.AddWithValue("@Year", year);
+        cmd.Parameters.AddWithValue("@Month", month);
+        conn.Open();
+        
+        using SqlDataReader reader = cmd.ExecuteReader();
+        while(reader.Read()) dates.Add(reader["Date"].ToString());
+        return dates;
+    }
+    
+    public List<string> GetBookedTimes(string date)
+    {
+        var times = new List<string>();
+        using SqlConnection conn = new SqlConnection(_connectionString);
+        string query = "SELECT Time FROM dbo.Appointments WHERE Date = @Date";
+        
+        using SqlCommand cmd = new SqlCommand(query, conn);
+        cmd.Parameters.AddWithValue("@Date", date);
+        conn.Open();
+        
+        using SqlDataReader reader = cmd.ExecuteReader();
+        while(reader.Read()) times.Add(reader["Time"].ToString());
+        return times;
+    }
+        
     public void CreateAppointment(string email, string date, string time, string reason, string hospital)
     {
         using SqlConnection conn = new SqlConnection(_connectionString);
