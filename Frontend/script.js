@@ -248,93 +248,95 @@ function saveAppointmentDetails() {
     window.location.href = "book-appointment.html";
 }
 
-function bookAppointment() {
-    const email = localStorage.getItem("loggedInEmail") || "";
-    const date = document.getElementById("selected-date")?.innerText || "";
-    const selectedTime = document.querySelector(".slot-time.selected");
-    const time = selectedTime ? selectedTime.innerText.trim() : "";
-    const reason = localStorage.getItem("appointmentReason") || "General appointment";
-    const hospital = localStorage.getItem("appointmentHospital") || "Imperial College Healthcare NHS Trust";
+async function bookAppointment() {
+  const email = localStorage.getItem("loggedInEmail") || "";
+  const date = document.getElementById("selected-date")?.innerText || "";
+  const selectedTime = document.querySelector(".slot-time.selected");
+  const time = selectedTime ? selectedTime.innerText : "";
+  const reason = localStorage.getItem("appointmentReason") || "General appointment";
+  const hospital = "Imperial College Healthcare NHS Trust";
 
-    if (!email) {
-        alert("No logged in user found.");
-        window.location.href = "login.html";
-        return;
-    }
+  if (!email) {
+    alert("No logged in user found");
+    return;
+  }
 
-    if (!date || !time) {
-        alert("Please select a date and time.");
-        return;
-    }
+  if (!date || !time) {
+    alert("Please select a date and time");
+    return;
+  }
 
-    const appointments = getAppointments();
-    const newAppointment = {
-        appointmentID: generateAppointmentId(),
-        email,
-        date,
-        time,
-        reason,
-        hospital
-    };
+  const response = await fetch("https://localhost:7156/api/appointments", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      email,
+      date,
+      time,
+      reason,
+      hospital
+    })
+  });
 
-    appointments.push(newAppointment);
-    saveAppointments(appointments);
+  if (response.ok) {
+    localStorage.setItem("lastAppointmentEmail", email);
+    localStorage.setItem("lastAppointmentDate", date);
+    localStorage.setItem("lastAppointmentTime", time);
+    localStorage.setItem("lastAppointmentReason", reason);
+    localStorage.setItem("lastAppointmentHospital", hospital);
 
-    localStorage.setItem("lastAppointmentId", String(newAppointment.appointmentID));
-    localStorage.setItem("lastAppointmentEmail", newAppointment.email);
-    localStorage.setItem("lastAppointmentDate", newAppointment.date);
-    localStorage.setItem("lastAppointmentTime", newAppointment.time);
-    localStorage.setItem("lastAppointmentReason", newAppointment.reason);
-    localStorage.setItem("lastAppointmentHospital", newAppointment.hospital);
-
-    alert("Appointment booked successfully.");
+    alert("Appointment booked");
     window.location.href = "confirm-appointment.html";
+  } else {
+    alert("Error booking appointment");
+  }
 }
 
 function loadConfirmationDetails() {
-    const confirmEmail = document.getElementById("confirm-email");
-    const confirmDate = document.getElementById("confirm-date");
-    const confirmTime = document.getElementById("confirm-time");
-    const confirmReason = document.getElementById("confirm-reason");
+  document.getElementById("confirm-email").innerText =
+    localStorage.getItem("lastAppointmentEmail") || "-";
 
-    if (confirmEmail) {
-        confirmEmail.innerText = localStorage.getItem("lastAppointmentEmail") || "-";
-    }
+  document.getElementById("confirm-date").innerText =
+    localStorage.getItem("lastAppointmentDate") || "-";
 
-    if (confirmDate) {
-        confirmDate.innerText = localStorage.getItem("lastAppointmentDate") || "-";
-    }
+  document.getElementById("confirm-time").innerText =
+    localStorage.getItem("lastAppointmentTime") || "-";
 
-    if (confirmTime) {
-        confirmTime.innerText = localStorage.getItem("lastAppointmentTime") || "-";
-    }
-
-    if (confirmReason) {
-        confirmReason.innerText = localStorage.getItem("lastAppointmentReason") || "-";
-    }
+  document.getElementById("confirm-reason").innerText =
+    localStorage.getItem("lastAppointmentReason") || "-";
 }
 
-function loadAppointments() {
-    const email = localStorage.getItem("loggedInEmail") || "";
-    const container = document.getElementById("appointments-list");
 
-    if (!email || !container) {
-        return;
-    }
+async function loadAppointments() {
+  const email = localStorage.getItem("loggedInEmail") || "";
+  const container = document.getElementById("appointments-list");
 
-    const appointments = getAppointments().filter((app) => app.email === email);
+  if (!email || !container) {
+    return;
+  }
 
-    if (appointments.length === 0) {
-        container.innerHTML = "<p>No appointments found.</p>";
-        return;
-    }
+  const response = await fetch(`https://localhost:7156/api/appointments/user/${encodeURIComponent(email)}`);
 
-    container.innerHTML = appointments.map((app) => `
-    <div class="appointment-item">
+  if (!response.ok) {
+    container.innerHTML = "<p>Could not load appointments.</p>";
+    return;
+  }
+
+  const appointments = await response.json();
+
+  if (!appointments || appointments.length === 0) {
+    container.innerHTML = "<p>No appointments found.</p>";
+    return;
+  }
+
+  container.innerHTML = appointments.map(app => `
+    <div class="appointment-item" style="margin-bottom: 20px;">
       <div class="detail-label">APPOINTMENT:</div>
       <div class="detail-value">${app.date} — ${app.time}</div>
       <div class="detail-value">Hospital: ${app.hospital || "-"}</div>
-      <div class="detail-value" style="margin-bottom: 10px;">Reason: ${app.reason || "-"}</div>
+      <div class="detail-value" style="margin-bottom: 10px;">Reason: ${app.reason}</div>
 
       <button type="button" class="btn btn-primary"
         onclick="openChangePage(${app.appointmentID}, '${escapeJs(app.date)}', '${escapeJs(app.time)}', '${escapeJs(app.hospital || "")}')">
@@ -381,56 +383,56 @@ function loadChangeForm() {
     }
 }
 
-function updateAppointment() {
-    const id = Number(localStorage.getItem("changeAppointmentId"));
-    const dateValue = document.getElementById("change-date")?.value || "";
-    const time = document.getElementById("change-time")?.value || "";
-    const hospital = document.getElementById("change-hospital")?.value || "";
+async function updateAppointment() {
+  const id = localStorage.getItem("changeAppointmentId");
+  const dateValue = document.getElementById("change-date")?.value || "";
+  const time = document.getElementById("change-time")?.value || "";
+  const hospital = document.getElementById("change-hospital")?.value || "";
 
-    if (!id) {
-        alert("No appointment selected.");
-        return;
-    }
+  if (!id) {
+    alert("No appointment selected");
+    return;
+  }
 
-    if (!dateValue || !time || !hospital) {
-        alert("Please fill in all fields.");
-        return;
-    }
+  if (!dateValue || !time || !hospital) {
+    alert("Please fill in all fields");
+    return;
+  }
 
-    const parts = dateValue.split("-");
-    const date = `${parts[2]}.${parts[1]}.${parts[0]}`;
+  const parts = dateValue.split("-");
+  const date = `${parts[2]}.${parts[1]}.${parts[0]}`;
 
-    const appointments = getAppointments();
-    const appointmentIndex = appointments.findIndex((app) => app.appointmentID === id);
+  const response = await fetch(`https://localhost:7156/api/appointments/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      date,
+      time,
+      hospital
+    })
+  });
 
-    if (appointmentIndex === -1) {
-        alert("Appointment not found.");
-        return;
-    }
-
-    appointments[appointmentIndex].date = date;
-    appointments[appointmentIndex].time = time;
-    appointments[appointmentIndex].hospital = hospital;
-
-    saveAppointments(appointments);
-
-    localStorage.setItem("lastAppointmentId", String(appointments[appointmentIndex].appointmentID));
-    localStorage.setItem("lastAppointmentEmail", appointments[appointmentIndex].email);
-    localStorage.setItem("lastAppointmentDate", appointments[appointmentIndex].date);
-    localStorage.setItem("lastAppointmentTime", appointments[appointmentIndex].time);
-    localStorage.setItem("lastAppointmentReason", appointments[appointmentIndex].reason || "");
-    localStorage.setItem("lastAppointmentHospital", appointments[appointmentIndex].hospital || "");
-
-    window.location.href = "dashboard.html";
+  if (response.ok) {
+    alert("Appointment updated");
+    window.location.href = "manage-appointments.html";
+  } else {
+    alert("Error updating appointment");
+  }
 }
 
-function cancelAppointment(id) {
-    const appointments = getAppointments();
-    const updatedAppointments = appointments.filter((app) => app.appointmentID !== id);
+async function cancelAppointment(id) {
+  const response = await fetch(`https://localhost:7156/api/appointments/${id}`, {
+    method: "DELETE"
+  });
 
-    saveAppointments(updatedAppointments);
-    alert("Appointment cancelled successfully.");
+  if (response.ok) {
+    alert("Appointment cancelled");
     loadAppointments();
+  } else {
+    alert("Error cancelling appointment");
+  }
 }
 
 function escapeJs(value) {
