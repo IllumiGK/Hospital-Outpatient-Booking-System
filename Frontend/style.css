@@ -732,23 +732,3 @@ textarea {
         font-size: 1.8rem;
     }
 }
-/* =========================
-   Form Message
-========================= */
-#form-message {
-  padding: 8px 12px;
-  border-radius: 5px;
-  font-weight: 500;
-  font-size: 0.9rem;
-  display: none;
-}
-
-#form-message.error {
-  background-color: #ffdddd;
-  color: #a00;
-}
-
-#form-message.success {
-  background-color: #ddffdd;
-  color: #0a0;
-}
