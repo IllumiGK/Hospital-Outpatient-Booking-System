@@ -11,37 +11,41 @@ public class DatabaseService
 
     public void RegisterUser(string name, string email, string password)
     {
-        using (SqlConnection conn = new SqlConnection(_connectionString));
-        string query = "INSERT INTO dbo.Users (Name, Email, Password) VALUES (@Name, @Email, @Password)";
-
-        SqlCommand cmd = new SqlCommand(query, conn);
-        cmd.Parameters.AddWithValue("@Name", name);
-        cmd.Parameters.AddWithValue("@Email", email);
-        cmd.Parameters.AddWithValue("@Password", password);
-
-        conn.Open();
-        cmd.ExecuteNonQuery();
+        using (SqlConnection conn = new SqlConnection(_connectionString))
+        {
+            string query = "INSERT INTO dbo.Users (Name, Email, Password) VALUES (@Name, @Email, @Password)";
+    
+            SqlCommand cmd = new SqlCommand(query, conn);
+            cmd.Parameters.AddWithValue("@Name", name);
+            cmd.Parameters.AddWithValue("@Email", email);
+            cmd.Parameters.AddWithValue("@Password", password);
+    
+            conn.Open();
+            cmd.ExecuteNonQuery();
+        }
     }
 
     public bool CheckUser(string email, string password)
     {
         using (SqlConnection conn = new SqlConnection(_connectionString));
-        string query = "SELECT COUNT(*) FROM dbo.Users WHERE Email=@Email AND Password=@Password";
-
-        SqlCommand cmd = new SqlCommand(query, conn);
-        cmd.Parameters.AddWithValue("@Email", email);
-        cmd.Parameters.AddWithValue("@Password", password);
-        
-        conn.Open();
-        int count = (int)cmd.ExecuteScalar();
-        return count > 0;
+        {
+            string query = "SELECT COUNT(*) FROM dbo.Users WHERE Email=@Email AND Password=@Password";
+    
+            SqlCommand cmd = new SqlCommand(query, conn);
+            cmd.Parameters.AddWithValue("@Email", email);
+            cmd.Parameters.AddWithValue("@Password", password);
+            
+            conn.Open();
+            int count = (int)cmd.ExecuteScalar();
+            return count > 0;
+        }
     }
 
     public void CreateAppointment(string email, string date, string time, string reason, string hospital)
     {
         using SqlConnection conn = new SqlConnection(_connectionString);
         string query = "INSERT INTO dbo.Appointments (Email, Date, Time, Reason, Hospital) VALUES (@Email, @Date, @Time, @Reason, @Hospital)";
-
+    
         using SqlCommand cmd = new SqlCommand(query, conn);
         cmd.Parameters.AddWithValue("@Email", email);
         cmd.Parameters.AddWithValue("@Date", date);
@@ -51,6 +55,7 @@ public class DatabaseService
 
         conn.Open();
         cmd.ExecuteNonQuery();
+        
     }
 
     public List<AppointmentRecord> GetAppointmentsByEmail(string email)
