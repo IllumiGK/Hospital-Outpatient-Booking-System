@@ -10,6 +10,20 @@ public class AppointmentController : ControllerBase
     {
         _db = db;
     }
+    
+    [HttpGet("booked")]
+    public IActionResult GetBookedDates(int year, int month)
+    {
+        var dates = _db.GetBookedDates(year, month);
+        return Ok(dates);
+    }
+
+    [HttpGet("times/{date}")]
+    public IActionResult GetBookedTimes(string date)
+    {
+        var times = _db.GetBookedTimes(date);
+        return Ok(times);
+    }
 
     [HttpPost]
     public IActionResult Create([FromBody] AppointmentRequest req)
