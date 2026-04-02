@@ -1,334 +1,335 @@
 document.addEventListener("DOMContentLoaded", () => {
-  setupProfileMenu();
-  setupCalendar();
-  setupTimeSelection();
-  setupChatbot();
+    setupProfileMenu();
+    setupCalendar();
+    setupTimeSelection();
+    setupChatbot();
 
-  if (document.getElementById("appointments-list")) {
-    loadAppointments();
-  }
+    if (document.getElementById("appointments-list")) {
+        loadAppointments();
+    }
 
-  if (document.getElementById("confirm-email")) {
-    loadConfirmationDetails();
-  }
+    if (document.getElementById("confirm-email")) {
+        loadConfirmationDetails();
+    }
 
-  if (document.getElementById("change-date")) {
-    loadChangeForm();
-  }
+    if (document.getElementById("change-date")) {
+        loadChangeForm();
+    }
 });
 
 function setupProfileMenu() {
-  const profileBtn = document.getElementById("profileBtn");
-  const profileMenu = document.getElementById("profileMenu");
+    const profileBtn = document.getElementById("profileBtn");
+    const profileMenu = document.getElementById("profileMenu");
 
-  if (profileBtn && profileMenu) {
-    profileBtn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      profileMenu.style.display =
-        profileMenu.style.display === "block" ? "none" : "block";
-    });
+    if (profileBtn && profileMenu) {
+        profileBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            profileMenu.style.display =
+                profileMenu.style.display === "block" ? "none" : "block";
+        });
 
-    document.addEventListener("click", (e) => {
-      if (!profileBtn.contains(e.target) && !profileMenu.contains(e.target)) {
-        profileMenu.style.display = "none";
-      }
-    });
-  }
+        document.addEventListener("click", (e) => {
+            if (!profileBtn.contains(e.target) && !profileMenu.contains(e.target)) {
+                profileMenu.style.display = "none";
+            }
+        });
+    }
 }
 
 function setupTimeSelection() {
-  const timeList = document.getElementById("time-list");
+    const timeList = document.getElementById("time-list");
 
-  if (timeList) {
-    timeList.addEventListener("click", (e) => {
-      if (!e.target.classList.contains("slot-time")) return;
+    if (timeList) {
+        timeList.addEventListener("click", (e) => {
+            if (!e.target.classList.contains("slot-time")) return;
 
-      document.querySelectorAll(".slot-time").forEach((btn) => {
-        btn.classList.remove("selected");
-      });
+            document.querySelectorAll(".slot-time").forEach((btn) => {
+                btn.classList.remove("selected");
+            });
 
-      e.target.classList.add("selected");
-    });
-  }
+            e.target.classList.add("selected");
+        });
+    }
 }
 
 function setupCalendar() {
-  const days = document.querySelectorAll(".calendar-day");
-  const dateOutput = document.getElementById("selected-date");
-  const calendarTitle = document.getElementById("calendar-title");
+    const days = document.querySelectorAll(".calendar-day");
+    const dateOutput = document.getElementById("selected-date");
+    const calendarTitle = document.getElementById("calendar-title");
 
-  const now = new Date();
-  const currentYear = now.getFullYear();
-  const currentMonth = now.getMonth();
-  const currentDay = now.getDate();
+    const now = new Date();
+    const currentYear = now.getFullYear();
+    const currentMonth = now.getMonth();
+    const currentDay = now.getDate();
 
-  const monthNames = [
-    "January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"
-  ];
+    const monthNames = [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    ];
 
-  if (calendarTitle) {
-    calendarTitle.textContent = `${monthNames[currentMonth]} ${currentYear}`;
-  }
+    if (calendarTitle) {
+        calendarTitle.textContent = `${monthNames[currentMonth]} ${currentYear}`;
+    }
 
-  if (dateOutput) {
-    const defaultDate = `${String(currentDay).padStart(2, "0")}.${String(currentMonth + 1).padStart(2, "0")}.${currentYear}`;
-    dateOutput.textContent = defaultDate;
-  }
+    if (dateOutput) {
+        const defaultDate = `${String(currentDay).padStart(2, "0")}.${String(currentMonth + 1).padStart(2, "0")}.${currentYear}`;
+        dateOutput.textContent = defaultDate;
+    }
 
-  if (days.length > 0 && dateOutput) {
-    days.forEach((day) => {
-      day.addEventListener("click", () => {
-        const dayNumber = day.textContent.trim();
-        if (!dayNumber) return;
+    if (days.length > 0 && dateOutput) {
+        days.forEach((day) => {
+            day.addEventListener("click", () => {
+                const dayNumber = day.textContent.trim();
+                if (!dayNumber) return;
 
-        days.forEach((d) => d.classList.remove("selected"));
-        day.classList.add("selected");
+                days.forEach((d) => d.classList.remove("selected"));
+                day.classList.add("selected");
 
-        dateOutput.textContent = `${String(dayNumber).padStart(2, "0")}.${String(currentMonth + 1).padStart(2, "0")}.${currentYear}`;
-      });
-    });
-  }
+                dateOutput.textContent = `${String(dayNumber).padStart(2, "0")}.${String(currentMonth + 1).padStart(2, "0")}.${currentYear}`;
+            });
+        });
+    }
 }
 
 function getRegisteredUser() {
-  return JSON.parse(localStorage.getItem("registeredUser") || "null");
+    return JSON.parse(localStorage.getItem("registeredUser") || "null");
 }
 
 function getAppointments() {
-  return JSON.parse(localStorage.getItem("appointments") || "[]");
+    return JSON.parse(localStorage.getItem("appointments") || "[]");
 }
 
 function saveAppointments(appointments) {
-  localStorage.setItem("appointments", JSON.stringify(appointments));
+    localStorage.setItem("appointments", JSON.stringify(appointments));
 }
 
 function generateAppointmentId() {
-  return Date.now();
+    return Date.now();
 }
 
 function showMessage(message, type = "error") {
-  const msgBox = document.getElementById("form-message");
-  if (!msgBox) return;
+    const msgBox = document.getElementById("form-message");
 
-  msgBox.textContent = message;
-  msgBox.className = type; // "error" or "success"
-  msgBox.style.display = "block";
+    if (!msgBox) {
+        alert(message);
+        return;
+    }
+
+    msgBox.textContent = message;
+    msgBox.className = type;
+    msgBox.style.display = "block";
 }
 
 async function register() {
-  const name = document.getElementById("name")?.value.trim() || "";
-  const dob = document.getElementById("dob")?.value || "";
-  const gender = document.getElementById("gender")?.value || "";
-  const address = document.getElementById("address")?.value.trim() || "";
-  const email = document.getElementById("email")?.value.trim() || "";
-  const password = document.getElementById("password")?.value || "";
+    const name = document.getElementById("name")?.value.trim() || "";
+    const dob = document.getElementById("dob")?.value || "";
+    const gender = document.getElementById("gender")?.value || "";
+    const address = document.getElementById("address")?.value.trim() || "";
+    const email = document.getElementById("email")?.value.trim() || "";
+    const password = document.getElementById("password")?.value || "";
 
-  // Validation
-  if (!name || !dob || !gender || !address || !email || !password) {
-    showMessage("Please fill in all fields.");
-    return;
-  }
-
-  if (!email.includes("@") || !email.includes(".")) {
-    showMessage("Please enter a valid email address.");
-    return;
-  }
-
-  if (password.length < 6) {
-    showMessage("Password must be at least 6 characters long.");
-    return;
-  }
-
-  try {
-    const response = await fetch("http://localhost:7156/api/auth/register", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        name,
-        email,
-        password
-        // backend currently only accepts these
-      })
-    });
-
-    const result = await response.text();
-
-    if (response.ok) {
-
-      showMessage("Registration successful. Redirecting...", "success");
-
-      setTimeout(() => {
-        window.location.href = "login.html";
-      }, 1500);
-
-    } else {
-      showMessage(result || "Registration failed.");
+    if (!name || !dob || !gender || !address || !email || !password) {
+        showMessage("Please fill in all fields.");
+        return;
     }
 
-  } catch (err) {
-    console.error(err);
-    showMessage("Could not connect to server.");
-  }
+    if (!email.includes("@") || !email.includes(".")) {
+        showMessage("Please enter a valid email address.");
+        return;
+    }
+
+    if (password.length < 6) {
+        showMessage("Password must be at least 6 characters long.");
+        return;
+    }
+
+    try {
+        const response = await fetch("http://localhost:7156/api/auth/register", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                name,
+                email,
+                password
+            })
+        });
+
+        const result = await response.text();
+
+        if (response.ok) {
+            localStorage.setItem("registeredEmail", email);
+
+            const user = { name, dob, gender, address, email, password };
+            localStorage.setItem("registeredUser", JSON.stringify(user));
+
+            showMessage("Registration successful. Redirecting...", "success");
+
+            setTimeout(() => {
+                window.location.href = "login.html";
+            }, 1500);
+        } else {
+            showMessage(result || "Registration failed.");
+        }
+    } catch (error) {
+        console.error("Register error:", error);
+        showMessage("Could not connect to the server.");
+    }
 }
 
 async function login() {
-  const email = document.getElementById("login-email")?.value.trim() || "";
-  const password = document.getElementById("login-password")?.value || "";
+    const email = document.getElementById("login-email")?.value.trim() || "";
+    const password = document.getElementById("login-password")?.value || "";
 
-  if (!email || !password) {
-    showMessage("Please enter email and password.");
-    return;
-  }
-
-  if (!email.includes("@") || !email.includes(".")) {
-    showMessage("Please enter a valid email address.");
-    return;
-  }
-
-  try {
-    const response = await fetch("http://localhost:7156/api/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ email, password })
-    });
-
-    const result = await response.text();
-
-    if (response.ok) {
-      // store session only (safe)
-      localStorage.setItem("loggedInEmail", email);
-
-      showMessage("Login successful. Redirecting...", "success");
-
-      setTimeout(() => {
-        window.location.href = "dashboard.html";
-      }, 1500);
-
-    } else {
-      showMessage("Invalid email or password.");
+    if (!email || !password) {
+        showMessage("Please enter email and password.");
+        return;
     }
 
-  } catch (err) {
-    console.error(err);
-    showMessage("Could not connect to server.");
-  }
+    if (!email.includes("@") || !email.includes(".")) {
+        showMessage("Please enter a valid email address.");
+        return;
+    }
+
+    try {
+        const response = await fetch("http://localhost:7156/api/auth/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ email, password })
+        });
+
+        const result = await response.text();
+
+        if (response.ok) {
+            localStorage.setItem("loggedInEmail", email);
+            showMessage("Login successful. Redirecting...", "success");
+
+            setTimeout(() => {
+                window.location.href = "dashboard.html";
+            }, 1500);
+        } else {
+            showMessage(result || "Invalid email or password.");
+        }
+    } catch (err) {
+        console.error(err);
+        showMessage("Could not connect to server.");
+    }
 }
 
 function logout() {
-  localStorage.removeItem("loggedInEmail");
-  window.location.href = "index.html";
+    localStorage.removeItem("loggedInEmail");
+    localStorage.removeItem("loggedInName");
+    window.location.href = "index.html";
 }
 
 function saveAppointmentDetails() {
-  const fullName = document.getElementById("patient-name")?.value.trim() || "";
-  const dob = document.getElementById("patient-dob")?.value || "";
-  const nhsNumber = document.getElementById("patient-nhs")?.value.trim() || "";
-  const reason = document.getElementById("booking-reason")?.value.trim() || "";
-  const hospital =
-    document.getElementById("hospital")?.value ||
-    "Imperial College Healthcare NHS Trust";
+    const fullName = document.getElementById("patient-name")?.value.trim() || "";
+    const dob = document.getElementById("patient-dob")?.value || "";
+    const nhsNumber = document.getElementById("patient-nhs")?.value.trim() || "";
+    const reason = document.getElementById("booking-reason")?.value.trim() || "";
+    const hospital =
+        document.getElementById("hospital")?.value ||
+        "Imperial College Healthcare NHS Trust";
 
-  if (!fullName || !dob || !nhsNumber || !reason) {
-    alert("Please fill in all details before continuing.");
-    return;
-  }
+    if (!fullName || !dob || !reason) {
+        alert("Please fill in all required details before continuing.");
+        return;
+    }
 
-  localStorage.setItem("appointmentPatientName", fullName);
-  localStorage.setItem("appointmentPatientDob", dob);
-  localStorage.setItem("appointmentPatientNhs", nhsNumber);
-  localStorage.setItem("appointmentReason", reason);
-  localStorage.setItem("appointmentHospital", hospital);
+    localStorage.setItem("appointmentPatientName", fullName);
+    localStorage.setItem("appointmentPatientDob", dob);
+    localStorage.setItem("appointmentPatientNhs", nhsNumber);
+    localStorage.setItem("appointmentReason", reason);
+    localStorage.setItem("appointmentHospital", hospital);
 
-  window.location.href = "book-appointment.html";
+    window.location.href = "book-appointment.html";
 }
 
 function bookAppointment() {
-  const email = localStorage.getItem("loggedInEmail") || "";
-  const date = document.getElementById("selected-date")?.innerText || "";
-  const selectedTime = document.querySelector(".slot-time.selected");
-  const time = selectedTime ? selectedTime.innerText.trim() : "";
-  const reason = localStorage.getItem("appointmentReason") || "General appointment";
-  const hospital = localStorage.getItem("appointmentHospital") || "Imperial College Healthcare NHS Trust";
+    const email = localStorage.getItem("loggedInEmail") || "";
+    const date = document.getElementById("selected-date")?.innerText || "";
+    const selectedTime = document.querySelector(".slot-time.selected");
+    const time = selectedTime ? selectedTime.innerText.trim() : "";
+    const reason = localStorage.getItem("appointmentReason") || "General appointment";
+    const hospital = localStorage.getItem("appointmentHospital") || "Imperial College Healthcare NHS Trust";
 
-  if (!email) {
-    alert("No logged in user found.");
-    window.location.href = "login.html";
-    return;
-  }
+    if (!email) {
+        alert("No logged in user found.");
+        window.location.href = "login.html";
+        return;
+    }
 
-  if (!date || !time) {
-    alert("Please select a date and time.");
-    return;
-  }
+    if (!date || !time) {
+        alert("Please select a date and time.");
+        return;
+    }
 
-  const appointments = getAppointments();
-  const newAppointment = {
-    appointmentID: generateAppointmentId(),
-    email,
-    date,
-    time,
-    reason,
-    hospital
-  };
+    const appointments = getAppointments();
+    const newAppointment = {
+        appointmentID: generateAppointmentId(),
+        email,
+        date,
+        time,
+        reason,
+        hospital
+    };
 
-  appointments.push(newAppointment);
-  saveAppointments(appointments);
+    appointments.push(newAppointment);
+    saveAppointments(appointments);
 
-  localStorage.setItem("lastAppointmentId", String(newAppointment.appointmentID));
-  localStorage.setItem("lastAppointmentEmail", newAppointment.email);
-  localStorage.setItem("lastAppointmentDate", newAppointment.date);
-  localStorage.setItem("lastAppointmentTime", newAppointment.time);
-  localStorage.setItem("lastAppointmentReason", newAppointment.reason);
-  localStorage.setItem("lastAppointmentHospital", newAppointment.hospital);
+    localStorage.setItem("lastAppointmentId", String(newAppointment.appointmentID));
+    localStorage.setItem("lastAppointmentEmail", newAppointment.email);
+    localStorage.setItem("lastAppointmentDate", newAppointment.date);
+    localStorage.setItem("lastAppointmentTime", newAppointment.time);
+    localStorage.setItem("lastAppointmentReason", newAppointment.reason);
+    localStorage.setItem("lastAppointmentHospital", newAppointment.hospital);
 
-  alert("Appointment booked successfully.");
-  window.location.href = "confirm-appointment.html";
+    alert("Appointment booked successfully.");
+    window.location.href = "confirm-appointment.html";
 }
 
 function loadConfirmationDetails() {
-  const confirmEmail = document.getElementById("confirm-email");
-  const confirmDate = document.getElementById("confirm-date");
-  const confirmTime = document.getElementById("confirm-time");
-  const confirmReason = document.getElementById("confirm-reason");
+    const confirmEmail = document.getElementById("confirm-email");
+    const confirmDate = document.getElementById("confirm-date");
+    const confirmTime = document.getElementById("confirm-time");
+    const confirmReason = document.getElementById("confirm-reason");
 
-  if (confirmEmail) {
-    confirmEmail.innerText = localStorage.getItem("lastAppointmentEmail") || "-";
-  }
+    if (confirmEmail) {
+        confirmEmail.innerText = localStorage.getItem("lastAppointmentEmail") || "-";
+    }
 
-  if (confirmDate) {
-    confirmDate.innerText = localStorage.getItem("lastAppointmentDate") || "-";
-  }
+    if (confirmDate) {
+        confirmDate.innerText = localStorage.getItem("lastAppointmentDate") || "-";
+    }
 
-  if (confirmTime) {
-    confirmTime.innerText = localStorage.getItem("lastAppointmentTime") || "-";
-  }
+    if (confirmTime) {
+        confirmTime.innerText = localStorage.getItem("lastAppointmentTime") || "-";
+    }
 
-  if (confirmReason) {
-    confirmReason.innerText = localStorage.getItem("lastAppointmentReason") || "-";
-  }
+    if (confirmReason) {
+        confirmReason.innerText = localStorage.getItem("lastAppointmentReason") || "-";
+    }
 }
 
 function loadAppointments() {
-  const email = localStorage.getItem("loggedInEmail") || "";
-  const container = document.getElementById("appointments-list");
+    const email = localStorage.getItem("loggedInEmail") || "";
+    const container = document.getElementById("appointments-list");
 
-  if (!email || !container) {
-    return;
-  }
+    if (!email || !container) {
+        return;
+    }
 
-  const appointments = getAppointments().filter((app) => app.email === email);
+    const appointments = getAppointments().filter((app) => app.email === email);
 
-  if (appointments.length === 0) {
-    container.innerHTML = "<p>No appointments found.</p>";
-    return;
-  }
+    if (appointments.length === 0) {
+        container.innerHTML = "<p>No appointments found.</p>";
+        return;
+    }
 
-  container.innerHTML = appointments.map((app) => `
+    container.innerHTML = appointments.map((app) => `
     <div class="appointment-item">
       <div class="detail-label">APPOINTMENT:</div>
       <div class="detail-value">${app.date} — ${app.time}</div>
@@ -348,177 +349,176 @@ function loadAppointments() {
 }
 
 function openChangePage(id, date, time, hospital) {
-  localStorage.setItem("changeAppointmentId", String(id));
-  localStorage.setItem("changeAppointmentDate", date);
-  localStorage.setItem("changeAppointmentTime", time);
-  localStorage.setItem("changeAppointmentHospital", hospital);
-  window.location.href = "change.html";
+    localStorage.setItem("changeAppointmentId", String(id));
+    localStorage.setItem("changeAppointmentDate", date);
+    localStorage.setItem("changeAppointmentTime", time);
+    localStorage.setItem("changeAppointmentHospital", hospital);
+    window.location.href = "change.html";
 }
 
 function loadChangeForm() {
-  const savedDate = localStorage.getItem("changeAppointmentDate") || "";
-  const savedTime = localStorage.getItem("changeAppointmentTime") || "";
-  const savedHospital = localStorage.getItem("changeAppointmentHospital") || "";
+    const savedDate = localStorage.getItem("changeAppointmentDate") || "";
+    const savedTime = localStorage.getItem("changeAppointmentTime") || "";
+    const savedHospital = localStorage.getItem("changeAppointmentHospital") || "";
 
-  const dateInput = document.getElementById("change-date");
-  const timeInput = document.getElementById("change-time");
-  const hospitalInput = document.getElementById("change-hospital");
+    const dateInput = document.getElementById("change-date");
+    const timeInput = document.getElementById("change-time");
+    const hospitalInput = document.getElementById("change-hospital");
 
-  if (dateInput && savedDate) {
-    const parts = savedDate.split(".");
-    if (parts.length === 3) {
-      dateInput.value = `${parts[2]}-${parts[1]}-${parts[0]}`;
+    if (dateInput && savedDate) {
+        const parts = savedDate.split(".");
+        if (parts.length === 3) {
+            dateInput.value = `${parts[2]}-${parts[1]}-${parts[0]}`;
+        }
     }
-  }
 
-  if (timeInput && savedTime) {
-    timeInput.value = savedTime;
-  }
+    if (timeInput && savedTime) {
+        timeInput.value = savedTime;
+    }
 
-  if (hospitalInput && savedHospital) {
-    hospitalInput.value = savedHospital;
-  }
+    if (hospitalInput && savedHospital) {
+        hospitalInput.value = savedHospital;
+    }
 }
 
 function updateAppointment() {
-  const id = Number(localStorage.getItem("changeAppointmentId"));
-  const dateValue = document.getElementById("change-date")?.value || "";
-  const time = document.getElementById("change-time")?.value || "";
-  const hospital = document.getElementById("change-hospital")?.value || "";
+    const id = Number(localStorage.getItem("changeAppointmentId"));
+    const dateValue = document.getElementById("change-date")?.value || "";
+    const time = document.getElementById("change-time")?.value || "";
+    const hospital = document.getElementById("change-hospital")?.value || "";
 
-  if (!id) {
-    alert("No appointment selected.");
-    return;
-  }
+    if (!id) {
+        alert("No appointment selected.");
+        return;
+    }
 
-  if (!dateValue || !time || !hospital) {
-    alert("Please fill in all fields.");
-    return;
-  }
+    if (!dateValue || !time || !hospital) {
+        alert("Please fill in all fields.");
+        return;
+    }
 
-  const parts = dateValue.split("-");
-  const date = `${parts[2]}.${parts[1]}.${parts[0]}`;
+    const parts = dateValue.split("-");
+    const date = `${parts[2]}.${parts[1]}.${parts[0]}`;
 
-  const appointments = getAppointments();
-  const appointmentIndex = appointments.findIndex((app) => app.appointmentID === id);
+    const appointments = getAppointments();
+    const appointmentIndex = appointments.findIndex((app) => app.appointmentID === id);
 
-  if (appointmentIndex === -1) {
-    alert("Appointment not found.");
-    return;
-  }
+    if (appointmentIndex === -1) {
+        alert("Appointment not found.");
+        return;
+    }
 
-  appointments[appointmentIndex].date = date;
-  appointments[appointmentIndex].time = time;
-  appointments[appointmentIndex].hospital = hospital;
+    appointments[appointmentIndex].date = date;
+    appointments[appointmentIndex].time = time;
+    appointments[appointmentIndex].hospital = hospital;
 
-  saveAppointments(appointments);
+    saveAppointments(appointments);
 
-  localStorage.setItem("lastAppointmentId", String(appointments[appointmentIndex].appointmentID));
-  localStorage.setItem("lastAppointmentEmail", appointments[appointmentIndex].email);
-  localStorage.setItem("lastAppointmentDate", appointments[appointmentIndex].date);
-  localStorage.setItem("lastAppointmentTime", appointments[appointmentIndex].time);
-  localStorage.setItem("lastAppointmentReason", appointments[appointmentIndex].reason || "");
-  localStorage.setItem("lastAppointmentHospital", appointments[appointmentIndex].hospital || "");
+    localStorage.setItem("lastAppointmentId", String(appointments[appointmentIndex].appointmentID));
+    localStorage.setItem("lastAppointmentEmail", appointments[appointmentIndex].email);
+    localStorage.setItem("lastAppointmentDate", appointments[appointmentIndex].date);
+    localStorage.setItem("lastAppointmentTime", appointments[appointmentIndex].time);
+    localStorage.setItem("lastAppointmentReason", appointments[appointmentIndex].reason || "");
+    localStorage.setItem("lastAppointmentHospital", appointments[appointmentIndex].hospital || "");
 
-  alert("Appointment updated successfully.");
-  window.location.href = "manage-appointments.html";
+    window.location.href = "dashboard.html";
 }
 
 function cancelAppointment(id) {
-  const appointments = getAppointments();
-  const updatedAppointments = appointments.filter((app) => app.appointmentID !== id);
+    const appointments = getAppointments();
+    const updatedAppointments = appointments.filter((app) => app.appointmentID !== id);
 
-  saveAppointments(updatedAppointments);
-  alert("Appointment cancelled successfully.");
-  loadAppointments();
+    saveAppointments(updatedAppointments);
+    alert("Appointment cancelled successfully.");
+    loadAppointments();
 }
 
 function escapeJs(value) {
-  return String(value)
-    .replace(/\\/g, "\\\\")
-    .replace(/'/g, "\\'");
+    return String(value)
+        .replace(/\\/g, "\\\\")
+        .replace(/'/g, "\\'");
 }
 
 function setupChatbot() {
-  const chatbotToggle = document.getElementById("chatbotToggle");
-  const chatbotWindow = document.getElementById("chatbotWindow");
-  const chatbotClose = document.getElementById("chatbotClose");
-  const chatbotSend = document.getElementById("chatbotSend");
-  const chatbotInput = document.getElementById("chatbotInput");
-  const chatbotMessages = document.getElementById("chatbotMessages");
+    const chatbotToggle = document.getElementById("chatbotToggle");
+    const chatbotWindow = document.getElementById("chatbotWindow");
+    const chatbotClose = document.getElementById("chatbotClose");
+    const chatbotSend = document.getElementById("chatbotSend");
+    const chatbotInput = document.getElementById("chatbotInput");
+    const chatbotMessages = document.getElementById("chatbotMessages");
 
-  if (!chatbotToggle || !chatbotWindow || !chatbotClose || !chatbotSend || !chatbotInput || !chatbotMessages) {
-    return;
-  }
-
-  chatbotToggle.addEventListener("click", () => {
-    chatbotWindow.classList.toggle("open");
-  });
-
-  chatbotClose.addEventListener("click", () => {
-    chatbotWindow.classList.remove("open");
-  });
-
-  chatbotSend.addEventListener("click", sendChatMessage);
-
-  chatbotInput.addEventListener("keypress", function (e) {
-    if (e.key === "Enter") {
-      sendChatMessage();
-    }
-  });
-
-  function sendChatMessage() {
-    const message = chatbotInput.value.trim();
-    if (!message) return;
-
-    addMessage(message, "user");
-    chatbotInput.value = "";
-
-    const reply = getBotReply(message);
-    setTimeout(() => {
-      addMessage(reply, "bot");
-    }, 500);
-  }
-
-  function addMessage(text, sender) {
-    const messageDiv = document.createElement("div");
-    messageDiv.className = `chatbot-message ${sender}`;
-    messageDiv.textContent = text;
-    chatbotMessages.appendChild(messageDiv);
-    chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
-  }
-
-  function getBotReply(message) {
-    const lower = message.toLowerCase();
-
-    if (lower.includes("register")) {
-      return "To register, go to the Register page, fill in your details, then click Register.";
+    if (!chatbotToggle || !chatbotWindow || !chatbotClose || !chatbotSend || !chatbotInput || !chatbotMessages) {
+        return;
     }
 
-    if (lower.includes("login") || lower.includes("log in")) {
-      return "To log in, enter your email and password on the Login page, then click Log In.";
+    chatbotToggle.addEventListener("click", () => {
+        chatbotWindow.classList.toggle("open");
+    });
+
+    chatbotClose.addEventListener("click", () => {
+        chatbotWindow.classList.remove("open");
+    });
+
+    chatbotSend.addEventListener("click", sendChatMessage);
+
+    chatbotInput.addEventListener("keypress", function (e) {
+        if (e.key === "Enter") {
+            sendChatMessage();
+        }
+    });
+
+    function sendChatMessage() {
+        const message = chatbotInput.value.trim();
+        if (!message) return;
+
+        addMessage(message, "user");
+        chatbotInput.value = "";
+
+        const reply = getBotReply(message);
+        setTimeout(() => {
+            addMessage(reply, "bot");
+        }, 500);
     }
 
-    if (lower.includes("book")) {
-      return "To book an appointment, first enter your details, then choose a date and time on the booking page.";
+    function addMessage(text, sender) {
+        const messageDiv = document.createElement("div");
+        messageDiv.className = `chatbot-message ${sender}`;
+        messageDiv.textContent = text;
+        chatbotMessages.appendChild(messageDiv);
+        chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
     }
 
-    if (lower.includes("change")) {
-      return "To change an appointment, go to Manage Appointments and select the Change option.";
-    }
+    function getBotReply(message) {
+        const lower = message.toLowerCase();
 
-    if (lower.includes("cancel")) {
-      return "To cancel an appointment, go to Manage Appointments and select the Cancel option.";
-    }
+        if (lower.includes("register")) {
+            return "To register, go to the Register page, fill in your details, then click Register.";
+        }
 
-    if (lower.includes("prescription")) {
-      return "You can use the Prescription section from the dashboard to view prescription-related information.";
-    }
+        if (lower.includes("login") || lower.includes("log in")) {
+            return "To log in, enter your email and password on the Login page, then click Log In.";
+        }
 
-    if (lower.includes("health record")) {
-      return "You can open the Health Record section from the dashboard to view your health details.";
-    }
+        if (lower.includes("book")) {
+            return "To book an appointment, first enter your details, then choose a date and time on the booking page.";
+        }
 
-    return "I can help with registration, login, booking appointments, changing appointments, cancelling appointments, prescriptions, and health records.";
-  }
+        if (lower.includes("change")) {
+            return "To change an appointment, go to Manage Appointments and select the Change option.";
+        }
+
+        if (lower.includes("cancel")) {
+            return "To cancel an appointment, go to Manage Appointments and select the Cancel option.";
+        }
+
+        if (lower.includes("prescription")) {
+            return "You can use the Prescription section from the dashboard to view prescription-related information.";
+        }
+
+        if (lower.includes("health record")) {
+            return "You can open the Health Record section from the dashboard to view your health details.";
+        }
+
+        return "I can help with registration, login, booking appointments, changing appointments, cancelling appointments, prescriptions, and health records.";
+    }
 }

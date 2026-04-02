@@ -1,115 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Register - National Healthcare UK</title>
-  <link rel="stylesheet" href="style.css">
-  <script defer src="script.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - National Healthcare UK</title>
+    <link rel="stylesheet" href="style.css">
+    <script defer src="script.js"></script>
 </head>
 
 <body>
-  <header class="top-banner">
-    <img src="images/logo.png" class="banner-logo" alt="National Healthcare UK Logo">
+    <header class="top-banner">
+        <img src="images/logo.png" class="banner-logo" alt="National Healthcare UK Logo">
 
-    <a href="index.html" class="banner-title-link">
-      <div class="banner-title">NATIONAL HEALTHCARE UK</div>
-    </a>
+        <a href="index.html" class="banner-title-link">
+            <div class="banner-title">NATIONAL HEALTHCARE UK</div>
+        </a>
 
-    <div class="profile-wrapper">
-      <img src="images/profile.png" class="profile-icon" id="profileBtn" alt="Profile">
+        <div class="profile-wrapper">
+            <img src="images/profile.png" class="profile-icon" id="profileBtn" alt="Profile">
 
-      <div class="profile-menu" id="profileMenu">
-        <div onclick="window.location.href='index.html'">Home</div>
-        <div onclick="window.location.href='login.html'">Log In</div>
-      </div>
-    </div>
-  </header>
-
-  <div class="app-shell">
-    <main class="app-main">
-      <div class="card">
-        <h1 class="card-title">Register for Healthcare Services</h1>
-        <p class="card-subtitle">Fill in your details to create an account</p>
-
-        <form onsubmit="event.preventDefault(); register();">
-          <div class="form-group">
-            <label class="form-label" for="name">Name</label>
-            <input class="form-input" id="name" type="text" placeholder="Full Name" required>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="dob">Date of Birth</label>
-            <input class="form-input" id="dob" type="date" required>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="gender">Gender</label>
-            <select class="form-select" id="gender" required>
-              <option value="">Select gender</option>
-              <option>Male</option>
-              <option>Female</option>
-              <option>Other</option>
-              <option>Prefer not to say</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="address">Address</label>
-            <input class="form-input" id="address" type="text" placeholder="Address" required>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="email">Email</label>
-            <input class="form-input" id="email" type="email" placeholder="email@example.com" required>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="password">Password</label>
-            <input class="form-input" id="password" type="password" placeholder="Password" required>
-          </div>
-
-          <div id="form-message" style="display:none; margin-bottom:12px;"></div>
-
-          <button type="submit" class="btn btn-primary btn-block">REGISTER</button>
-
-          <button type="button" class="btn btn-secondary btn-block" onclick="window.location.href='index.html'">
-            BACK
-          </button>
-        </form>
-
-        <p class="card-subtitle" style="margin-top: 18px; margin-bottom: 0;">
-          Already have an account?
-          <a href="login.html">Log in here</a>
-        </p>
-      </div>
-    </main>
-
-    <footer class="app-footer">
-      © 2026 National Healthcare. All rights reserved.
-    </footer>
-  </div>
-
-  <div class="chatbot-container">
-    <button class="chatbot-toggle" id="chatbotToggle" aria-label="Open chat assistant">💬</button>
-
-    <div class="chatbot-window" id="chatbotWindow">
-      <div class="chatbot-header">
-        <span>Healthcare Assistant</span>
-        <button class="chatbot-close" id="chatbotClose" aria-label="Close chat assistant">×</button>
-      </div>
-
-      <div class="chatbot-messages" id="chatbotMessages">
-        <div class="chatbot-message bot">
-          Hello. I am your healthcare assistant. Fill in all your personal details on this page, then click Register to create your account.
+            <div class="profile-menu" id="profileMenu">
+                <div onclick="window.location.href='index.html'">Home</div>
+                <div onclick="window.location.href='login.html'">Log In</div>
+            </div>
         </div>
-      </div>
+    </header>
 
-      <div class="chatbot-input-area">
-        <input type="text" id="chatbotInput" class="chatbot-input" placeholder="Type your message...">
-        <button id="chatbotSend" class="chatbot-send">Send</button>
-      </div>
+    <div class="app-shell">
+        <main class="app-main">
+            <div class="card">
+                <h1 class="card-title">Register for Healthcare Services</h1>
+                <p class="card-subtitle">Fill in your details to create an account</p>
+
+                <form onsubmit="event.preventDefault(); register();">
+                    <div class="form-group">
+                        <label class="form-label" for="name">Name</label>
+                        <input class="form-input" id="name" type="text" placeholder="Full Name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="dob">Date of Birth</label>
+                        <input class="form-input" id="dob" type="date" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="gender">Gender</label>
+                        <select class="form-select" id="gender" required>
+                            <option value="">Select gender</option>
+                            <option>Male</option>
+                            <option>Female</option>
+                            <option>Other</option>
+                            <option>Prefer not to say</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="address">Address</label>
+                        <input class="form-input" id="address" type="text" placeholder="Address" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="email">Email</label>
+                        <input class="form-input" id="email" type="email" placeholder="email@example.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="password">Password</label>
+                        <input class="form-input" id="password" type="password" placeholder="Password" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block">REGISTER</button>
+
+                    <button type="button" class="btn btn-secondary btn-block" onclick="window.location.href='index.html'">
+                        BACK
+                    </button>
+                </form>
+
+                <p class="card-subtitle" style="margin-top: 18px; margin-bottom: 0;">
+                    Already have an account?
+                    <a href="login.html">Log in here</a>
+                </p>
+            </div>
+        </main>
+
+        <footer class="app-footer">
+            © 2026 National Healthcare. All rights reserved.
+        </footer>
     </div>
-  </div>
+
+    <div class="chatbot-container">
+        <button class="chatbot-toggle" id="chatbotToggle" aria-label="Open chat assistant">💬</button>
+
+        <div class="chatbot-window" id="chatbotWindow">
+            <div class="chatbot-header">
+                <span>Healthcare Assistant</span>
+                <button class="chatbot-close" id="chatbotClose" aria-label="Close chat assistant">×</button>
+            </div>
+
+            <div class="chatbot-messages" id="chatbotMessages">
+                <div class="chatbot-message bot">
+                    Hello. I am your healthcare assistant. Fill in all your personal details on this page, then click Register to create your account.
+                </div>
+            </div>
+
+            <div class="chatbot-input-area">
+                <input type="text" id="chatbotInput" class="chatbot-input" placeholder="Type your message...">
+                <button id="chatbotSend" class="chatbot-send">Send</button>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

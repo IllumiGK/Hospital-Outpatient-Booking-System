@@ -1,106 +1,114 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Appointment Details - National Healthcare UK</title>
-  <link rel="stylesheet" href="style.css">
-  <script defer src="script.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointment Details - National Healthcare UK</title>
+    <link rel="stylesheet" href="style.css">
+    <script defer src="script.js"></script>
 </head>
 
 <body>
-  <header class="top-banner">
-    <img src="images/logo.png" class="banner-logo" alt="National Healthcare UK Logo">
+    <header class="top-banner">
+        <img src="images/logo.png" class="banner-logo" alt="National Healthcare UK Logo">
 
-    <a href="index.html" class="banner-title-link">
-      <div class="banner-title">NATIONAL HEALTHCARE UK</div>
-    </a>
+        <a href="index.html" class="banner-title-link">
+            <div class="banner-title">NATIONAL HEALTHCARE UK</div>
+        </a>
 
-    <div class="profile-wrapper">
-      <img src="images/profile.png" class="profile-icon" id="profileBtn" alt="Profile">
-      <div class="profile-menu" id="profileMenu">
-        <div onclick="window.location.href='dashboard.html'">Home</div>
-        <div onclick="window.location.href='manage-appointments.html'">Manage Appointment</div>
-        <div onclick="logout()">Log Out</div>
-      </div>
-    </div>
-  </header>
-
-  <div class="app-shell">
-    <main class="app-main">
-      <div class="card" style="max-width: 650px;">
-        <h1 class="section-title">Appointment Details</h1>
-        <p class="section-subtitle">
-          Please enter your details before choosing an appointment date.
-        </p>
-
-        <form onsubmit="event.preventDefault(); saveAppointmentDetails();">
-          <div class="form-group">
-            <label class="form-label" for="patient-name">Full Name</label>
-            <input type="text" id="patient-name" class="form-input" placeholder="Enter your full name" required>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="patient-dob">Date of Birth</label>
-            <input type="date" id="patient-dob" class="form-input" required>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="patient-nhs">NHS Number</label>
-            <input type="text" id="patient-nhs" class="form-input" placeholder="e.g. 123 456 7890" required>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="booking-reason">Reason for Booking</label>
-            <input type="text" id="booking-reason" class="form-input" placeholder="e.g. Regular Check Up" required>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="hospital">Hospital</label>
-            <select id="hospital" class="form-select" required>
-              <option value="">Select a hospital</option>
-              <option value="Imperial College Healthcare NHS Trust">Imperial College Healthcare NHS Trust</option>
-              <option value="St Mary's Hospital">St Mary's Hospital</option>
-              <option value="Chelsea and Westminster Hospital">Chelsea and Westminster Hospital</option>
-              <option value="Royal London Hospital">Royal London Hospital</option>
-              <option value="Guy's and St Thomas' Hospital">Guy's and St Thomas' Hospital</option>
-            </select>
-          </div>
-
-          <button type="submit" class="btn btn-primary btn-block">CONTINUE</button>
-
-          <button type="button" class="btn btn-secondary btn-block" onclick="window.location.href='dashboard.html'">
-            BACK
-          </button>
-        </form>
-      </div>
-    </main>
-
-    <footer class="app-footer">
-      © 2026 National Healthcare. All rights reserved.
-    </footer>
-  </div>
-
-  <div class="chatbot-container">
-    <button class="chatbot-toggle" id="chatbotToggle" aria-label="Open chat assistant">💬</button>
-
-    <div class="chatbot-window" id="chatbotWindow">
-      <div class="chatbot-header">
-        <span>Healthcare Assistant</span>
-        <button class="chatbot-close" id="chatbotClose" aria-label="Close chat assistant">×</button>
-      </div>
-
-      <div class="chatbot-messages" id="chatbotMessages">
-        <div class="chatbot-message bot">
-          Please fill in your full name, date of birth, NHS number, reason for booking, and hospital before continuing.
+        <div class="profile-wrapper">
+            <img src="images/profile.png" class="profile-icon" id="profileBtn" alt="Profile">
+            <div class="profile-menu" id="profileMenu">
+                <div onclick="window.location.href='dashboard.html'">Home</div>
+                <div onclick="window.location.href='manage-appointments.html'">Manage Appointment</div>
+                <div onclick="logout()">Log Out</div>
+            </div>
         </div>
-      </div>
+    </header>
 
-      <div class="chatbot-input-area">
-        <input type="text" id="chatbotInput" class="chatbot-input" placeholder="Type your message...">
-        <button id="chatbotSend" class="chatbot-send">Send</button>
-      </div>
+    <div class="app-shell">
+        <main class="app-main">
+            <div class="card" style="max-width: 650px;">
+                <h1 class="section-title">Appointment Details</h1>
+                <p class="section-subtitle">
+                    Please enter your details before choosing an appointment date.
+                </p>
+
+                <form onsubmit="event.preventDefault(); saveAppointmentDetails();">
+                    <div class="form-group">
+                        <label class="form-label" for="patient-name">Full Name</label>
+                        <input type="text" id="patient-name" class="form-input" placeholder="Enter your full name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="patient-dob">Date of Birth</label>
+                        <input type="date" id="patient-dob" class="form-input" required>
+                    </div>
+
+                    <div class="form-group">
+                        <<<<<<< HEAD
+                        <label class="form-label" for="patient-nhs">NHS UK</label>
+                        <input type="text"
+                               id="patient-nhs"
+                               class="form-input"
+                               placeholder="Optional">
+                        =======
+                        <label class="form-label" for="patient-nhs">NHS Number</label>
+                        <input type="text" id="patient-nhs" class="form-input" placeholder="e.g. 123 456 7890" required>
+                        >>>>>>> 6df5482 (Updated all changes)
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="booking-reason">Reason for Booking</label>
+                        <input type="text" id="booking-reason" class="form-input" placeholder="e.g. Regular Check Up" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="hospital">Hospital</label>
+                        <select id="hospital" class="form-select" required>
+                            <option value="">Select a hospital</option>
+                            <option value="Imperial College Healthcare NHS Trust">Imperial College Healthcare NHS Trust</option>
+                            <option value="St Mary's Hospital">St Mary's Hospital</option>
+                            <option value="Chelsea and Westminster Hospital">Chelsea and Westminster Hospital</option>
+                            <option value="Royal London Hospital">Royal London Hospital</option>
+                            <option value="Guy's and St Thomas' Hospital">Guy's and St Thomas' Hospital</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block">CONTINUE</button>
+
+                    <button type="button" class="btn btn-secondary btn-block" onclick="window.location.href='dashboard.html'">
+                        BACK
+                    </button>
+                </form>
+            </div>
+        </main>
+
+        <footer class="app-footer">
+            © 2026 National Healthcare. All rights reserved.
+        </footer>
     </div>
-  </div>
+
+    <div class="chatbot-container">
+        <button class="chatbot-toggle" id="chatbotToggle" aria-label="Open chat assistant">💬</button>
+
+        <div class="chatbot-window" id="chatbotWindow">
+            <div class="chatbot-header">
+                <span>Healthcare Assistant</span>
+                <button class="chatbot-close" id="chatbotClose" aria-label="Close chat assistant">×</button>
+            </div>
+
+            <div class="chatbot-messages" id="chatbotMessages">
+                <div class="chatbot-message bot">
+                    Please fill in your full name, date of birth, NHS number, reason for booking, and hospital before continuing.
+                </div>
+            </div>
+
+            <div class="chatbot-input-area">
+                <input type="text" id="chatbotInput" class="chatbot-input" placeholder="Type your message...">
+                <button id="chatbotSend" class="chatbot-send">Send</button>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
