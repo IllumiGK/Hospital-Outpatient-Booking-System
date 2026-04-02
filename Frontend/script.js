@@ -79,7 +79,7 @@ async function setupCalendar() {
     // **Fetch booked dates from backend**
     let bookedDates = [];
     try {
-        const res = await fetch(`https://localhost:7156/api/appointments/booked?year=${currentYear}&month=${currentMonth+1}`);
+        const res = await fetch(`http://localhost:7156/api/appointments/booked?year=${currentYear}&month=${currentMonth+1}`);
         if (res.ok) bookedDates = await res.json(); // returns ["03.04.2026", "10.04.2026", ...]
     } catch (err) {
         console.error("Could not fetch booked dates", err);
@@ -127,7 +127,7 @@ async function updateAvailableTimes(date) {
     });
 
     try {
-        const res = await fetch(`https://localhost:7156/api/appointments/times/${encodeURIComponent(date)}`);
+        const res = await fetch(`http://localhost:7156/api/appointments/times/${encodeURIComponent(date)}`);
         if (!res.ok) return;
 
         const bookedTimes = await res.json(); // ["10:00", "15:00", ...]
