@@ -157,8 +157,6 @@ async function register() {
     const result = await response.text();
 
     if (response.ok) {
-      // SAFE localStorage usage (no password)
-      localStorage.setItem("registeredEmail", email);
 
       showMessage("Registration successful. Redirecting...", "success");
 
@@ -176,36 +174,53 @@ async function register() {
   }
 }
 
-function login() {
+async function login() {
   const email = document.getElementById("login-email")?.value.trim() || "";
   const password = document.getElementById("login-password")?.value || "";
 
   if (!email || !password) {
-    alert("Please enter your email and password.");
+    showMessage("Please enter email and password.");
     return;
   }
 
-  const savedUser = getRegisteredUser();
-
-  if (!savedUser) {
-    alert("No registered account found. Please register first.");
-    window.location.href = "register.html";
+  if (!email.includes("@") || !email.includes(".")) {
+    showMessage("Please enter a valid email address.");
     return;
   }
 
-  if (email === savedUser.email && password === savedUser.password) {
-    localStorage.setItem("loggedInEmail", savedUser.email);
-    localStorage.setItem("loggedInName", savedUser.name);
-    alert("Login successful.");
-    window.location.href = "dashboard.html";
-  } else {
-    alert("Invalid email or password.");
+  try {
+    const response = await fetch("http://localhost:7156/api/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ email, password })
+    });
+
+    const result = await response.text();
+
+    if (response.ok) {
+      // store session only (safe)
+      localStorage.setItem("loggedInEmail", email);
+
+      showMessage("Login successful. Redirecting...", "success");
+
+      setTimeout(() => {
+        window.location.href = "dashboard.html";
+      }, 1500);
+
+    } else {
+      showMessage("Invalid email or password.");
+    }
+
+  } catch (err) {
+    console.error(err);
+    showMessage("Could not connect to server.");
   }
 }
 
 function logout() {
   localStorage.removeItem("loggedInEmail");
-  localStorage.removeItem("loggedInName");
   window.location.href = "index.html";
 }
 
