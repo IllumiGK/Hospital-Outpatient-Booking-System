@@ -5,6 +5,8 @@
 
 ## CST2550 Software Engineering Management and Development 
 
+---
+
 ## Project Topic
 
 Our group was tasked with developing a **Hospital Outpatient Booking System**.
@@ -65,3 +67,5 @@ Testing was carried out using the MSTest framework within the .NET environment t
 Unit tests were developed to validate key components of the application, particularly the custom data structures and core functionalities related to managing patient booking records. This helped to verify that operations such as insertion, searching, and retrieval behaved as expected.
 
 Testing also supported the identification and resolution of bugs, improving the overall stability and performance of the system. The use of MSTest allowed for a structured and repeatable testing approach throughout development.
+
+---
