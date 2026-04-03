@@ -45,10 +45,10 @@ The development process follows a structured, team-based approach inspired by Ag
 
 The project was developed using a structured, team-based approach inspired by Agile principles. This allowed for:
 
-* **Clear task distribution
-* **Continuous collaboration
-* **Iterative improvements
-* **Accountability within the team
+* Clear task distribution
+* Continuous collaboration
+* Iterative improvements
+* Accountability within the team
 
 ---
 
@@ -58,12 +58,10 @@ A core part of this project is the use of a custom-built data structure to manag
 
 ---
 
-### Testing
+## Testing
 
 Testing was carried out using the MSTest framework within the .NET environment to ensure the reliability and correctness of the system.
 
 Unit tests were developed to validate key components of the application, particularly the custom data structures and core functionalities related to managing patient booking records. This helped to verify that operations such as insertion, searching, and retrieval behaved as expected.
 
 Testing also supported the identification and resolution of bugs, improving the overall stability and performance of the system. The use of MSTest allowed for a structured and repeatable testing approach throughout development.
-
-
