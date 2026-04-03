@@ -25,6 +25,8 @@ The project was developed collaboratively, with each team member contributing to
   * Supported decision-making across design and implementation
   * Organised communication within the team
   * Worked on frontend components
+  * Co-Contributed to the design of the Figma prototype
+  * Co-Contributed to the development of the project report
 
   ---
 
