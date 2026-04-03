@@ -1,26 +1,26 @@
 /* =========================
-   ROOT VARIABLES
+   1. ROOT VARIABLES
 ========================= */
 :root {
-    --nhs-blue: #081F5C;
-    --nhs-light-blue: #081F5C;
-    --nhs-dark-text: #081F5C;
-    --nhs-muted: #555;
-    --bg-light: #f5f7fb;
-    --white: #ffffff;
-    --border: #d0d4dd;
-    --danger: #c53030;
-    --success: #38a169;
-    --warning: #d69e2e;
-    --no-slot: #e53e3e;
-    --footer-blue: #081F5C;
-    --font-main: "Segoe UI", system-ui, sans-serif;
+    --color-primary: #081F5C;
+    --color-primary-hover: #004a94;
+    --color-text-dark: #081F5C;
+    --color-text-muted: #555;
+    --color-bg-light: #F7F2EB;
+    --color-white: #ffffff;
+    --color-border: #d0d4dd;
+    --color-danger: #c53030;
+    --color-success: #38a169;
+    --color-warning: #d69e2e;
+    --color-no-slot: #e53e3e;
+    --color-footer: #081F5C;
+    --font-main: "Inter", "Segoe UI", system-ui, sans-serif;
     --shadow-soft: 0 3px 12px rgba(0, 0, 0, 0.08);
     --shadow-medium: 0 4px 12px rgba(0, 0, 0, 0.12);
 }
 
 /* =========================
-   GLOBAL RESET
+   2. GLOBAL RESET
 ========================= */
 *,
 *::before,
@@ -37,8 +37,8 @@ body {
 
 body {
     font-family: var(--font-main);
-    background-color: #F7F2EB;
-    color: var(--nhs-dark-text);
+    background-color: var(--color-bg-light);
+    color: var(--color-text-dark);
     display: flex;
     flex-direction: column;
 }
@@ -56,11 +56,11 @@ textarea {
 }
 
 /* =========================
-   TOP HEADER
+   3. TOP HEADER
 ========================= */
 .top-banner {
-    background-color: var(--nhs-blue);
-    color: white;
+    background-color: var(--color-primary);
+    color: var(--color-white);
     padding: 40px 64px;
     display: flex;
     align-items: center;
@@ -83,13 +83,6 @@ textarea {
     align-items: center;
 }
 
-    .banner-title-link:hover .banner-title {
-        opacity: 0.92;
-        transform: scale(1.01);
-        transition: all 0.2s ease;
-        cursor: pointer;
-    }
-
 .banner-title {
     flex: 1;
     text-align: center;
@@ -97,7 +90,14 @@ textarea {
     font-weight: 700;
     letter-spacing: 0.04em;
     line-height: 1.2;
-    color: white;
+    color: var(--color-white);
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.banner-title-link:hover .banner-title {
+    opacity: 0.92;
+    transform: scale(1.01);
+    cursor: pointer;
 }
 
 .profile-wrapper {
@@ -107,6 +107,7 @@ textarea {
 .profile-icon {
     height: 96px;
     width: 96px;
+    object-fit: cover;
     border-radius: 50%;
     cursor: pointer;
 }
@@ -116,7 +117,7 @@ textarea {
     right: 0;
     top: 110px;
     width: 240px;
-    background: var(--white);
+    background: var(--color-white);
     color: #000;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
@@ -137,7 +138,7 @@ textarea {
         }
 
 /* =========================
-   PAGE LAYOUT
+   4. PAGE LAYOUT
 ========================= */
 .app-shell {
     min-height: 100vh;
@@ -159,15 +160,15 @@ textarea {
     text-align: center;
     padding: 20px;
     font-size: 0.9rem;
-    color: white;
-    background-color: var(--footer-blue);
-    border-top: 1px solid var(--footer-blue);
+    color: var(--color-white);
+    background-color: var(--color-footer);
+    border-top: 1px solid var(--color-footer);
     width: 100%;
     margin-top: auto;
 }
 
 /* =========================
-   LANDING PAGE
+   5. LANDING PAGE
 ========================= */
 .landing-layout {
     text-align: center;
@@ -178,14 +179,14 @@ textarea {
 .landing-text h1 {
     font-size: 2.4rem;
     font-weight: 700;
-    color: var(--nhs-blue);
+    color: var(--color-primary);
     margin-bottom: 20px;
 }
 
 .landing-text p {
     font-size: 1.2rem;
     line-height: 1.6;
-    color: var(--nhs-muted);
+    color: var(--color-text-muted);
 }
 
 .landing-actions {
@@ -197,7 +198,7 @@ textarea {
 }
 
 /* =========================
-   BUTTONS
+   6. BUTTONS
 ========================= */
 .btn {
     padding: 16px 28px;
@@ -218,18 +219,18 @@ textarea {
     }
 
 .btn-primary {
-    background-color: var(--nhs-light-blue);
-    color: white;
+    background-color: var(--color-primary);
+    color: var(--color-white);
 }
 
     .btn-primary:hover {
-        background-color: #004a94;
+        background-color: var(--color-primary-hover);
     }
 
 .btn-secondary {
-    background-color: white;
-    color: var(--nhs-light-blue);
-    border: 3px solid var(--nhs-light-blue);
+    background-color: var(--color-white);
+    color: var(--color-primary);
+    border: 3px solid var(--color-primary);
 }
 
     .btn-secondary:hover {
@@ -237,8 +238,8 @@ textarea {
     }
 
 .btn-danger {
-    background-color: var(--danger);
-    color: white;
+    background-color: var(--color-danger);
+    color: var(--color-white);
 }
 
     .btn-danger:hover {
@@ -252,10 +253,10 @@ textarea {
 }
 
 /* =========================
-   CARD
+   7. CARD
 ========================= */
 .card {
-    background-color: white;
+    background-color: var(--color-white);
     border-radius: 10px;
     padding: 40px 32px;
     max-width: 480px;
@@ -266,18 +267,18 @@ textarea {
 .card-title {
     font-size: 2rem;
     font-weight: 700;
-    color: var(--nhs-blue);
+    color: var(--color-primary);
     margin-bottom: 12px;
 }
 
 .card-subtitle {
     font-size: 1.1rem;
-    color: var(--nhs-muted);
+    color: var(--color-text-muted);
     margin-bottom: 28px;
 }
 
 /* =========================
-   FORMS
+   8. FORMS
 ========================= */
 .form-group {
     margin-bottom: 20px;
@@ -295,42 +296,42 @@ textarea {
     width: 100%;
     padding: 12px 14px;
     border-radius: 6px;
-    border: 1px solid var(--border);
+    border: 1px solid var(--color-border);
     font-size: 1rem;
-    background: #fff;
+    background: var(--color-white);
 }
 
     .form-input:focus,
     .form-select:focus {
         outline: none;
-        border-color: var(--nhs-light-blue);
-        box-shadow: 0 0 0 2px rgba(0, 94, 184, 0.25);
+        border-color: var(--color-primary);
+        box-shadow: 0 0 0 2px rgba(8, 31, 92, 0.2);
     }
 
 /* =========================
-   SECTION TITLES / DETAILS
+   9. SECTION TITLES / DETAILS
 ========================= */
 .section-title {
     font-size: 1.6rem;
     font-weight: 700;
-    color: var(--nhs-blue);
+    color: var(--color-primary);
     margin-bottom: 12px;
 }
 
 .section-subtitle {
     font-size: 1.1rem;
-    color: var(--nhs-muted);
+    color: var(--color-text-muted);
     margin-bottom: 24px;
 }
 
 .detail-label {
     font-weight: 700;
-    color: var(--nhs-blue);
+    color: var(--color-primary);
     margin-bottom: 6px;
 }
 
 .detail-value {
-    color: var(--nhs-dark-text);
+    color: var(--color-text-dark);
     line-height: 1.5;
     word-break: break-word;
 }
@@ -343,7 +344,7 @@ textarea {
 }
 
 /* =========================
-   DASHBOARD
+   10. DASHBOARD
 ========================= */
 .dashboard {
     width: 100%;
@@ -353,14 +354,14 @@ textarea {
 .dashboard-title {
     font-size: 2rem;
     font-weight: 700;
-    color: var(--nhs-blue);
+    color: var(--color-primary);
     text-align: center;
     margin-bottom: 12px;
 }
 
 .dashboard-subtitle {
     font-size: 1.2rem;
-    color: var(--nhs-muted);
+    color: var(--color-text-muted);
     margin-bottom: 30px;
     text-align: center;
 }
@@ -372,13 +373,17 @@ textarea {
 }
 
 .dashboard-card {
-    background-color: white;
+    background-color: var(--color-primary);
     border-radius: 12px;
     padding: 20px;
     text-align: center;
-    border: 1px solid var(--border);
+    border: 1px solid var(--color-border);
     cursor: pointer;
     transition: transform 0.15s ease, box-shadow 0.15s ease;
+    min-height: 312px; /* about 25% taller than a typical shorter card look */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
 }
 
     .dashboard-card:hover {
@@ -388,19 +393,29 @@ textarea {
 
 .dashboard-card-img {
     width: 100%;
-    height: 160px;
+    height: 200px;
     object-fit: cover;
+    object-position: center;
     border-radius: 8px;
-    margin-bottom: 12px;
+    margin-bottom: 16px;
 }
 
 .dashboard-card-title {
     font-size: 1.2rem;
     font-weight: 600;
+    color: #f7f2eb;
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-underline-offset: 4px;
+    transition: text-decoration-color 0.2s ease;
+}
+
+.dashboard-card:hover .dashboard-card-title {
+    text-decoration-color: #f7f2eb;
 }
 
 /* =========================
-   APPOINTMENT / CALENDAR
+   11. APPOINTMENT / CALENDAR
 ========================= */
 .calendar-wrapper {
     display: grid;
@@ -418,10 +433,10 @@ textarea {
 .calendar-table {
     width: 100%;
     border-collapse: collapse;
-    background-color: white;
+    background-color: var(--color-white);
     border-radius: 8px;
     overflow: hidden;
-    border: 1px solid var(--border);
+    border: 1px solid var(--color-border);
 }
 
     .calendar-table th,
@@ -429,12 +444,12 @@ textarea {
         text-align: center;
         padding: 10px;
         font-size: 0.9rem;
-        border-bottom: 1px solid var(--border);
+        border-bottom: 1px solid var(--color-border);
     }
 
     .calendar-table th {
-        background-color: var(--nhs-blue);
-        color: white;
+        background-color: var(--color-primary);
+        color: var(--color-white);
     }
 
 .calendar-day {
@@ -447,8 +462,8 @@ textarea {
     }
 
     .calendar-day.selected {
-        background-color: var(--nhs-light-blue) !important;
-        color: white !important;
+        background-color: var(--color-primary) !important;
+        color: var(--color-white) !important;
         font-weight: 700;
     }
 
@@ -473,22 +488,22 @@ textarea {
 }
 
 .slot-available {
-    background-color: var(--success);
+    background-color: var(--color-success);
 }
 
 .slot-limited {
-    background-color: var(--warning);
+    background-color: var(--color-warning);
 }
 
 .slot-none {
-    background-color: var(--no-slot);
+    background-color: var(--color-no-slot);
 }
 
 .slot-details-card {
-    background-color: white;
+    background-color: var(--color-white);
     border-radius: 8px;
     padding: 20px;
-    border: 1px solid var(--border);
+    border: 1px solid var(--color-border);
     box-shadow: var(--shadow-soft);
 }
 
@@ -502,29 +517,28 @@ textarea {
 .slot-time {
     padding: 8px 12px;
     border-radius: 6px;
-    border: 1px solid var(--border);
+    border: 1px solid var(--color-border);
     font-size: 0.95rem;
     cursor: pointer;
-    background: #fff;
+    background: var(--color-white);
 }
 
     .slot-time.selected {
-        background-color: var(--nhs-light-blue);
-        color: white;
-        border-color: var(--nhs-light-blue);
+        background-color: var(--color-primary);
+        color: var(--color-white);
+        border-color: var(--color-primary);
     }
 
 .appointment-item {
-    background: #fff;
-    border: 1px solid var(--border);
+    background: var(--color-white);
+    border: 1px solid var(--color-border);
     border-radius: 8px;
     padding: 16px;
     box-shadow: var(--shadow-soft);
 }
 
 /* =========================
-   CHATBOT
-   KEPT UNCHANGED
+   12. CHATBOT
 ========================= */
 .chatbot-container {
     position: fixed;
@@ -634,7 +648,7 @@ textarea {
 }
 
 /* =========================
-   RESPONSIVE
+   13. RESPONSIVE
 ========================= */
 @media (max-width: 900px) {
     .top-banner {
@@ -706,6 +720,14 @@ textarea {
         width: 56px;
     }
 
+    .dashboard-card {
+        min-height: 280px;
+    }
+
+    .dashboard-card-img {
+        height: 180px;
+    }
+
     .chatbot-window {
         width: calc(100vw - 30px);
         right: 0;
@@ -730,5 +752,13 @@ textarea {
 
     .banner-title {
         font-size: 1.8rem;
+    }
+
+    .dashboard-card {
+        min-height: 260px;
+    }
+
+    .dashboard-card-img {
+        height: 160px;
     }
 }
