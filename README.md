@@ -38,3 +38,32 @@ Following the design phase, the frontend was implemented using HTML, CSS, and Ja
 In addition to implementation, the project required justification of design decisions, time-complexity analysis, and thorough testing to ensure reliability and performance.
 
 The development process follows a structured, team-based approach inspired by Agile principles, ensuring collaboration, accountability, and continuous improvement throughout the project lifecycle.
+
+---
+
+## Development Approach
+
+The project was developed using a structured, team-based approach inspired by Agile principles. This allowed for:
+
+* **Clear task distribution
+* **Continuous collaboration
+* **Iterative improvements
+* **Accountability within the team
+
+---
+
+## Data Structures and Algorithms
+
+A core part of this project is the use of a custom-built data structure to manage booking records efficiently. The system also includes analysis and justification of algorithm performance, focusing on time complexity and efficiency.
+
+---
+
+### Testing
+
+Testing was carried out using the MSTest framework within the .NET environment to ensure the reliability and correctness of the system.
+
+Unit tests were developed to validate key components of the application, particularly the custom data structures and core functionalities related to managing patient booking records. This helped to verify that operations such as insertion, searching, and retrieval behaved as expected.
+
+Testing also supported the identification and resolution of bugs, improving the overall stability and performance of the system. The use of MSTest allowed for a structured and repeatable testing approach throughout development.
+
+
