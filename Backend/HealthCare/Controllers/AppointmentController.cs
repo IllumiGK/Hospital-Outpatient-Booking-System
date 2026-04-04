@@ -19,17 +19,29 @@ public class AppointmentController : ControllerBase
             string.IsNullOrWhiteSpace(req.Date) ||
             string.IsNullOrWhiteSpace(req.Time) ||
             string.IsNullOrWhiteSpace(req.Reason) ||
-            string.IsNullOrWhiteSpace(req.Hospital))
+            string.IsNullOrWhiteSpace(req.Hospital) ||
+            string.IsNullOrWhiteSpace(req.FullName) ||
+            string.IsNullOrWhiteSpace(req.DOB))
         {
-            return BadRequest("All appointment fields are required.");
+            return BadRequest("All required appointment fields are required.");
         }
 
-        if (_db.AppointmentSlotExists(req.Date, req.Time, req.Hospital))
+        bool created = _db.CreateAppointment(
+            req.Email,
+            req.Date,
+            req.Time,
+            req.Reason,
+            req.Hospital,
+            req.FullName,
+            req.DOB,
+            req.NHUKNumber
+        );
+
+        if (!created)
         {
             return Conflict("This appointment slot has already been booked.");
         }
 
-        _db.CreateAppointment(req.Email, req.Date, req.Time, req.Reason, req.Hospital);
         return Ok("Appointment booked");
     }
 
@@ -116,6 +128,9 @@ public class AppointmentRequest
     public string Time { get; set; } = "";
     public string Reason { get; set; } = "";
     public string Hospital { get; set; } = "";
+    public string FullName { get; set; } = "";
+    public string DOB { get; set; } = "";
+    public string NHUKNumber { get; set; } = "";
 }
 
 public class UpdateAppointmentRequest

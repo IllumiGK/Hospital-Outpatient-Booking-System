@@ -1,6 +1,7 @@
 using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
+using Microsoft.Extensions.Configuration;
 
 public class DatabaseService
 {
@@ -10,14 +11,12 @@ public class DatabaseService
     {
         "09:00",
         "10:00",
-        "10:30",
         "11:00",
+        "12:00",
         "13:00",
-        "13:30",
+        "14:00",
         "15:00",
-        "15:30",
         "16:00",
-        "16:30",
         "17:00"
     };
 
@@ -78,20 +77,57 @@ public class DatabaseService
         };
     }
 
-    public void CreateAppointment(string email, string date, string time, string reason, string hospital)
+    public bool CreateAppointment(
+    string email,
+    string date,
+    string time,
+    string reason,
+    string hospital,
+    string fullName,
+    string dob,
+    string nhukNumber)
     {
         using SqlConnection conn = new SqlConnection(_connectionString);
-        string query = "INSERT INTO dbo.Appointments (Email, Date, Time, Reason, Hospital) VALUES (@Email, @Date, @Time, @Reason, @Hospital)";
-
-        using SqlCommand cmd = new SqlCommand(query, conn);
-        cmd.Parameters.AddWithValue("@Email", email);
-        cmd.Parameters.AddWithValue("@Date", date);
-        cmd.Parameters.AddWithValue("@Time", time);
-        cmd.Parameters.AddWithValue("@Reason", reason);
-        cmd.Parameters.AddWithValue("@Hospital", hospital);
-
         conn.Open();
-        cmd.ExecuteNonQuery();
+
+        string checkQuery = @"
+        SELECT COUNT(*)
+        FROM dbo.Appointments
+        WHERE [Date] = @Date
+          AND [Time] = @Time
+          AND Hospital = @Hospital";
+
+        using SqlCommand checkCmd = new SqlCommand(checkQuery, conn);
+        checkCmd.Parameters.AddWithValue("@Date", date);
+        checkCmd.Parameters.AddWithValue("@Time", time);
+        checkCmd.Parameters.AddWithValue("@Hospital", hospital);
+
+        int count = Convert.ToInt32(checkCmd.ExecuteScalar());
+
+        if (count > 0)
+        {
+            return false;
+        }
+
+        string insertQuery = @"
+        INSERT INTO dbo.Appointments
+        (Email, [Date], [Time], Reason, Hospital, FullName, DOB, NHUKNumber)
+        VALUES
+        (@Email, @Date, @Time, @Reason, @Hospital, @FullName, @DOB, @NHUKNumber)";
+
+        using SqlCommand insertCmd = new SqlCommand(insertQuery, conn);
+        insertCmd.Parameters.AddWithValue("@Email", email);
+        insertCmd.Parameters.AddWithValue("@Date", date);
+        insertCmd.Parameters.AddWithValue("@Time", time);
+        insertCmd.Parameters.AddWithValue("@Reason", reason);
+        insertCmd.Parameters.AddWithValue("@Hospital", hospital);
+        insertCmd.Parameters.AddWithValue("@FullName", fullName);
+        insertCmd.Parameters.AddWithValue("@DOB", dob);
+        insertCmd.Parameters.AddWithValue("@NHUKNumber",
+            string.IsNullOrWhiteSpace(nhukNumber) ? DBNull.Value : nhukNumber);
+
+        insertCmd.ExecuteNonQuery();
+        return true;
     }
 
     public bool AppointmentSlotExists(string date, string time, string hospital, int? excludeAppointmentId = null)
@@ -160,16 +196,16 @@ public class DatabaseService
         string yearPart = year.ToString();
 
         string query = @"
-            SELECT [Date], COUNT(DISTINCT [Time]) AS BookedCount
-            FROM dbo.Appointments
-            WHERE Hospital = @Hospital
-              AND [Date] LIKE @DatePattern
-            GROUP BY [Date]
-            ORDER BY [Date]";
+        SELECT [Date], COUNT(DISTINCT [Time]) AS BookedCount
+        FROM dbo.Appointments
+        WHERE Hospital = @Hospital
+          AND [Date] LIKE @DatePattern
+        GROUP BY [Date]
+        ORDER BY [Date]";
 
         using SqlCommand cmd = new SqlCommand(query, conn);
         cmd.Parameters.AddWithValue("@Hospital", hospital);
-        cmd.Parameters.AddWithValue("@DatePattern", "__." + monthPart + "." + yearPart);
+        cmd.Parameters.AddWithValue("@DatePattern", "__/" + monthPart + "/" + yearPart);
 
         conn.Open();
         using SqlDataReader reader = cmd.ExecuteReader();
@@ -178,18 +214,19 @@ public class DatabaseService
         {
             string date = reader["Date"].ToString() ?? "";
             int bookedCount = Convert.ToInt32(reader["BookedCount"]);
+            int availableCount = AllAppointmentTimes.Length - bookedCount;
 
-            if (bookedCount <= 0)
-            {
-                statuses[date] = "available";
-            }
-            else if (bookedCount >= AllAppointmentTimes.Length)
+            if (availableCount == 0)
             {
                 statuses[date] = "none";
             }
-            else
+            else if (availableCount <= 5)
             {
                 statuses[date] = "limited";
+            }
+            else
+            {
+                statuses[date] = "available";
             }
         }
 

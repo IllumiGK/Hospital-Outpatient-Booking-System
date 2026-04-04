@@ -20,14 +20,12 @@ document.addEventListener("DOMContentLoaded", () => {
 const ALL_APPOINTMENT_TIMES = [
     "09:00",
     "10:00",
-    "10:30",
     "11:00",
+    "12:00",
     "13:00",
-    "13:30",
+    "14:00",
     "15:00",
-    "15:30",
     "16:00",
-    "16:30",
     "17:00"
 ];
 
@@ -91,7 +89,22 @@ async function getBookedTimesForDate(date, hospital) {
 }
 
 function formatDate(day, month, year) {
-    return `${String(day).padStart(2, "0")}.${String(month + 1).padStart(2, "0")}.${year}`;
+    return `${String(day).padStart(2, "0")}/${String(month + 1).padStart(2, "0")}/${year}`;
+}
+
+function isWeekend(day, month, year) {
+    const jsDay = new Date(year, month, day).getDay();
+    return jsDay === 0 || jsDay === 6;
+}
+
+function isPastDate(day, month, year) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const currentDate = new Date(year, month, day);
+    currentDate.setHours(0, 0, 0, 0);
+
+    return currentDate < today;
 }
 
 function buildMonthTable(month, year, monthName) {
@@ -174,8 +187,7 @@ async function setupCalendar() {
 
     const days = document.querySelectorAll(".calendar-day");
 
-    const defaultDate = formatDate(currentDay, currentMonth, currentYear);
-    dateOutput.textContent = defaultDate;
+    let defaultDate = "";
 
     for (const dayCell of days) {
         const day = Number(dayCell.dataset.day);
@@ -184,21 +196,47 @@ async function setupCalendar() {
 
         const formatted = formatDate(day, month, year);
 
-        dayCell.classList.remove("slot-none", "slot-limited", "slot-available", "selected");
+        dayCell.classList.remove(
+            "slot-none",
+            "slot-limited",
+            "slot-available",
+            "selected",
+            "weekend-day",
+            "past-day"
+        );
+
+        if (isWeekend(day, month, year)) {
+            dayCell.classList.add("weekend-day");
+            dayCell.onclick = null;
+            continue;
+        }
+
+        if (isPastDate(day, month, year)) {
+            dayCell.classList.add("past-day");
+            dayCell.onclick = null;
+            continue;
+        }
 
         const bookedTimes = await getBookedTimesForDate(formatted, hospital);
         const bookedCount = bookedTimes.length;
+        const availableCount = ALL_APPOINTMENT_TIMES.length - bookedCount;
 
-        if (bookedCount === 0) {
-            dayCell.classList.add("slot-available");
-        } else if (bookedCount >= ALL_APPOINTMENT_TIMES.length) {
+        if (availableCount === 0) {
             dayCell.classList.add("slot-none");
-        } else {
+        } else if (availableCount <= 5) {
             dayCell.classList.add("slot-limited");
+        } else {
+            dayCell.classList.add("slot-available");
         }
 
         dayCell.onclick = async () => {
-            if (dayCell.classList.contains("slot-none")) return;
+            if (
+                dayCell.classList.contains("slot-none") ||
+                dayCell.classList.contains("weekend-day") ||
+                dayCell.classList.contains("past-day")
+            ) {
+                return;
+            }
 
             document.querySelectorAll(".calendar-day").forEach(d => d.classList.remove("selected"));
             dayCell.classList.add("selected");
@@ -211,14 +249,38 @@ async function setupCalendar() {
     const todayCell = Array.from(days).find(cell =>
         Number(cell.dataset.day) === currentDay &&
         Number(cell.dataset.month) === currentMonth &&
-        Number(cell.dataset.year) === currentYear
+        Number(cell.dataset.year) === currentYear &&
+        !cell.classList.contains("weekend-day") &&
+        !cell.classList.contains("past-day") &&
+        !cell.classList.contains("slot-none")
     );
 
-    if (todayCell && !todayCell.classList.contains("slot-none")) {
+    if (todayCell) {
         todayCell.classList.add("selected");
+        defaultDate = formatDate(currentDay, currentMonth, currentYear);
+    } else {
+        const firstAvailableCell = Array.from(days).find(cell =>
+            !cell.classList.contains("weekend-day") &&
+            !cell.classList.contains("past-day") &&
+            !cell.classList.contains("slot-none")
+        );
+
+        if (firstAvailableCell) {
+            firstAvailableCell.classList.add("selected");
+            defaultDate = formatDate(
+                Number(firstAvailableCell.dataset.day),
+                Number(firstAvailableCell.dataset.month),
+                Number(firstAvailableCell.dataset.year)
+            );
+        }
     }
 
-    await updateAvailableTimes(defaultDate);
+    if (defaultDate) {
+        dateOutput.textContent = defaultDate;
+        await updateAvailableTimes(defaultDate);
+    } else {
+        dateOutput.textContent = "No available date";
+    }
 }
 
 async function updateAvailableTimes(date) {
@@ -431,7 +493,7 @@ function logout() {
 function saveAppointmentDetails() {
     const fullName = document.getElementById("patient-name")?.value.trim() || "";
     const dob = document.getElementById("patient-dob")?.value || "";
-    const nhsNumber = document.getElementById("patient-nhs")?.value.trim() || "";
+    const nhukNumber = document.getElementById("patient-nhuk")?.value.trim() || "";
     const reason = document.getElementById("booking-reason")?.value.trim() || "";
     const hospital =
         document.getElementById("hospital")?.value ||
@@ -444,7 +506,7 @@ function saveAppointmentDetails() {
 
     localStorage.setItem("appointmentPatientName", fullName);
     localStorage.setItem("appointmentPatientDob", dob);
-    localStorage.setItem("appointmentPatientNhs", nhsNumber);
+    localStorage.setItem("appointmentPatientNhuk", nhukNumber);
     localStorage.setItem("appointmentReason", reason);
     localStorage.setItem("appointmentHospital", hospital);
 
@@ -458,6 +520,9 @@ async function bookAppointment() {
     const time = selectedTime ? selectedTime.innerText : "";
     const reason = localStorage.getItem("appointmentReason") || "General appointment";
     const hospital = localStorage.getItem("appointmentHospital") || "Imperial College Healthcare NHS Trust";
+    const fullName = localStorage.getItem("appointmentPatientName") || "";
+    const dob = localStorage.getItem("appointmentPatientDob") || "";
+    const nhukNumber = localStorage.getItem("appointmentPatientNhuk") || "";
 
     if (!email) {
         showMessage("No logged in user found");
@@ -480,7 +545,10 @@ async function bookAppointment() {
                 date,
                 time,
                 reason,
-                hospital
+                hospital,
+                fullName,
+                dob,
+                nhukNumber
             })
         });
 
@@ -494,6 +562,9 @@ async function bookAppointment() {
             localStorage.setItem("lastAppointmentHospital", hospital);
 
             showMessage(result || "Appointment booked", "success");
+
+            await updateAvailableTimes(date);
+            await setupCalendar();
 
             setTimeout(() => {
                 window.location.href = "confirm-appointment.html";
@@ -609,7 +680,7 @@ function loadChangeForm() {
     const hospitalInput = document.getElementById("change-hospital");
 
     if (dateInput && savedDate) {
-        const parts = savedDate.split(".");
+        const parts = savedDate.split("/");
         if (parts.length === 3) {
             dateInput.value = `${parts[2]}-${parts[1]}-${parts[0]}`;
         }
@@ -641,7 +712,7 @@ async function updateAppointment() {
     }
 
     const parts = dateValue.split("-");
-    const date = `${parts[2]}.${parts[1]}.${parts[0]}`;
+    const date = `${parts[2]}/${parts[1]}/${parts[0]}`;
 
     try {
         const response = await fetch(`https://localhost:7156/api/appointments/${id}`, {

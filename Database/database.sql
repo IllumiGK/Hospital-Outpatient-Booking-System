@@ -12,4 +12,11 @@ CREATE TABLE dbo.Appointments (
     [Time] NVARCHAR(20) NOT NULL,
     Reason NVARCHAR(255) NOT NULL,
     Hospital NVARCHAR(255) NOT NULL
+    FullName NVARCHAR(100) NOT NULL,
+    DOB NVARCHAR(20) NOT NULL,
+    NHUKNumber NVARCHAR(20) NULL
 );
+
+ALTER TABLE dbo.Appointments
+ADD CONSTRAINT UQ_AppointmentSlot
+UNIQUE ([Date], [Time], Hospital);

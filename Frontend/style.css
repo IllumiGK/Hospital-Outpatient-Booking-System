@@ -526,14 +526,17 @@ textarea {
 
 .slot-available {
     background-color: var(--color-success);
+    color: inherit;
 }
 
 .slot-limited {
     background-color: var(--color-warning);
+    color: inherit;
 }
 
 .slot-none {
     background-color: var(--color-no-slot);
+    color: var(--color-white);
 }
 
 .slot-details-card {
@@ -566,12 +569,38 @@ textarea {
         border-color: var(--color-primary);
     }
 
+    .slot-time:disabled {
+        background-color: #f1f1f1;
+        color: #888;
+        cursor: not-allowed;
+        opacity: 1;
+    }
+
 .appointment-item {
     background: var(--color-white);
     border: 1px solid var(--color-border);
     border-radius: 8px;
     padding: 16px;
     box-shadow: var(--shadow-soft);
+}
+
+.weekend-day {
+    background-color: #d3d3d3 !important;
+    color: #666 !important;
+    cursor: not-allowed;
+}
+
+.past-day {
+    background-color: var(--color-no-slot) !important;
+    color: var(--color-white) !important;
+    cursor: not-allowed;
+}
+
+.slot-time:disabled {
+    background-color: #f1f1f1;
+    color: #888;
+    cursor: not-allowed;
+    opacity: 1;
 }
 
 /* =========================
