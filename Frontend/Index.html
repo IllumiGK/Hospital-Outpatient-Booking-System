@@ -1,41 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Character encoding for the webpage -->
     <meta charset="UTF-8">
+
+    <!-- Makes the page responsive on mobile/tablet devices -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Title shown in the browser tab -->
     <title>National Healthcare UK - Welcome</title>
+
+    <!-- External CSS file for styling -->
     <link rel="stylesheet" href="style.css">
+
+    <!-- External JavaScript file (loaded after HTML is parsed) -->
     <script defer src="script.js"></script>
 </head>
 
 <body>
+
+    <!-- =========================
+         TOP HEADER / NAVIGATION
+    ========================== -->
     <header class="top-banner">
+
+        <!-- Website / system logo -->
         <img src="images/logo.png" class="banner-logo" alt="Logo">
 
+        <!-- Clickable website title that returns user to homepage -->
         <a href="index.html" class="banner-title-link">
             <div class="banner-title">NATIONAL HEALTHCARE UK</div>
         </a>
 
+        <!-- Profile icon and dropdown menu -->
         <div class="profile-wrapper">
+
+            <!-- Profile icon button -->
             <img src="images/profile.png" class="profile-icon" id="profileBtn" alt="Profile">
 
+            <!-- Profile dropdown menu -->
             <div class="profile-menu" id="profileMenu">
+
+                <!-- Redirects user to login page -->
                 <div onclick="window.location.href='login.html'">Log In</div>
+
+                <!-- Redirects user to register page -->
                 <div onclick="window.location.href='register.html'">Register</div>
             </div>
         </div>
     </header>
 
+    <!-- =========================
+         MAIN APP CONTAINER
+    ========================== -->
     <div class="app-shell">
         <main class="app-main">
+
+            <!-- Landing page layout section -->
             <div class="landing-layout">
+
+                <!-- Introductory text content -->
                 <div class="landing-text">
+
+                    <!-- Main heading -->
                     <h1 class="card-title">Use National Healthcare Web Services</h1>
 
+                    <!-- Short description of service -->
                     <p class="card-subtitle">
                         Log in to view your health information and manage your healthcare online.
                     </p>
 
+                    <!-- Eligibility requirements for using the service -->
                     <p class="card-subtitle">
                         Who can use National Healthcare services<br>
                         You must be:<br>
@@ -43,39 +78,66 @@
                         · registered with a GP surgery in England
                     </p>
 
+                    <!-- Action buttons for login and registration -->
                     <div class="landing-actions">
+
+                        <!-- Button linking to login page -->
                         <a href="login.html" class="btn btn-primary">LOG IN</a>
+
+                        <!-- Button linking to register page -->
                         <a href="register.html" class="btn btn-secondary">REGISTER</a>
                     </div>
                 </div>
             </div>
         </main>
 
+        <!-- =========================
+             FOOTER SECTION
+        ========================== -->
         <footer class="app-footer">
             © 2026 National Healthcare. All rights reserved.
         </footer>
     </div>
 
+    <!-- =========================
+         CHATBOT / AI ASSISTANT
+    ========================== -->
     <div class="chatbot-container">
+
+        <!-- Floating button to open chatbot -->
         <button class="chatbot-toggle" id="chatbotToggle" aria-label="Open chat assistant">💬</button>
 
+        <!-- Chatbot popup window -->
         <div class="chatbot-window" id="chatbotWindow">
+
+            <!-- Chatbot header -->
             <div class="chatbot-header">
                 <span>Healthcare Assistant</span>
+
+                <!-- Button to close chatbot -->
                 <button class="chatbot-close" id="chatbotClose" aria-label="Close chat assistant">×</button>
             </div>
 
+            <!-- Chat messages display area -->
             <div class="chatbot-messages" id="chatbotMessages">
+
+                <!-- Default welcome message from bot -->
                 <div class="chatbot-message bot">
                     Hello. I am your healthcare assistant. How can I help you today?
                 </div>
             </div>
 
+            <!-- Chat input area -->
             <div class="chatbot-input-area">
+
+                <!-- User text input box -->
                 <input type="text" id="chatbotInput" class="chatbot-input" placeholder="Type your message...">
+
+                <!-- Send message button -->
                 <button id="chatbotSend" class="chatbot-send">Send</button>
             </div>
         </div>
     </div>
+
 </body>
 </html>
