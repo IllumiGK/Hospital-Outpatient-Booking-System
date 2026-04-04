@@ -1,17 +1,20 @@
 var builder = WebApplication.CreateBuilder(args);
 
+//Add support for the controllers (API endpoints)
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(); //Enables Swagger for API testing
 
+//Configure CORS to allow frontend applications to access the API
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
-        policy.AllowAnyOrigin()
-              .AllowAnyMethod()
-              .AllowAnyHeader());
+        policy.AllowAnyOrigin()  //Allow requests from any domain
+              .AllowAnyMethod()  // Allow GET , POST, PUT, DELETE
+              .AllowAnyHeader());  //Allow all headers
 });
 
+//Register DatabaseService for dependecy injection
 builder.Services.AddSingleton<DatabaseService>();
 
 var app = builder.Build();

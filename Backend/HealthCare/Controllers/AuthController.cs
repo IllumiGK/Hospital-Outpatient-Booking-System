@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
+//Handles user authentication such as registration and login
 [ApiController]
 [Route("api/auth")]
 public class AuthController : ControllerBase
@@ -11,6 +12,7 @@ public class AuthController : ControllerBase
         _db = db;
     }
 
+//Registers a new user in the system
     [HttpPost("register")]
     public IActionResult Register([FromBody] RegisterRequest req)
     {
@@ -30,6 +32,7 @@ public class AuthController : ControllerBase
         return Ok("User registered");
     }
 
+//Logs in a user by validating an email and password
     [HttpPost("login")]
     public IActionResult Login([FromBody] LoginRequest req)
     {

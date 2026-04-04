@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
 
+//handles all database operations including users and appointments
 public class DatabaseService
 {
     private readonly string _connectionString;
@@ -25,6 +26,7 @@ public class DatabaseService
         _connectionString = config.GetConnectionString("DefaultConnection")!;
     }
 
+    //Checks if a user already exists by email
     public bool UserExists(string email)
     {
         using SqlConnection conn = new SqlConnection(_connectionString);
@@ -38,6 +40,7 @@ public class DatabaseService
         return count > 0;
     }
 
+    //Inserts a new user inot the Users table
     public void RegisterUser(string name, string email, string password)
     {
         using SqlConnection conn = new SqlConnection(_connectionString);
@@ -52,6 +55,7 @@ public class DatabaseService
         cmd.ExecuteNonQuery();
     }
 
+    //Retrives a user by email and password for login
     public UserRecord? GetUserByCredentials(string email, string password)
     {
         using SqlConnection conn = new SqlConnection(_connectionString);
@@ -77,6 +81,7 @@ public class DatabaseService
         };
     }
 
+<<<<<<< HEAD
     public bool CreateAppointment(
     string email,
     string date,
@@ -86,6 +91,10 @@ public class DatabaseService
     string fullName,
     string dob,
     string nhukNumber)
+=======
+    //Creates a new appointment in the database
+    public void CreateAppointment(string email, string date, string time, string reason, string hospital)
+>>>>>>> 860baa49d4ba2b0760799e95f7b6260d04f2cdc9
     {
         using SqlConnection conn = new SqlConnection(_connectionString);
         conn.Open();
@@ -130,6 +139,7 @@ public class DatabaseService
         return true;
     }
 
+    
     public bool AppointmentSlotExists(string date, string time, string hospital, int? excludeAppointmentId = null)
     {
         using SqlConnection conn = new SqlConnection(_connectionString);
@@ -296,6 +306,7 @@ public class DatabaseService
         return appointments;
     }
 
+    // Updates an existing appointment
     public bool UpdateAppointment(int appointmentId, string date, string time, string hospital)
     {
         using SqlConnection conn = new SqlConnection(_connectionString);
@@ -316,6 +327,7 @@ public class DatabaseService
         return rowsAffected > 0;
     }
 
+    //Deletes an appointment from the database
     public bool DeleteAppointment(int appointmentId)
     {
         using SqlConnection conn = new SqlConnection(_connectionString);

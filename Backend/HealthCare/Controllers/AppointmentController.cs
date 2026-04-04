@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
+//Handles appointment booking, retrieval, updates, and deletion
 [ApiController]
 [Route("api/appointments")]
 public class AppointmentController : ControllerBase
@@ -12,6 +13,7 @@ public class AppointmentController : ControllerBase
         _db = db;
     }
 
+//Creates a new appointment booking
     [HttpPost]
     public IActionResult Create([FromBody] AppointmentRequest req)
     {
@@ -45,6 +47,7 @@ public class AppointmentController : ControllerBase
         return Ok("Appointment booked");
     }
 
+//Retrieves all appointments for a specific user
     [HttpGet("user/{email}")]
     public IActionResult GetByUser(string email)
     {
@@ -76,6 +79,7 @@ public class AppointmentController : ControllerBase
         return Ok(bookedTimes);
     }
 
+//Updates an existing appointment
     [HttpPut("{id}")]
     public IActionResult Update(int id, [FromBody] UpdateAppointmentRequest req)
     {
@@ -107,6 +111,7 @@ public class AppointmentController : ControllerBase
         return Ok("Appointment updated");
     }
 
+//Deletes an appointment
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
