@@ -27,6 +27,7 @@ The project was developed collaboratively, with each team member contributing to
   * Worked on frontend components
   * Co-Contributed to the design of the Figma prototype
   * Co-Contributed to the development of the project report
+  * Implimenting of AI features in the project
 
   ---
 
