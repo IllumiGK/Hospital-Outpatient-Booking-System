@@ -90,10 +90,68 @@ async function getBookedTimesForDate(date, hospital) {
     }
 }
 
+function formatDate(day, month, year) {
+    return `${String(day).padStart(2, "0")}.${String(month + 1).padStart(2, "0")}.${year}`;
+}
+
+function buildMonthTable(month, year, monthName) {
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    let html = `
+        <div class="calendar-header">
+            <h2 class="section-title">${monthName} ${year}</h2>
+        </div>
+
+        <table class="calendar-table" style="margin-bottom: 24px;">
+            <thead>
+                <tr>
+                    <th>SUNDAY</th>
+                    <th>MONDAY</th>
+                    <th>TUESDAY</th>
+                    <th>WEDNESDAY</th>
+                    <th>THURSDAY</th>
+                    <th>FRIDAY</th>
+                    <th>SATURDAY</th>
+                </tr>
+            </thead>
+            <tbody>
+    `;
+
+    let day = 1;
+
+    for (let row = 0; row < 6; row++) {
+        html += "<tr>";
+
+        for (let col = 0; col < 7; col++) {
+            if ((row === 0 && col < firstDay) || day > daysInMonth) {
+                html += "<td></td>";
+            } else {
+                html += `<td class="calendar-day" data-day="${day}" data-month="${month}" data-year="${year}">${day}</td>`;
+                day++;
+            }
+        }
+
+        html += "</tr>";
+
+        if (day > daysInMonth) {
+            break;
+        }
+    }
+
+    html += `
+            </tbody>
+        </table>
+    `;
+
+    return html;
+}
+
 async function setupCalendar() {
-    const days = document.querySelectorAll(".calendar-day");
+    const calendarContainer = document.getElementById("calendar-container");
     const dateOutput = document.getElementById("selected-date");
-    const calendarTitle = document.getElementById("calendar-title");
+
+    if (!calendarContainer || !dateOutput) return;
 
     const now = new Date();
     const currentYear = now.getFullYear();
@@ -101,53 +159,66 @@ async function setupCalendar() {
     const currentDay = now.getDate();
     const hospital = getSelectedHospital();
 
+    const nextMonthDate = new Date(currentYear, currentMonth + 1, 1);
+    const nextMonth = nextMonthDate.getMonth();
+    const nextMonthYear = nextMonthDate.getFullYear();
+
     const monthNames = [
         "January", "February", "March", "April", "May", "June",
         "July", "August", "September", "October", "November", "December"
     ];
 
-    if (calendarTitle) {
-        calendarTitle.textContent = `${monthNames[currentMonth]} ${currentYear}`;
-    }
+    calendarContainer.innerHTML =
+        buildMonthTable(currentMonth, currentYear, monthNames[currentMonth]) +
+        buildMonthTable(nextMonth, nextMonthYear, monthNames[nextMonth]);
 
-    if (dateOutput) {
-        const defaultDate = `${String(currentDay).padStart(2, "0")}.${String(currentMonth + 1).padStart(2, "0")}.${currentYear}`;
-        dateOutput.textContent = defaultDate;
-    }
+    const days = document.querySelectorAll(".calendar-day");
 
-    if (days.length > 0 && dateOutput) {
-        for (const day of days) {
-            const dayNumber = day.textContent.trim();
-            if (!dayNumber) continue;
+    const defaultDate = formatDate(currentDay, currentMonth, currentYear);
+    dateOutput.textContent = defaultDate;
 
-            const formatted = `${String(dayNumber).padStart(2, "0")}.${String(currentMonth + 1).padStart(2, "0")}.${currentYear}`;
+    for (const dayCell of days) {
+        const day = Number(dayCell.dataset.day);
+        const month = Number(dayCell.dataset.month);
+        const year = Number(dayCell.dataset.year);
 
-            day.classList.remove("slot-none", "slot-limited", "slot-available", "selected");
+        const formatted = formatDate(day, month, year);
 
-            const bookedTimes = await getBookedTimesForDate(formatted, hospital);
-            const bookedCount = bookedTimes.length;
+        dayCell.classList.remove("slot-none", "slot-limited", "slot-available", "selected");
 
-            if (bookedCount === 0) {
-                day.classList.add("slot-available");
-            } else if (bookedCount >= ALL_APPOINTMENT_TIMES.length) {
-                day.classList.add("slot-none");
-            } else {
-                day.classList.add("slot-limited");
-            }
+        const bookedTimes = await getBookedTimesForDate(formatted, hospital);
+        const bookedCount = bookedTimes.length;
 
-            day.onclick = async () => {
-                if (day.classList.contains("slot-none")) return;
-
-                days.forEach(d => d.classList.remove("selected"));
-                day.classList.add("selected");
-
-                dateOutput.textContent = formatted;
-                await updateAvailableTimes(formatted);
-            };
+        if (bookedCount === 0) {
+            dayCell.classList.add("slot-available");
+        } else if (bookedCount >= ALL_APPOINTMENT_TIMES.length) {
+            dayCell.classList.add("slot-none");
+        } else {
+            dayCell.classList.add("slot-limited");
         }
 
-        await updateAvailableTimes(dateOutput.textContent);
+        dayCell.onclick = async () => {
+            if (dayCell.classList.contains("slot-none")) return;
+
+            document.querySelectorAll(".calendar-day").forEach(d => d.classList.remove("selected"));
+            dayCell.classList.add("selected");
+
+            dateOutput.textContent = formatted;
+            await updateAvailableTimes(formatted);
+        };
     }
+
+    const todayCell = Array.from(days).find(cell =>
+        Number(cell.dataset.day) === currentDay &&
+        Number(cell.dataset.month) === currentMonth &&
+        Number(cell.dataset.year) === currentYear
+    );
+
+    if (todayCell && !todayCell.classList.contains("slot-none")) {
+        todayCell.classList.add("selected");
+    }
+
+    await updateAvailableTimes(defaultDate);
 }
 
 async function updateAvailableTimes(date) {
@@ -195,17 +266,58 @@ function generateAppointmentId() {
     return Date.now();
 }
 
-function showMessage(message, type = "error") {
-    const msgBox = document.getElementById("form-message");
+function getOrCreateMessageBox() {
+    let msgBox = document.getElementById("form-message");
 
-    if (!msgBox) {
-        alert(message);
-        return;
+    if (msgBox) return msgBox;
+
+    msgBox = document.getElementById("page-message");
+    if (msgBox) return msgBox;
+
+    msgBox = document.createElement("div");
+    msgBox.id = "page-message";
+    msgBox.style.display = "none";
+    msgBox.style.marginBottom = "16px";
+    msgBox.style.padding = "12px 16px";
+    msgBox.style.borderRadius = "8px";
+    msgBox.style.fontWeight = "600";
+    msgBox.style.textAlign = "center";
+
+    const target =
+        document.querySelector(".card") ||
+        document.querySelector(".slot-details-card") ||
+        document.querySelector(".calendar-wrapper") ||
+        document.querySelector(".app-main");
+
+    if (target) {
+        target.insertBefore(msgBox, target.firstChild);
+    } else {
+        document.body.prepend(msgBox);
     }
+
+    return msgBox;
+}
+
+function showMessage(message, type = "error") {
+    const msgBox = getOrCreateMessageBox();
 
     msgBox.textContent = message;
     msgBox.className = type;
     msgBox.style.display = "block";
+
+    if (type === "success") {
+        msgBox.style.backgroundColor = "#e6ffed";
+        msgBox.style.color = "#1f7a3d";
+        msgBox.style.border = "1px solid #b7ebc6";
+    } else if (type === "info") {
+        msgBox.style.backgroundColor = "#eaf4ff";
+        msgBox.style.color = "#0b5cab";
+        msgBox.style.border = "1px solid #b9d8ff";
+    } else {
+        msgBox.style.backgroundColor = "#fff1f0";
+        msgBox.style.color = "#c53030";
+        msgBox.style.border = "1px solid #f5c2c0";
+    }
 }
 
 async function register() {
@@ -326,7 +438,7 @@ function saveAppointmentDetails() {
         "Imperial College Healthcare NHS Trust";
 
     if (!fullName || !dob || !reason || !hospital) {
-        alert("Please fill in all required details before continuing.");
+        showMessage("Please fill in all required details before continuing.");
         return;
     }
 
@@ -348,12 +460,12 @@ async function bookAppointment() {
     const hospital = localStorage.getItem("appointmentHospital") || "Imperial College Healthcare NHS Trust";
 
     if (!email) {
-        alert("No logged in user found");
+        showMessage("No logged in user found");
         return;
     }
 
     if (!date || !time) {
-        alert("Please select a date and time");
+        showMessage("Please select a date and time");
         return;
     }
 
@@ -381,16 +493,19 @@ async function bookAppointment() {
             localStorage.setItem("lastAppointmentReason", reason);
             localStorage.setItem("lastAppointmentHospital", hospital);
 
-            alert(result || "Appointment booked");
-            window.location.href = "confirm-appointment.html";
+            showMessage(result || "Appointment booked", "success");
+
+            setTimeout(() => {
+                window.location.href = "confirm-appointment.html";
+            }, 1200);
         } else {
-            alert(result || "Error booking appointment");
+            showMessage(result || "Error booking appointment");
             await updateAvailableTimes(date);
             await setupCalendar();
         }
     } catch (error) {
         console.error("Book appointment error:", error);
-        alert("Could not connect to server.");
+        showMessage("Could not connect to server.");
     }
 }
 
@@ -516,12 +631,12 @@ async function updateAppointment() {
     const hospital = document.getElementById("change-hospital")?.value || "";
 
     if (!id) {
-        alert("No appointment selected");
+        showMessage("No appointment selected");
         return;
     }
 
     if (!dateValue || !time || !hospital) {
-        alert("Please fill in all fields");
+        showMessage("Please fill in all fields");
         return;
     }
 
@@ -544,14 +659,17 @@ async function updateAppointment() {
         const result = await response.text();
 
         if (response.ok) {
-            alert(result || "Appointment updated");
-            window.location.href = "manage-appointments.html";
+            showMessage(result || "Appointment updated", "success");
+
+            setTimeout(() => {
+                window.location.href = "manage-appointments.html";
+            }, 1200);
         } else {
-            alert(result || "Error updating appointment");
+            showMessage(result || "Error updating appointment");
         }
     } catch (error) {
         console.error("Update appointment error:", error);
-        alert("Could not connect to server.");
+        showMessage("Could not connect to server.");
     }
 }
 
@@ -564,15 +682,19 @@ async function cancelAppointment(id) {
         const result = await response.text();
 
         if (response.ok) {
-            alert(result || "Appointment cancelled");
+            showMessage(result || "Appointment cancelled", "success");
             loadAppointments();
         } else {
-            alert(result || "Error cancelling appointment");
+            showMessage(result || "Error cancelling appointment");
         }
     } catch (error) {
         console.error("Cancel appointment error:", error);
-        alert("Could not connect to server.");
+        showMessage("Could not connect to server.");
     }
+}
+
+function requestRepeatPrescription() {
+    showMessage("Prescription request submitted successfully.", "success");
 }
 
 function escapeJs(value) {
@@ -654,7 +776,7 @@ function setupChatbot() {
         }
 
         if (lower.includes("prescription")) {
-            return "You can use th\e Prescription section from the dashboard to view prescription-related information.";
+            return "You can use the Prescription section from the dashboard to view prescription-related information.";
         }
 
         if (lower.includes("health record")) {
