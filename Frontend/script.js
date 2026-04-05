@@ -72,7 +72,7 @@ function getSelectedHospital() {
 async function getBookedTimesForDate(date, hospital) {
     try {
         const res = await fetch(
-            `https://localhost:7156/api/appointments/times/${encodeURIComponent(date)}?hospital=${encodeURIComponent(hospital)}`
+            `https://localhost:5015/api/appointments/times/${encodeURIComponent(date)}?hospital=${encodeURIComponent(hospital)}`
         );
 
         if (!res.ok) {
@@ -294,7 +294,7 @@ async function updateAvailableTimes(date) {
 
     try {
         const res = await fetch(
-            `https://localhost:7156/api/appointments/times/${encodeURIComponent(date)}?hospital=${encodeURIComponent(hospital)}`
+            `https://localhost:5015/api/appointments/times/${encodeURIComponent(date)}?hospital=${encodeURIComponent(hospital)}`
         );
 
         if (!res.ok) return;
@@ -406,7 +406,7 @@ async function register() {
     }
 
     try {
-        const response = await fetch("https://localhost:7156/api/auth/register", {
+        const response = await fetch("https://localhost:5015/api/auth/register", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -455,7 +455,7 @@ async function login() {
     }
 
     try {
-        const response = await fetch("https://localhost:7156/api/auth/login", {
+        const response = await fetch("https://localhost:5015/api/auth/login", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -535,7 +535,7 @@ async function bookAppointment() {
     }
 
     try {
-        const response = await fetch("https://localhost:7156/api/appointments", {
+        const response = await fetch("https://localhost:5015/api/appointments", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -625,7 +625,7 @@ async function loadAppointments() {
     }
 
     try {
-        const response = await fetch(`https://localhost:7156/api/appointments/user/${encodeURIComponent(email)}`);
+        const response = await fetch(`https://localhost:5015/api/appointments/user/${encodeURIComponent(email)}`);
 
         if (!response.ok) {
             container.innerHTML = "<p>Could not load appointments.</p>";
@@ -715,7 +715,7 @@ async function updateAppointment() {
     const date = `${parts[2]}/${parts[1]}/${parts[0]}`;
 
     try {
-        const response = await fetch(`https://localhost:7156/api/appointments/${id}`, {
+        const response = await fetch(`https://localhost:5015/api/appointments/${id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"
@@ -746,7 +746,7 @@ async function updateAppointment() {
 
 async function cancelAppointment(id) {
     try {
-        const response = await fetch(`https://localhost:7156/api/appointments/${id}`, {
+        const response = await fetch(`https://localhost:5015/api/appointments/${id}`, {
             method: "DELETE"
         });
 

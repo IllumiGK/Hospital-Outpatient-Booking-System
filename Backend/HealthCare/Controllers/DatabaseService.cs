@@ -81,20 +81,16 @@ public class DatabaseService
         };
     }
 
-<<<<<<< HEAD
+
     public bool CreateAppointment(
-    string email,
-    string date,
-    string time,
-    string reason,
-    string hospital,
-    string fullName,
-    string dob,
-    string nhukNumber)
-=======
-    //Creates a new appointment in the database
-    public void CreateAppointment(string email, string date, string time, string reason, string hospital)
->>>>>>> 860baa49d4ba2b0760799e95f7b6260d04f2cdc9
+     string email,
+     string date,
+     string time,
+     string reason,
+     string hospital,
+     string fullName,
+     string dob,
+     string nhukNumber)
     {
         using SqlConnection conn = new SqlConnection(_connectionString);
         conn.Open();
@@ -139,7 +135,7 @@ public class DatabaseService
         return true;
     }
 
-    
+
     public bool AppointmentSlotExists(string date, string time, string hospital, int? excludeAppointmentId = null)
     {
         using SqlConnection conn = new SqlConnection(_connectionString);
