@@ -1,24 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Basic page setup -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Page title -->
     <title>Manage Appointments - National Healthcare UK</title>
     <link rel="icon" type="image/png" href="images/Favicon.png">
+
+    <!-- External styling + scripts -->
     <link rel="stylesheet" href="style.css">
     <script defer src="script.js"></script>
 </head>
 
 <body>
+
+    <!-- =========================
+         TOP HEADER / NAVIGATION
+    ========================== -->
     <header class="top-banner">
+
+        <!-- Website logo -->
         <img src="images/logo.png" class="banner-logo" alt="National Healthcare UK Logo">
 
+        <!-- Clickable title linking to homepage -->
         <a href="index.html" class="banner-title-link">
             <div class="banner-title">NATIONAL HEALTHCARE UK</div>
         </a>
 
+        <!-- Profile dropdown -->
         <div class="profile-wrapper">
             <img src="images/profile.png" class="profile-icon" id="profileBtn" alt="Profile">
+
             <div class="profile-menu" id="profileMenu">
                 <div onclick="window.location.href='dashboard.html'">Home</div>
                 <div onclick="window.location.href='manage-appointments.html'">Manage Appointment</div>
@@ -27,42 +41,63 @@
         </div>
     </header>
 
+    <!-- =========================
+         MAIN CONTENT AREA
+    ========================== -->
     <div class="app-shell">
         <main class="app-main">
+
+            <!-- Manage appointments card -->
             <div class="card" style="max-width: 760px;">
+
+                <!-- Page heading -->
                 <h1 class="section-title">Manage Appointments</h1>
                 <p class="section-subtitle">View, change, or cancel your upcoming appointments.</p>
 
+                <!-- Appointment list container (populated by JS) -->
                 <div id="appointments-list">
                     <p>Loading appointments...</p>
                 </div>
 
+                <!-- Back button -->
                 <button type="button" class="btn btn-secondary btn-block" onclick="window.location.href='dashboard.html'">
                     BACK TO HOME
                 </button>
             </div>
         </main>
 
+        <!-- =========================
+             FOOTER
+        ========================== -->
         <footer class="app-footer">
             © 2026 National Healthcare. All rights reserved.
         </footer>
     </div>
 
+    <!-- =========================
+         CHATBOT / AI ASSISTANT
+    ========================== -->
     <div class="chatbot-container">
+
+        <!-- Chatbot toggle button -->
         <button class="chatbot-toggle" id="chatbotToggle" aria-label="Open chat assistant">💬</button>
 
+        <!-- Chatbot popup window -->
         <div class="chatbot-window" id="chatbotWindow">
+
             <div class="chatbot-header">
                 <span>Healthcare Assistant</span>
                 <button class="chatbot-close" id="chatbotClose" aria-label="Close chat assistant">×</button>
             </div>
 
+            <!-- Default chatbot message -->
             <div class="chatbot-messages" id="chatbotMessages">
                 <div class="chatbot-message bot">
                     This page allows you to review your appointments and choose to change or cancel them.
                 </div>
             </div>
 
+            <!-- Chat input area -->
             <div class="chatbot-input-area">
                 <input type="text" id="chatbotInput" class="chatbot-input" placeholder="Type your message...">
                 <button id="chatbotSend" class="chatbot-send">Send</button>
@@ -70,10 +105,16 @@
         </div>
     </div>
 
+    <!-- =========================
+         CONFIRMATION MODAL
+         (Used when cancelling an appointment)
+    ========================== -->
     <div id="confirmModal" class="confirm-modal">
         <div class="confirm-modal-box">
+
             <h3 class="confirm-modal-title">Confirm Cancellation</h3>
             <p class="confirm-modal-text">Are you sure you want to cancel this appointment?</p>
+
             <div class="confirm-modal-actions">
                 <button type="button" class="btn btn-secondary" onclick="closeConfirmModal()">No</button>
                 <button type="button" class="btn btn-danger" id="confirmYesBtn">Yes, Cancel</button>
