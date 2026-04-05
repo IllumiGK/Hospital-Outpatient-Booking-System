@@ -1,3 +1,6 @@
+USE HealthcareDB;
+GO
+
 INSERT INTO dbo.Users (Name, Email, Password, DOB, Gender, Address)
 VALUES
 ('Ali Khan', 'ali@gmail.com', '123456', '2000-05-12', 'Male', 'London, UK'),
