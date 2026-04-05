@@ -1,116 +1,127 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Basic page setup -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Health Record - National Healthcare UK</title>
+
+    <!-- Page title -->
+    <title>Dashboard - National Healthcare UK</title>
     <link rel="icon" type="image/png" href="images/Favicon.png">
+
+    <!-- External styling + scripts -->
     <link rel="stylesheet" href="style.css">
     <script defer src="script.js"></script>
 </head>
 
 <body>
+
+    <!-- =========================
+         TOP HEADER / NAVIGATION
+    ========================== -->
     <header class="top-banner">
+
+        <!-- Website logo -->
         <img src="images/logo.png" class="banner-logo" alt="National Healthcare UK Logo">
 
+        <!-- Clickable title linking to homepage -->
         <a href="index.html" class="banner-title-link">
             <div class="banner-title">NATIONAL HEALTHCARE UK</div>
         </a>
 
+        <!-- Profile dropdown -->
         <div class="profile-wrapper">
             <img src="images/profile.png" class="profile-icon" id="profileBtn" alt="Profile">
+
             <div class="profile-menu" id="profileMenu">
-                <div onclick="window.location.href='dashboard.html'">Home</div>
                 <div onclick="window.location.href='manage-appointments.html'">Manage Appointment</div>
                 <div onclick="logout()">Log Out</div>
             </div>
         </div>
     </header>
 
+    <!-- =========================
+         MAIN DASHBOARD CONTENT
+    ========================== -->
     <div class="app-shell">
         <main class="app-main">
-            <div class="card" style="max-width: 900px;">
-                <h1 class="section-title">Health Record</h1>
-                <p class="section-subtitle">
-                    View a summary of your healthcare information.
+
+            <!-- Dashboard welcome + quick actions -->
+            <div class="dashboard">
+
+                <!-- Dynamic user greeting -->
+                <h1 class="dashboard-title">
+                    Welcome,
+                    <span id="user-name">User</span>
+                </h1>
+
+                <p class="dashboard-subtitle">
+                    Find information and services to help you manage your health
                 </p>
 
-                <div class="details-grid">
-                    <div>
-                        <div class="detail-label">PATIENT NAME :-</div>
-                        <div class="detail-value" id="health-name">-</div>
+                <!-- Dashboard feature cards -->
+                <div class="dashboard-cards">
+
+                    <!-- Book appointment card -->
+                    <div class="dashboard-card" onclick="window.location.href='appointment-details.html'">
+                        <img src="images/book.png" class="dashboard-card-img" alt="Book Appointment">
+                        <div class="dashboard-card-title">BOOK AN APPOINTMENT</div>
                     </div>
 
-                    <div>
-                        <div class="detail-label">EMAIL :-</div>
-                        <div class="detail-value" id="health-email">-</div>
+                    <!-- Health record card -->
+                    <div class="dashboard-card" onclick="window.location.href='health-record.html'">
+                        <img src="images/healthrecord.png" class="dashboard-card-img" alt="Health Record">
+                        <div class="dashboard-card-title">HEALTH RECORD</div>
                     </div>
 
-                    <div>
-                        <div class="detail-label">DATE OF BIRTH :-</div>
-                        <div class="detail-value">12/04/2002</div>
-                    </div>
-
-                    <div>
-                        <div class="detail-label">BLOOD GROUP :-</div>
-                        <div class="detail-value">O+</div>
-                    </div>
-
-                    <div>
-                        <div class="detail-label">ALLERGIES :-</div>
-                        <div class="detail-value">Penicillin</div>
-                    </div>
-
-                    <div>
-                        <div class="detail-label">LONG TERM CONDITION :-</div>
-                        <div class="detail-value">Asthma</div>
-                    </div>
-
-                    <div>
-                        <div class="detail-label">LAST CHECK-UP :-</div>
-                        <div class="detail-value">14.02.2026</div>
-                    </div>
-
-                    <div>
-                        <div class="detail-label">REGISTERED GP :-</div>
-                        <div class="detail-value">Dr Sarah Ahmed</div>
+                    <!-- Prescription card -->
+                    <div class="dashboard-card" onclick="window.location.href='prescription.html'">
+                        <img src="images/prescription.png" class="dashboard-card-img" alt="Prescription">
+                        <div class="dashboard-card-title">PRESCRIPTION</div>
                     </div>
                 </div>
 
-                <div class="card" style="max-width: 100%; margin-top: 24px; padding: 24px;">
-                    <h2 class="section-title" style="font-size: 1.3rem;">Recent Notes</h2>
-                    <p class="detail-value">
-                        Patient attended a general review appointment. Symptoms stable.
-                        Advised to continue inhaler as prescribed and return if symptoms worsen.
-                    </p>
+                <!-- Back to home button -->
+                <div style="margin-top: 30px; text-align: center;">
+                    <button type="button" class="btn btn-secondary" onclick="window.location.href='dashboard.html'">
+                        BACK TO HOME
+                    </button>
                 </div>
-
-                <button type="button" class="btn btn-secondary btn-block" onclick="window.location.href='dashboard.html'">
-                    BACK TO HOME
-                </button>
             </div>
         </main>
 
+        <!-- =========================
+             FOOTER
+        ========================== -->
         <footer class="app-footer">
             © 2026 National Healthcare. All rights reserved.
         </footer>
     </div>
 
+    <!-- =========================
+         CHATBOT / AI ASSISTANT
+    ========================== -->
     <div class="chatbot-container">
+
+        <!-- Chatbot toggle button -->
         <button class="chatbot-toggle" id="chatbotToggle" aria-label="Open chat assistant">💬</button>
 
+        <!-- Chatbot popup window -->
         <div class="chatbot-window" id="chatbotWindow">
+
             <div class="chatbot-header">
                 <span>Healthcare Assistant</span>
-                <button class="chatbot-close" id="chatbotClose" aria-label="Close chat assistant">×</button>
+                <button class="chatbot-close" id="chatbotClose">×</button>
             </div>
 
+            <!-- Default chatbot message -->
             <div class="chatbot-messages" id="chatbotMessages">
                 <div class="chatbot-message bot">
-                    This page shows a summary of your health record, including recent medical information and notes.
+                    Hello! You can book appointments, view health records, or manage prescriptions from this dashboard.
                 </div>
             </div>
 
+            <!-- Chat input area -->
             <div class="chatbot-input-area">
                 <input type="text" id="chatbotInput" class="chatbot-input" placeholder="Type your message...">
                 <button id="chatbotSend" class="chatbot-send">Send</button>
@@ -118,16 +129,19 @@
         </div>
     </div>
 
+    <!-- =========================
+         INLINE SCRIPT (LOAD USER NAME)
+    ========================== -->
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            const name = localStorage.getItem("loggedInName") || "Patient";
-            const email = localStorage.getItem("loggedInEmail") || "patient@email.com";
 
-            const healthName = document.getElementById("health-name");
-            const healthEmail = document.getElementById("health-email");
+            // Load logged-in user's name from localStorage
+            const name = localStorage.getItem("loggedInName");
 
-            if (healthName) healthName.innerText = name;
-            if (healthEmail) healthEmail.innerText = email;
+            // Display name if available
+            if (name) {
+                document.getElementById("user-name").innerText = name;
+            }
         });
     </script>
 </body>
