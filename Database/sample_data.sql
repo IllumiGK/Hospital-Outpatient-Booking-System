@@ -1,45 +1,45 @@
-INSERT INTO dbo.Users (Name, Email, Password)
+INSERT INTO dbo.Users (Name, Email, Password, DOB, Gender, Address)
 VALUES
-('Ali Khan', 'ali@gmail.com', '123456'),
-('Sara Ahmed', 'sara@gmail.com', '123456'),
-('John Smith', 'john@gmail.com', '123456'),
-('Ayesha Malik', 'ayesha@gmail.com', '123456'),
-('David Brown', 'david@gmail.com', '123456'),
-('Mariam Noor', 'mariam@gmail.com', '123456'),
-('Adam Lewis', 'adam@gmail.com', '123456'),
-('Zain Hussain', 'zain@gmail.com', '123456'),
-('Emma Clarke', 'emma@gmail.com', '123456');
-INSERT INTO dbo.Appointments
-(Email, [Date], [Time], Reason, Hospital, FullName, DOB, NHUKNumber)
+('Ali Khan', 'ali@gmail.com', '123456', '2000-05-12', 'Male', 'London, UK'),
+('Sarah Ahmed', 'sarah@gmail.com', '123456', '1998-11-03', 'Female', 'Manchester, UK'),
+('John Smith', 'john@gmail.com', '123456', '1985-07-22', 'Male', 'Birmingham, UK'),
+('Emily Clark', 'emily@gmail.com', '123456', '1992-02-14', 'Female', 'Leeds, UK'),
+('David Wilson', 'david@gmail.com', '123456', '1979-09-30', 'Male', 'Liverpool, UK');
+
+-- Fully booked day (RED)
+
+INSERT INTO dbo.Appointments (Email, Date, Time, Reason, Hospital, FullName, DOB, NHUKNumber)
 VALUES
+('ali@gmail.com','10/04/2026','09:00','Checkup','Chelsea and Westminster Hospital','Ali Khan','2000-05-12','NHUK001'),
+('sarah@gmail.com','10/04/2026','10:00','Flu','Chelsea and Westminster Hospital','Sarah Ahmed','1998-11-03','NHUK002'),
+('john@gmail.com','10/04/2026','11:00','Injury','Chelsea and Westminster Hospital','John Smith','1985-07-22','NHUK003'),
+('emily@gmail.com','10/04/2026','12:00','Consultation','Chelsea and Westminster Hospital','Emily Clark','1992-02-14','NHUK004'),
+('david@gmail.com','10/04/2026','13:00','Checkup','Chelsea and Westminster Hospital','David Wilson','1979-09-30','NHUK005'),
+('ali@gmail.com','10/04/2026','14:00','Follow-up','Chelsea and Westminster Hospital','Ali Khan','2000-05-12','NHUK006'),
+('sarah@gmail.com','10/04/2026','15:00','Consultation','Chelsea and Westminster Hospital','Sarah Ahmed','1998-11-03','NHUK007'),
+('john@gmail.com','10/04/2026','16:00','Review','Chelsea and Westminster Hospital','John Smith','1985-07-22','NHUK008'),
+('emily@gmail.com','10/04/2026','17:00','Checkup','Chelsea and Westminster Hospital','Emily Clark','1992-02-14','NHUK009');
 
--- GREEN DAY (only 2 bookings)
-('ali@gmail.com', '10/04/2026', '09:00', 'Checkup', 'Imperial College Healthcare NHS Trust', 'Ali Khan', '12/08/2003', NULL),
-('sara@gmail.com', '10/04/2026', '10:00', 'Follow-up', 'Imperial College Healthcare NHS Trust', 'Sara Ahmed', '03/05/2002', 'NHUK12345'),
+-- Limited slots day (AMBER)
 
--- AMBER DAY (4 bookings → limited)
-('john@gmail.com', '11/04/2026', '09:00', 'Consultation', 'St Mary''s Hospital', 'John Smith', '10/01/2000', NULL),
-('ayesha@gmail.com', '11/04/2026', '10:00', 'Blood Test', 'St Mary''s Hospital', 'Ayesha Malik', '14/06/2001', 'NHUK56789'),
-('david@gmail.com', '11/04/2026', '11:00', 'Checkup', 'St Mary''s Hospital', 'David Brown', '21/02/1999', NULL),
-('mariam@gmail.com', '11/04/2026', '12:00', 'Review', 'St Mary''s Hospital', 'Mariam Noor', '18/09/2003', NULL),
+INSERT INTO dbo.Appointments (Email, Date, Time, Reason, Hospital, FullName, DOB, NHUKNumber)
+VALUES
+('ali@gmail.com','12/04/2026','09:00','Checkup','St Mary''s Hospital','Ali Khan','2000-05-12',NULL),
+('sarah@gmail.com','12/04/2026','10:00','Flu','St Mary''s Hospital','Sarah Ahmed','1998-11-03',NULL),
+('john@gmail.com','12/04/2026','11:00','Consultation','St Mary''s Hospital','John Smith','1985-07-22',NULL),
+('emily@gmail.com','12/04/2026','13:00','Review','St Mary''s Hospital','Emily Clark','1992-02-14',NULL),
+('david@gmail.com','12/04/2026','15:00','Checkup','St Mary''s Hospital','David Wilson','1979-09-30',NULL);
 
--- RED DAY (ALL 9 slots booked)
-('adam@gmail.com', '14/04/2026', '09:00', 'Checkup', 'Chelsea and Westminster Hospital', 'Adam Lewis', '05/03/2002', NULL),
-('zain@gmail.com', '14/04/2026', '10:00', 'Consultation', 'Chelsea and Westminster Hospital', 'Zain Hussain', '07/07/2001', NULL),
-('emma@gmail.com', '14/04/2026', '11:00', 'Review', 'Chelsea and Westminster Hospital', 'Emma Clarke', '09/11/2000', NULL),
-('ali@gmail.com', '14/04/2026', '12:00', 'Checkup', 'Chelsea and Westminster Hospital', 'Ali Khan', '12/08/2003', NULL),
-('sara@gmail.com', '14/04/2026', '13:00', 'Follow-up', 'Chelsea and Westminster Hospital', 'Sara Ahmed', '03/05/2002', NULL),
-('john@gmail.com', '14/04/2026', '14:00', 'Consultation', 'Chelsea and Westminster Hospital', 'John Smith', '10/01/2000', NULL),
-('ayesha@gmail.com', '14/04/2026', '15:00', 'Blood Test', 'Chelsea and Westminster Hospital', 'Ayesha Malik', '14/06/2001', NULL),
-('david@gmail.com', '14/04/2026', '16:00', 'Review', 'Chelsea and Westminster Hospital', 'David Brown', '21/02/1999', NULL),
-('mariam@gmail.com', '14/04/2026', '17:00', 'Checkup', 'Chelsea and Westminster Hospital', 'Mariam Noor', '18/09/2003', NULL),
+-- Available day (GREEN)
 
--- EXTRA GREEN DAY
-('adam@gmail.com', '15/04/2026', '09:00', 'Checkup', 'Royal London Hospital', 'Adam Lewis', '05/03/2002', NULL),
+INSERT INTO dbo.Appointments (Email, Date, Time, Reason, Hospital, FullName, DOB, NHUKNumber)
+VALUES
+('ali@gmail.com','14/04/2026','09:00','Checkup','Royal London Hospital','Ali Khan','2000-05-12',NULL),
+('sarah@gmail.com','14/04/2026','11:00','Consultation','Royal London Hospital','Sarah Ahmed','1998-11-03',NULL);
 
--- EXTRA AMBER DAY (5 bookings)
-('zain@gmail.com', '16/04/2026', '09:00', 'Consultation', 'Guy''s and St Thomas'' Hospital', 'Zain Hussain', '07/07/2001', NULL),
-('emma@gmail.com', '16/04/2026', '10:00', 'Review', 'Guy''s and St Thomas'' Hospital', 'Emma Clarke', '09/11/2000', NULL),
-('ali@gmail.com', '16/04/2026', '11:00', 'Checkup', 'Guy''s and St Thomas'' Hospital', 'Ali Khan', '12/08/2003', NULL),
-('sara@gmail.com', '16/04/2026', '12:00', 'Follow-up', 'Guy''s and St Thomas'' Hospital', 'Sara Ahmed', '03/05/2002', NULL),
-('john@gmail.com', '16/04/2026', '13:00', 'Consultation', 'Guy''s and St Thomas'' Hospital', 'John Smith', '10/01/2000', NULL);
+-- Another hospital (for variety)
+
+INSERT INTO dbo.Appointments (Email, Date, Time, Reason, Hospital, FullName, DOB, NHUKNumber)
+VALUES
+('ali@gmail.com','14/04/2026','09:00','Checkup','Royal London Hospital','Ali Khan','2000-05-12',NULL),
+('sarah@gmail.com','14/04/2026','11:00','Consultation','Royal London Hospital','Sarah Ahmed','1998-11-03',NULL);
