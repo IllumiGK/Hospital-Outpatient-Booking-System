@@ -41,15 +41,20 @@ public class DatabaseService
     }
 
     //Inserts a new user inot the Users table
-    public void RegisterUser(string name, string email, string password)
+    public void RegisterUser(string name, string email, string password, string dob, string gender, string address)
     {
         using SqlConnection conn = new SqlConnection(_connectionString);
-        string query = "INSERT INTO dbo.Users (Name, Email, Password) VALUES (@Name, @Email, @Password)";
+        string query = @"
+        INSERT INTO dbo.Users (Name, Email, Password, DOB, Gender, Address)
+        VALUES (@Name, @Email, @Password, @DOB, @Gender, @Address)";
 
         using SqlCommand cmd = new SqlCommand(query, conn);
         cmd.Parameters.AddWithValue("@Name", name);
         cmd.Parameters.AddWithValue("@Email", email);
         cmd.Parameters.AddWithValue("@Password", password);
+        cmd.Parameters.AddWithValue("@DOB", dob);
+        cmd.Parameters.AddWithValue("@Gender", gender);
+        cmd.Parameters.AddWithValue("@Address", address);
 
         conn.Open();
         cmd.ExecuteNonQuery();
@@ -81,6 +86,37 @@ public class DatabaseService
         };
     }
 
+    public UserDetailsRecord? GetUserDetailsByEmail(string email)
+    {
+        using SqlConnection conn = new SqlConnection(_connectionString);
+        string query = @"
+        SELECT TOP 1 UserID, Name, Email, ISNULL(DOB, '') AS DOB,
+               ISNULL(Gender, '') AS Gender,
+               ISNULL(Address, '') AS Address
+        FROM dbo.Users
+        WHERE Email = @Email";
+
+        using SqlCommand cmd = new SqlCommand(query, conn);
+        cmd.Parameters.AddWithValue("@Email", email);
+
+        conn.Open();
+        using SqlDataReader reader = cmd.ExecuteReader();
+
+        if (!reader.Read())
+        {
+            return null;
+        }
+
+        return new UserDetailsRecord
+        {
+            UserID = Convert.ToInt32(reader["UserID"]),
+            Name = reader["Name"].ToString() ?? "",
+            Email = reader["Email"].ToString() ?? "",
+            DOB = reader["DOB"].ToString() ?? "",
+            Gender = reader["Gender"].ToString() ?? "",
+            Address = reader["Address"].ToString() ?? ""
+        };
+    }
 
     public bool CreateAppointment(
      string email,
@@ -354,4 +390,14 @@ public class UserRecord
     public int UserID { get; set; }
     public string Name { get; set; } = "";
     public string Email { get; set; } = "";
+}
+
+public class UserDetailsRecord
+{
+    public int UserID { get; set; }
+    public string Name { get; set; } = "";
+    public string Email { get; set; } = "";
+    public string DOB { get; set; } = "";
+    public string Gender { get; set; } = "";
+    public string Address { get; set; } = "";
 }

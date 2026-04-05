@@ -45,14 +45,12 @@
                     <select id="change-time" class="form-select" required>
                         <option value="09:00">09:00</option>
                         <option value="10:00">10:00</option>
-                        <option value="10:30">10:30</option>
                         <option value="11:00">11:00</option>
+                        <option value="12:00">12:00</option>
                         <option value="13:00">13:00</option>
-                        <option value="13:30">13:30</option>
+                        <option value="14:00">14:00</option>
                         <option value="15:00">15:00</option>
-                        <option value="15:30">15:30</option>
                         <option value="16:00">16:00</option>
-                        <option value="16:30">16:30</option>
                         <option value="17:00">17:00</option>
                     </select>
                 </div>
@@ -101,6 +99,18 @@
             <div class="chatbot-input-area">
                 <input type="text" id="chatbotInput" class="chatbot-input" placeholder="Type your message...">
                 <button id="chatbotSend" class="chatbot-send">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Confirmation Modal -->
+    <div id="confirmModal" class="confirm-modal">
+        <div class="confirm-modal-box">
+            <h3 class="confirm-modal-title">Confirm Cancellation</h3>
+            <p class="confirm-modal-text">Are you sure you want to cancel this appointment?</p>
+            <div class="confirm-modal-actions">
+                <button type="button" class="btn btn-secondary" onclick="closeConfirmModal()">No</button>
+                <button type="button" class="btn btn-danger" id="confirmYesBtn">Yes, Cancel</button>
             </div>
         </div>
     </div>

@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
     setupCalendar();
     setupTimeSelection();
     setupChatbot();
+    autofillPatientDetailsFromServer();
 
     if (document.getElementById("appointments-list")) {
         loadAppointments();
@@ -72,7 +73,7 @@ function getSelectedHospital() {
 async function getBookedTimesForDate(date, hospital) {
     try {
         const res = await fetch(
-            `https://localhost:5015/api/appointments/times/${encodeURIComponent(date)}?hospital=${encodeURIComponent(hospital)}`
+            `http://localhost:5015/api/appointments/times/${encodeURIComponent(date)}?hospital=${encodeURIComponent(hospital)}`
         );
 
         if (!res.ok) {
@@ -294,7 +295,7 @@ async function updateAvailableTimes(date) {
 
     try {
         const res = await fetch(
-            `https://localhost:5015/api/appointments/times/${encodeURIComponent(date)}?hospital=${encodeURIComponent(hospital)}`
+            `http://localhost:5015/api/appointments/times/${encodeURIComponent(date)}?hospital=${encodeURIComponent(hospital)}`
         );
 
         if (!res.ok) return;
@@ -406,7 +407,7 @@ async function register() {
     }
 
     try {
-        const response = await fetch("https://localhost:5015/api/auth/register", {
+        const response = await fetch("http://localhost:5015/api/auth/register", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -414,18 +415,16 @@ async function register() {
             body: JSON.stringify({
                 name,
                 email,
-                password
+                password,
+                dob,
+                gender,
+                address
             })
         });
 
         const result = await response.text();
 
         if (response.ok) {
-            localStorage.setItem("registeredEmail", email);
-
-            const user = { name, dob, gender, address, email, password };
-            localStorage.setItem("registeredUser", JSON.stringify(user));
-
             showMessage("Registration successful. Redirecting...", "success");
 
             setTimeout(() => {
@@ -455,7 +454,7 @@ async function login() {
     }
 
     try {
-        const response = await fetch("https://localhost:5015/api/auth/login", {
+        const response = await fetch("http://localhost:5015/api/auth/login", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -481,6 +480,44 @@ async function login() {
     } catch (err) {
         console.error(err);
         showMessage("Could not connect to server.");
+    }
+}
+
+async function autofillPatientDetailsFromServer() {
+    const email = localStorage.getItem("loggedInEmail") || "";
+
+    if (!email) return;
+
+    try {
+        const response = await fetch(`http://localhost:5015/api/auth/user/${encodeURIComponent(email)}`);
+
+        if (!response.ok) {
+            console.error("Could not load user details from server.");
+            return;
+        }
+
+        const user = await response.json();
+
+        const nameInput = document.getElementById("patient-name");
+        const dobInput = document.getElementById("patient-dob");
+
+        if (nameInput) {
+            nameInput.value = user.name || "";
+        }
+
+        if (dobInput && user.dob) {
+            // if stored as dd/MM/yyyy convert to yyyy-MM-dd for input[type=date]
+            if (user.dob.includes("/")) {
+                const parts = user.dob.split("/");
+                if (parts.length === 3) {
+                    dobInput.value = `${parts[2]}-${parts[1]}-${parts[0]}`;
+                }
+            } else {
+                dobInput.value = user.dob;
+            }
+        }
+    } catch (error) {
+        console.error("Autofill error:", error);
     }
 }
 
@@ -513,6 +550,7 @@ function saveAppointmentDetails() {
     window.location.href = "book-appointment.html";
 }
 
+
 async function bookAppointment() {
     const email = localStorage.getItem("loggedInEmail") || "";
     const date = document.getElementById("selected-date")?.innerText || "";
@@ -535,7 +573,7 @@ async function bookAppointment() {
     }
 
     try {
-        const response = await fetch("https://localhost:5015/api/appointments", {
+        const response = await fetch("http://localhost:5015/api/appointments", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -625,7 +663,7 @@ async function loadAppointments() {
     }
 
     try {
-        const response = await fetch(`https://localhost:5015/api/appointments/user/${encodeURIComponent(email)}`);
+        const response = await fetch(`http://localhost:5015/api/appointments/user/${encodeURIComponent(email)}`);
 
         if (!response.ok) {
             container.innerHTML = "<p>Could not load appointments.</p>";
@@ -651,14 +689,63 @@ async function loadAppointments() {
                 CHANGE
               </button>
 
-              <button type="button" class="btn btn-danger" onclick="cancelAppointment(${app.appointmentID})">
-                CANCEL
-              </button>
+              <button type="button" class="btn btn-danger" onclick="openConfirmModal(${app.appointmentID})">
+    CANCEL
+</button>
             </div>
         `).join("");
     } catch (error) {
         console.error("Load appointments error:", error);
         container.innerHTML = "<p>Could not load appointments.</p>";
+    }
+}
+
+let pendingCancelAppointmentId = null;
+
+function openConfirmModal(id) {
+    pendingCancelAppointmentId = id;
+    const modal = document.getElementById("confirmModal");
+    const confirmBtn = document.getElementById("confirmYesBtn");
+
+    if (!modal || !confirmBtn) return;
+
+    confirmBtn.onclick = async () => {
+        await performCancelAppointment();
+    };
+
+    modal.classList.add("open");
+}
+
+function closeConfirmModal() {
+    const modal = document.getElementById("confirmModal");
+    if (modal) {
+        modal.classList.remove("open");
+    }
+    pendingCancelAppointmentId = null;
+}
+
+async function performCancelAppointment() {
+    if (!pendingCancelAppointmentId) return;
+
+    try {
+        const response = await fetch(`http://localhost:5015/api/appointments/${pendingCancelAppointmentId}`, {
+            method: "DELETE"
+        });
+
+        const result = await response.text();
+
+        if (response.ok) {
+            showMessage(result || "Appointment cancelled", "success");
+            closeConfirmModal();
+            loadAppointments();
+        } else {
+            showMessage(result || "Error cancelling appointment");
+            closeConfirmModal();
+        }
+    } catch (error) {
+        console.error("Cancel appointment error:", error);
+        showMessage("Could not connect to server.");
+        closeConfirmModal();
     }
 }
 
@@ -715,7 +802,7 @@ async function updateAppointment() {
     const date = `${parts[2]}/${parts[1]}/${parts[0]}`;
 
     try {
-        const response = await fetch(`https://localhost:5015/api/appointments/${id}`, {
+        const response = await fetch(`http://localhost:5015/api/appointments/${id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"
@@ -744,24 +831,23 @@ async function updateAppointment() {
     }
 }
 
-async function cancelAppointment(id) {
-    try {
-        const response = await fetch(`https://localhost:5015/api/appointments/${id}`, {
-            method: "DELETE"
-        });
+function openConfirmModal(id) {
+    console.log("Cancel clicked for appointment:", id);
 
-        const result = await response.text();
+    pendingCancelAppointmentId = id;
+    const modal = document.getElementById("confirmModal");
+    const confirmBtn = document.getElementById("confirmYesBtn");
 
-        if (response.ok) {
-            showMessage(result || "Appointment cancelled", "success");
-            loadAppointments();
-        } else {
-            showMessage(result || "Error cancelling appointment");
-        }
-    } catch (error) {
-        console.error("Cancel appointment error:", error);
-        showMessage("Could not connect to server.");
+    if (!modal || !confirmBtn) {
+        console.log("Modal elements not found");
+        return;
     }
+
+    confirmBtn.onclick = async () => {
+        await performCancelAppointment();
+    };
+
+    modal.classList.add("open");
 }
 
 function requestRepeatPrescription() {
