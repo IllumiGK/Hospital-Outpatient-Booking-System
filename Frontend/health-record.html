@@ -1,24 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
+
+
 <head>
-    <!-- Basic page setup -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!-- Page title -->
     <title>Health Record - National Healthcare UK</title>
     <link rel="icon" type="image/png" href="images/Favicon.png">
-
-    <!-- External styling + scripts -->
     <link rel="stylesheet" href="style.css">
     <script defer src="script.js"></script>
 </head>
 
-<body>
 
+<body>
     <!-- =========================
-         TOP HEADER / NAVIGATION
-    ========================== -->
+           TOP HEADER / NAVIGATION
+      ========================== -->
     <header class="top-banner">
 
         <!-- Website logo -->
@@ -40,109 +37,37 @@
         </div>
     </header>
 
-    <!-- =========================
-         MAIN DASHBOARD CONTENT
-    ========================== -->
     <div class="app-shell">
         <main class="app-main">
+            <div class="card" style="max-width: 900px;">
+                <h1 class="section-title">Health Record</h1>
+                <p class="section-subtitle">View your health information below.</p>
 
-            <!-- Dashboard welcome + quick actions -->
-            <div class="dashboard">
-
-                <!-- Dynamic user greeting -->
-                <h1 class="dashboard-title">
-                    Welcome,
-                    <span id="user-name">User</span>
-                </h1>
-
-                <p class="dashboard-subtitle">
-                    Find information and services to help you manage your health
-                </p>
-
-                <!-- Dashboard feature cards -->
-                <div class="dashboard-cards">
-
-                    <!-- Book appointment card -->
-                    <div class="dashboard-card" onclick="window.location.href='appointment-details.html'">
-                        <img src="images/book.png" class="dashboard-card-img" alt="Book Appointment">
-                        <div class="dashboard-card-title">BOOK AN APPOINTMENT</div>
-                    </div>
-
-                    <!-- Health record card -->
-                    <div class="dashboard-card" onclick="window.location.href='health-record.html'">
-                        <img src="images/healthrecord.png" class="dashboard-card-img" alt="Health Record">
-                        <div class="dashboard-card-title">HEALTH RECORD</div>
-                    </div>
-
-                    <!-- Prescription card -->
-                    <div class="dashboard-card" onclick="window.location.href='prescription.html'">
-                        <img src="images/prescription.png" class="dashboard-card-img" alt="Prescription">
-                        <div class="dashboard-card-title">PRESCRIPTION</div>
-                    </div>
+                <div class="appointment-item" style="margin-bottom: 18px;">
+                    <div class="detail-label">Patient Name:</div>
+                    <div class="detail-value">John Smith</div>
                 </div>
 
-                <!-- Back to home button -->
-                <div style="margin-top: 30px; text-align: center;">
-                    <button type="button" class="btn btn-secondary" onclick="window.location.href='dashboard.html'">
-                        BACK TO HOME
-                    </button>
+                <div class="appointment-item" style="margin-bottom: 18px;">
+                    <div class="detail-label">Date of Birth:</div>
+                    <div class="detail-value">12/05/1990</div>
                 </div>
+
+                <div class="appointment-item" style="margin-bottom: 18px;">
+                    <div class="detail-label">Blood Group:</div>
+                    <div class="detail-value">O+</div>
+                </div>
+
+                <div class="appointment-item" style="margin-bottom: 18px;">
+                    <div class="detail-label">Allergies:</div>
+                    <div class="detail-value">Penicillin</div>
+                </div>
+
+                <button type="button" class="btn btn-secondary btn-block" onclick="window.location.href='dashboard.html'">
+                    BACK TO HOME
+                </button>
             </div>
         </main>
-
-        <!-- =========================
-             FOOTER
-        ========================== -->
-        <footer class="app-footer">
-            © 2026 National Healthcare. All rights reserved.
-        </footer>
     </div>
-
-    <!-- =========================
-         CHATBOT / AI ASSISTANT
-    ========================== -->
-    <div class="chatbot-container">
-
-        <!-- Chatbot toggle button -->
-        <button class="chatbot-toggle" id="chatbotToggle" aria-label="Open chat assistant">💬</button>
-
-        <!-- Chatbot popup window -->
-        <div class="chatbot-window" id="chatbotWindow">
-
-            <div class="chatbot-header">
-                <span>Healthcare Assistant</span>
-                <button class="chatbot-close" id="chatbotClose">×</button>
-            </div>
-
-            <!-- Default chatbot message -->
-            <div class="chatbot-messages" id="chatbotMessages">
-                <div class="chatbot-message bot">
-                    Hello! You can book appointments, view health records, or manage prescriptions from this dashboard.
-                </div>
-            </div>
-
-            <!-- Chat input area -->
-            <div class="chatbot-input-area">
-                <input type="text" id="chatbotInput" class="chatbot-input" placeholder="Type your message...">
-                <button id="chatbotSend" class="chatbot-send">Send</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- =========================
-         INLINE SCRIPT (LOAD USER NAME)
-    ========================== -->
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-
-            // Load logged-in user's name from localStorage
-            const name = localStorage.getItem("loggedInName");
-
-            // Display name if available
-            if (name) {
-                document.getElementById("user-name").innerText = name;
-            }
-        });
-    </script>
 </body>
 </html>
