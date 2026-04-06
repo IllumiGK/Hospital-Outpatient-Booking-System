@@ -15,6 +15,7 @@ The project was developed collaboratively, with each team member contributing to
   * Ensured project requirements and progress were clearly documented
   * Managed project documentation and meeting records
   * Worked on frontend and backend components
+  * Updated code to connect the frontend to the backend
 
   ---
 
