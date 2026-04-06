@@ -10,12 +10,13 @@ The project was developed collaboratively, with each team member contributing to
 
   * Coordinated overall project development and team activities
   * Managed timelines and ensured tasks were completed on schedule
-  * Supported decision-making across design and implementation
+  * Managed decision-making across design and implementation
   * Organised communication within the team
   * Ensured project requirements and progress were clearly documented
   * Managed project documentation and meeting records
-  * Worked on frontend and backend components
-  * Updated code to connect the frontend to the backend
+  * Added some changes to script.js to allow for better calendar function
+  * Added some backend booking components and components for getting data from the SQL database for the extra calendar functions
+  * Prepped the frontend for backend integration by changing localstorage to HTMLrequests to the backend server.
 
   ---
 
