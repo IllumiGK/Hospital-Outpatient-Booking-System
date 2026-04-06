@@ -28,7 +28,7 @@ The project was developed collaboratively, with each team member contributing to
   * Worked on frontend components
   * Co-Contributed to the design of the Figma prototype
   * Co-Contributed to the development of the project report
-  * Implimenting of AI features in the project
+  * Implementing of AI features in the project
 
   ---
 
@@ -46,13 +46,18 @@ The project was developed collaboratively, with each team member contributing to
 
 * **Gabriel Mendes (M00966597) – Developer**
 
-  * Worked on backend components
+  * Helped develop the C# backend along with Costin
+  * Helped with SQL database creation
+  * Worked on code quality by adding comments to the backend code
 
   ---
 
 * **Ismail Ahmed (M00938887) – Developer**
 
-  * Worked on frontend components
+  * Created the initial frontend
+  * Added functionality for frontend signin, login, and saving of booking appointment info to localstorage
+  * Made the HTML and CSS match the Figma prototype very well
+  * Worked on code quality of the frontend by tiding it up and adding code comments
 
   ---
 
