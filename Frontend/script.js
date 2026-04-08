@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
     setupChatbot();
     autofillPatientDetailsFromServer();
 
-    // Page‑specific initialisation
+    // Page-specific initialisation
     if (document.getElementById("appointments-list")) {
         loadAppointments();
     }
@@ -18,12 +18,20 @@ document.addEventListener("DOMContentLoaded", () => {
     if (document.getElementById("change-date")) {
         loadChangeForm();
     }
+
+    if (document.getElementById("selected-hospital")) {
+        loadSelectedHospitalDetails();
+    }
+
+    if (document.getElementById("health-record-name")) {
+        loadHealthRecord();
+    }
 });
 
 // All possible appointment times
 const ALL_APPOINTMENT_TIMES = [
-    "09:00","10:00","11:00","12:00",
-    "13:00","14:00","15:00","16:00","17:00"
+    "09:00", "10:00", "11:00", "12:00",
+    "13:00", "14:00", "15:00", "16:00", "17:00"
 ];
 
 function setupProfileMenu() {
@@ -68,7 +76,7 @@ function setupTimeSelection() {
 // Get hospital chosen earlier in the flow
 function getSelectedHospital() {
     return localStorage.getItem("appointmentHospital") ||
-           "Imperial College Healthcare NHS Trust";
+        "Imperial College Healthcare NHS Trust";
 }
 
 // Fetch booked times for a specific date + hospital
@@ -180,8 +188,8 @@ async function setupCalendar() {
     const nextMonthYear = nextMonthDate.getFullYear();
 
     const monthNames = [
-        "January","February","March","April","May","June",
-        "July","August","September","October","November","December"
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
     ];
 
     calendarContainer.innerHTML =
@@ -202,8 +210,8 @@ async function setupCalendar() {
 
         // Reset classes
         dayCell.classList.remove(
-            "slot-none","slot-limited","slot-available",
-            "selected","weekend-day","past-day"
+            "slot-none", "slot-limited", "slot-available",
+            "selected", "weekend-day", "past-day"
         );
 
         // Disable weekends
@@ -225,7 +233,7 @@ async function setupCalendar() {
         const bookedCount = bookedTimes.length;
         const availableCount = ALL_APPOINTMENT_TIMES.length - bookedCount;
 
-        // Colour‑code availability
+        // Colour-code availability
         if (availableCount === 0) {
             dayCell.classList.add("slot-none");
         } else if (availableCount <= 5) {
@@ -250,7 +258,7 @@ async function setupCalendar() {
         };
     }
 
-    // Auto‑select today or first available date
+    // Auto-select today or first available date
     const todayCell = Array.from(days).find(cell =>
         Number(cell.dataset.day) === currentDay &&
         Number(cell.dataset.month) === currentMonth &&
@@ -296,7 +304,7 @@ async function updateAvailableTimes(date) {
     // Reset all times
     timeButtons.forEach(btn => {
         btn.disabled = false;
-        btn.classList.remove("slot-none","selected");
+        btn.classList.remove("slot-none", "selected");
     });
 
     try {
@@ -399,7 +407,6 @@ function showMessage(message, type = "error") {
 // USER REGISTRATION
 // ===============================
 async function register() {
-    // Collect form values
     const name = document.getElementById("name")?.value.trim() || "";
     const dob = document.getElementById("dob")?.value || "";
     const gender = document.getElementById("gender")?.value || "";
@@ -407,7 +414,6 @@ async function register() {
     const email = document.getElementById("email")?.value.trim() || "";
     const password = document.getElementById("password")?.value || "";
 
-    // Basic validation
     if (!name || !dob || !gender || !address || !email || !password) {
         showMessage("Please fill in all fields.");
         return;
@@ -423,7 +429,6 @@ async function register() {
         return;
     }
 
-    // Send registration request
     try {
         const response = await fetch("http://localhost:5015/api/auth/register", {
             method: "POST",
@@ -436,7 +441,6 @@ async function register() {
         if (response.ok) {
             showMessage("Registration successful. Redirecting...", "success");
 
-            // Redirect after success
             setTimeout(() => {
                 window.location.href = "login.html";
             }, 1500);
@@ -456,7 +460,6 @@ async function login() {
     const email = document.getElementById("login-email")?.value.trim() || "";
     const password = document.getElementById("login-password")?.value || "";
 
-    // Basic validation
     if (!email || !password) {
         showMessage("Please enter email and password.");
         return;
@@ -467,7 +470,6 @@ async function login() {
         return;
     }
 
-    // Send login request
     try {
         const response = await fetch("http://localhost:5015/api/auth/login", {
             method: "POST",
@@ -478,7 +480,6 @@ async function login() {
         if (response.ok) {
             const result = await response.json();
 
-            // Store user session info
             localStorage.setItem("loggedInEmail", result.email || email);
             localStorage.setItem("loggedInName", result.name || "");
 
@@ -498,7 +499,7 @@ async function login() {
 }
 
 // ===============================
-// AUTO‑FILL PATIENT DETAILS
+// AUTO-FILL PATIENT DETAILS
 // ===============================
 async function autofillPatientDetailsFromServer() {
     const email = localStorage.getItem("loggedInEmail") || "";
@@ -514,13 +515,11 @@ async function autofillPatientDetailsFromServer() {
 
         const user = await response.json();
 
-        // Fill name + DOB if fields exist on the page
         const nameInput = document.getElementById("patient-name");
         const dobInput = document.getElementById("patient-dob");
 
         if (nameInput) nameInput.value = user.name || "";
 
-        // Convert dd/MM/yyyy → yyyy-MM-dd for date input
         if (dobInput && user.dob) {
             if (user.dob.includes("/")) {
                 const parts = user.dob.split("/");
@@ -557,13 +556,11 @@ function saveAppointmentDetails() {
         document.getElementById("hospital")?.value ||
         "Imperial College Healthcare NHS Trust";
 
-    // Required fields check
     if (!fullName || !dob || !reason || !hospital) {
         showMessage("Please fill in all required details before continuing.");
         return;
     }
 
-    // Store details for next page
     localStorage.setItem("appointmentPatientName", fullName);
     localStorage.setItem("appointmentPatientDob", dob);
     localStorage.setItem("appointmentPatientNhuk", nhukNumber);
@@ -588,7 +585,6 @@ async function bookAppointment() {
     const dob = localStorage.getItem("appointmentPatientDob") || "";
     const nhukNumber = localStorage.getItem("appointmentPatientNhuk") || "";
 
-    // Required checks
     if (!email) {
         showMessage("No logged in user found");
         return;
@@ -599,7 +595,6 @@ async function bookAppointment() {
         return;
     }
 
-    // Send booking request
     try {
         const response = await fetch("http://localhost:5015/api/appointments", {
             method: "POST",
@@ -619,7 +614,6 @@ async function bookAppointment() {
         const result = await response.text();
 
         if (response.ok) {
-            // Store last appointment for confirmation page
             localStorage.setItem("lastAppointmentEmail", email);
             localStorage.setItem("lastAppointmentDate", date);
             localStorage.setItem("lastAppointmentTime", time);
@@ -628,18 +622,14 @@ async function bookAppointment() {
 
             showMessage(result || "Appointment booked", "success");
 
-            // Refresh availability
             await updateAvailableTimes(date);
             await setupCalendar();
 
-            // Redirect to confirmation
             setTimeout(() => {
                 window.location.href = "confirm-appointment.html";
             }, 1200);
         } else {
             showMessage(result || "Error booking appointment");
-
-            // Refresh UI even on failure
             await updateAvailableTimes(date);
             await setupCalendar();
         }
@@ -653,7 +643,6 @@ async function bookAppointment() {
 // LOAD CONFIRMATION PAGE DETAILS
 // ===============================
 function loadConfirmationDetails() {
-    // Grab confirmation fields
     const confirmEmail = document.getElementById("confirm-email");
     const confirmDate = document.getElementById("confirm-date");
     const confirmTime = document.getElementById("confirm-time");
@@ -661,19 +650,155 @@ function loadConfirmationDetails() {
     const confirmHospital = document.getElementById("confirm-hospital");
     const confirmName = document.getElementById("confirm-name");
 
-    // Fill confirmation summary from localStorage
     if (confirmEmail) confirmEmail.innerText = localStorage.getItem("lastAppointmentEmail") || "-";
     if (confirmDate) confirmDate.innerText = localStorage.getItem("lastAppointmentDate") || "-";
     if (confirmTime) confirmTime.innerText = localStorage.getItem("lastAppointmentTime") || "-";
     if (confirmReason) confirmReason.innerText = localStorage.getItem("lastAppointmentReason") || "-";
     if (confirmHospital) confirmHospital.innerText = localStorage.getItem("lastAppointmentHospital") || "-";
 
-    // Prefer appointment name → fallback to logged‑in name
     if (confirmName) {
         confirmName.innerText =
             localStorage.getItem("appointmentPatientName") ||
             localStorage.getItem("loggedInName") ||
             "-";
+    }
+}
+
+// ===============================
+// LOAD SELECTED HOSPITAL DETAILS
+// ===============================
+function loadSelectedHospitalDetails() {
+    const hospital =
+        localStorage.getItem("appointmentHospital") ||
+        "Imperial College Healthcare NHS Trust";
+
+    const hospitalElement = document.getElementById("selected-hospital");
+    const addressElement = document.getElementById("hospital-address");
+    const phoneElement = document.getElementById("hospital-phone");
+
+    if (hospitalElement) {
+        hospitalElement.innerText = hospital;
+    }
+
+    const hospitalDetails = {
+        "Imperial College Healthcare NHS Trust": {
+            address: "The Bays, S Wharf Rd, London W2 1NY",
+            phone: "020 3311 3311"
+        },
+        "St Mary's Hospital": {
+            address: "Praed St, London W2 1NY",
+            phone: "020 3312 6666"
+        },
+        "Chelsea and Westminster Hospital": {
+            address: "369 Fulham Rd, London SW10 9NH",
+            phone: "020 3315 8000"
+        },
+        "Royal London Hospital": {
+            address: "Whitechapel Rd, London E1 1FR",
+            phone: "020 7377 7000"
+        },
+        "Guy's and St Thomas' Hospital": {
+            address: "Great Maze Pond, London SE1 9RT",
+            phone: "020 7188 7188"
+        }
+    };
+
+    const selectedDetails =
+        hospitalDetails[hospital] ||
+        hospitalDetails["Imperial College Healthcare NHS Trust"];
+
+    if (addressElement) {
+        addressElement.innerText = selectedDetails.address;
+    }
+
+    if (phoneElement) {
+        phoneElement.innerText = selectedDetails.phone;
+    }
+}
+
+// ===============================
+// GENERATE CONSISTENT RANDOM HEALTH DATA
+// ===============================
+function createSeedFromText(text) {
+    let seed = 0;
+    for (let i = 0; i < text.length; i++) {
+        seed = (seed * 31 + text.charCodeAt(i)) >>> 0;
+    }
+    return seed;
+}
+
+function seededPick(items, seed, offset = 0) {
+    if (!items.length) return "";
+    const index = (seed + offset) % items.length;
+    return items[index];
+}
+
+function generateUserHealthProfile(userKey) {
+    const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
+    const allergyOptions = [
+        "No known allergies",
+        "Penicillin",
+        "Dust",
+        "Pollen",
+        "Peanuts",
+        "Seafood",
+        "Latex",
+        "Ibuprofen"
+    ];
+
+    const seed = createSeedFromText(userKey || "default-user");
+
+    return {
+        bloodGroup: seededPick(bloodGroups, seed, 3),
+        allergies: seededPick(allergyOptions, seed, 7)
+    };
+}
+
+// ===============================
+// LOAD HEALTH RECORD
+// ===============================
+async function loadHealthRecord() {
+    const email = localStorage.getItem("loggedInEmail") || "";
+    const loggedInName = localStorage.getItem("loggedInName") || "";
+
+    const nameElement = document.getElementById("health-record-name");
+    const dobElement = document.getElementById("health-record-dob");
+    const bloodGroupElement = document.getElementById("health-record-blood-group");
+    const allergiesElement = document.getElementById("health-record-allergies");
+
+    if (!nameElement || !dobElement || !bloodGroupElement || !allergiesElement) return;
+
+    const generatedHealth = generateUserHealthProfile(email || loggedInName);
+
+    nameElement.innerText = loggedInName || "-";
+    dobElement.innerText = localStorage.getItem("appointmentPatientDob") || "-";
+    bloodGroupElement.innerText = generatedHealth.bloodGroup;
+    allergiesElement.innerText = generatedHealth.allergies;
+
+    if (!email) return;
+
+    try {
+        const response = await fetch(`http://localhost:5015/api/auth/user/${encodeURIComponent(email)}`);
+
+        if (!response.ok) {
+            console.error("Could not load health record details from server.");
+            return;
+        }
+
+        const user = await response.json();
+
+        nameElement.innerText = user.name || loggedInName || "-";
+        dobElement.innerText = user.dob || localStorage.getItem("appointmentPatientDob") || "-";
+
+        if (user.bloodGroup) {
+            bloodGroupElement.innerText = user.bloodGroup;
+        }
+
+        if (user.allergies) {
+            allergiesElement.innerText = user.allergies;
+        }
+    } catch (error) {
+        console.error("Health record load error:", error);
     }
 }
 
@@ -684,11 +809,9 @@ async function loadAppointments() {
     const email = localStorage.getItem("loggedInEmail") || "";
     const container = document.getElementById("appointments-list");
 
-    // Page safety check
     if (!email || !container) return;
 
     try {
-        // Fetch appointments for logged‑in user
         const response = await fetch(`http://localhost:5015/api/appointments/user/${encodeURIComponent(email)}`);
 
         if (!response.ok) {
@@ -698,13 +821,11 @@ async function loadAppointments() {
 
         const appointments = await response.json();
 
-        // No appointments found
         if (!appointments || appointments.length === 0) {
             container.innerHTML = "<p>No appointments found.</p>";
             return;
         }
 
-        // Render appointment list
         container.innerHTML = appointments.map(app => `
             <div class="appointment-item" style="margin-bottom: 20px;">
               <div class="detail-label">APPOINTMENT:</div>
@@ -735,14 +856,18 @@ let pendingCancelAppointmentId = null;
 // OPEN CANCEL CONFIRMATION MODAL
 // ===============================
 function openConfirmModal(id) {
+    console.log("Cancel clicked for appointment:", id);
+
     pendingCancelAppointmentId = id;
 
     const modal = document.getElementById("confirmModal");
     const confirmBtn = document.getElementById("confirmYesBtn");
 
-    if (!modal || !confirmBtn) return;
+    if (!modal || !confirmBtn) {
+        console.log("Modal elements not found");
+        return;
+    }
 
-    // Bind confirm button to cancellation
     confirmBtn.onclick = async () => {
         await performCancelAppointment();
     };
@@ -773,7 +898,7 @@ async function performCancelAppointment() {
         if (response.ok) {
             showMessage(result || "Appointment cancelled", "success");
             closeConfirmModal();
-            loadAppointments(); // Refresh list
+            loadAppointments();
         } else {
             showMessage(result || "Error cancelling appointment");
             closeConfirmModal();
@@ -789,7 +914,6 @@ async function performCancelAppointment() {
 // OPEN CHANGE APPOINTMENT PAGE
 // ===============================
 function openChangePage(id, date, time, hospital) {
-    // Store selected appointment details
     localStorage.setItem("changeAppointmentId", String(id));
     localStorage.setItem("changeAppointmentDate", date);
     localStorage.setItem("changeAppointmentTime", time);
@@ -810,7 +934,6 @@ function loadChangeForm() {
     const timeInput = document.getElementById("change-time");
     const hospitalInput = document.getElementById("change-hospital");
 
-    // Convert dd/MM/yyyy → yyyy-MM-dd
     if (dateInput && savedDate) {
         const parts = savedDate.split("/");
         if (parts.length === 3) {
@@ -831,7 +954,6 @@ async function updateAppointment() {
     const time = document.getElementById("change-time")?.value || "";
     const hospital = document.getElementById("change-hospital")?.value || "";
 
-    // Required fields check
     if (!id) {
         showMessage("No appointment selected");
         return;
@@ -842,12 +964,10 @@ async function updateAppointment() {
         return;
     }
 
-    // Convert yyyy-MM-dd → dd/MM/yyyy
     const parts = dateValue.split("-");
     const date = `${parts[2]}/${parts[1]}/${parts[0]}`;
 
     try {
-        // Send update request
         const response = await fetch(`http://localhost:5015/api/appointments/${id}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
@@ -859,7 +979,6 @@ async function updateAppointment() {
         if (response.ok) {
             showMessage(result || "Appointment updated", "success");
 
-            // Redirect after update
             setTimeout(() => {
                 window.location.href = "manage-appointments.html";
             }, 1200);
@@ -873,37 +992,9 @@ async function updateAppointment() {
 }
 
 // ===============================
-// OPEN CANCEL CONFIRMATION MODAL
-// ===============================
-function openConfirmModal(id) {
-    console.log("Cancel clicked for appointment:", id);
-
-    // Store the appointment ID that the user wants to cancel
-    pendingCancelAppointmentId = id;
-
-    const modal = document.getElementById("confirmModal");
-    const confirmBtn = document.getElementById("confirmYesBtn");
-
-    // Safety check: modal must exist
-    if (!modal || !confirmBtn) {
-        console.log("Modal elements not found");
-        return;
-    }
-
-    // Bind the confirm button to the cancellation action
-    confirmBtn.onclick = async () => {
-        await performCancelAppointment();
-    };
-
-    // Show modal
-    modal.classList.add("open");
-}
-
-// ===============================
 // REPEAT PRESCRIPTION REQUEST
 // ===============================
 function requestRepeatPrescription() {
-    // Simple success message — no backend call yet
     showMessage("Prescription request submitted successfully.", "success");
 }
 
@@ -911,7 +1002,6 @@ function requestRepeatPrescription() {
 // ESCAPE STRINGS FOR INLINE JS
 // ===============================
 function escapeJs(value) {
-    // Prevents breaking HTML onclick attributes
     return String(value)
         .replace(/\\/g, "\\\\")
         .replace(/'/g, "\\'");
@@ -928,66 +1018,204 @@ function setupChatbot() {
     const chatbotInput = document.getElementById("chatbotInput");
     const chatbotMessages = document.getElementById("chatbotMessages");
 
-    // If any required element is missing, skip chatbot setup
     if (!chatbotToggle || !chatbotWindow || !chatbotClose || !chatbotSend || !chatbotInput || !chatbotMessages) {
         return;
     }
 
-    // Open/close chatbot window
+    const loggedInName = localStorage.getItem("loggedInName") || "there";
+    let chatbotWelcomed = false;
+
     chatbotToggle.addEventListener("click", () => {
         chatbotWindow.classList.toggle("open");
+
+        if (chatbotWindow.classList.contains("open") && !chatbotWelcomed) {
+            chatbotWelcomed = true;
+
+            chatbotMessages.innerHTML = "";
+
+            setTimeout(() => {
+                addMessage(getWelcomeMessage(loggedInName), "bot");
+                addQuickReplies();
+            }, 250);
+        }
     });
 
     chatbotClose.addEventListener("click", () => {
         chatbotWindow.classList.remove("open");
     });
 
-    // Send message on button click
     chatbotSend.addEventListener("click", sendChatMessage);
 
-    // Send message on Enter key
     chatbotInput.addEventListener("keypress", function (e) {
         if (e.key === "Enter") {
+            e.preventDefault();
             sendChatMessage();
         }
     });
 
-    // ===============================
-    // SEND USER MESSAGE + BOT REPLY
-    // ===============================
-    function sendChatMessage() {
-        const message = chatbotInput.value.trim();
+    function sendChatMessage(prefilledMessage = "") {
+        const message = prefilledMessage || chatbotInput.value.trim();
         if (!message) return;
 
         addMessage(message, "user");
         chatbotInput.value = "";
+        removeQuickReplies();
+        showTyping();
 
-        // Generate bot reply
-        const reply = getBotReply(message);
         setTimeout(() => {
-            addMessage(reply, "bot");
-        }, 500);
+            removeTyping();
+            addMessage(getBotReply(message), "bot");
+            addQuickReplies();
+        }, 700);
     }
 
-    // Add message to chat window
     function addMessage(text, sender) {
         const messageDiv = document.createElement("div");
         messageDiv.className = `chatbot-message ${sender}`;
         messageDiv.textContent = text;
         chatbotMessages.appendChild(messageDiv);
-
-        // Auto-scroll to bottom
         chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
     }
 
-    // ===============================
-    // BASIC BOT RESPONSE LOGIC
-    // ===============================
+    function showTyping() {
+        removeTyping();
+
+        const typingDiv = document.createElement("div");
+        typingDiv.className = "chatbot-message bot chatbot-typing";
+        typingDiv.id = "chatbotTyping";
+        typingDiv.textContent = "Typing...";
+        chatbotMessages.appendChild(typingDiv);
+        chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+    }
+
+    function removeTyping() {
+        const existingTyping = document.getElementById("chatbotTyping");
+        if (existingTyping) {
+            existingTyping.remove();
+        }
+    }
+
+    function removeQuickReplies() {
+        const existingReplies = document.getElementById("chatbotQuickReplies");
+        if (existingReplies) {
+            existingReplies.remove();
+        }
+    }
+
+    function addQuickReplies() {
+        removeQuickReplies();
+
+        const repliesWrapper = document.createElement("div");
+        repliesWrapper.className = "chatbot-quick-replies";
+        repliesWrapper.id = "chatbotQuickReplies";
+
+        const replies = getQuickReplies();
+
+        replies.forEach(replyText => {
+            const button = document.createElement("button");
+            button.type = "button";
+            button.className = "chatbot-quick-reply";
+            button.textContent = replyText;
+            button.addEventListener("click", () => {
+                sendChatMessage(replyText);
+            });
+            repliesWrapper.appendChild(button);
+        });
+
+        chatbotMessages.appendChild(repliesWrapper);
+        chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+    }
+
+    function getQuickReplies() {
+        if (document.getElementById("user-name")) {
+            return [
+                "Book appointment",
+                "Health record",
+                "Prescription",
+                "Manage appointments"
+            ];
+        }
+
+        if (document.getElementById("patient-name")) {
+            return [
+                "What should I fill in?",
+                "Hospital help",
+                "Booking reason"
+            ];
+        }
+
+        if (document.getElementById("selected-date")) {
+            return [
+                "Selected hospital",
+                "Choose time",
+                "How to confirm?"
+            ];
+        }
+
+        if (document.getElementById("appointments-list")) {
+            return [
+                "Change appointment",
+                "Cancel appointment",
+                "Back to dashboard"
+            ];
+        }
+
+        if (document.getElementById("health-record-name")) {
+            return [
+                "Explain blood group",
+                "Explain allergies",
+                "Back to dashboard"
+            ];
+        }
+
+        return [
+            "Book appointment",
+            "Log in help",
+            "Register help"
+        ];
+    }
+
+    function getWelcomeMessage(name) {
+        if (document.getElementById("user-name")) {
+            return `👋 Hi ${name}! Welcome back. What would you like to do today?`;
+        }
+
+        if (document.getElementById("patient-name")) {
+            return `👋 Hi ${name}! I can help you complete your appointment details.`;
+        }
+
+        if (document.getElementById("selected-date")) {
+            const hospital = localStorage.getItem("appointmentHospital") || "your selected hospital";
+            return `👋 Hi ${name}! Please choose a date and time for ${hospital}.`;
+        }
+
+        if (document.getElementById("appointments-list")) {
+            return `👋 Hello ${name}! You can review, change, or cancel your appointments here.`;
+        }
+
+        if (document.getElementById("health-record-name")) {
+            return `👋 Hello ${name}! Here is your health record summary.`;
+        }
+
+        if (document.getElementById("confirm-email")) {
+            return `👋 Great news ${name}! Your appointment details are ready to review.`;
+        }
+
+        return `👋 Hello ${name}! I’m your healthcare assistant. How can I help you today?`;
+    }
+
     function getBotReply(message) {
         const lower = message.toLowerCase();
+        const selectedHospital = localStorage.getItem("appointmentHospital") || "your selected hospital";
+        const selectedDate = document.getElementById("selected-date")?.innerText || "";
+        const selectedTime = document.querySelector(".slot-time.selected")?.innerText || "";
+
+        if (lower.includes("hello") || lower.includes("hi") || lower.includes("hey")) {
+            return "👋 Hello! How can I help you today?";
+        }
 
         if (lower.includes("register")) {
-            return "To register, go to the Register page, fill in your details, then click Register.";
+            return "To register, go to the Register page, fill in your personal details, and click Register.";
         }
 
         if (lower.includes("login") || lower.includes("log in")) {
@@ -995,26 +1223,73 @@ function setupChatbot() {
         }
 
         if (lower.includes("book")) {
-            return "To book an appointment, first enter your details, then choose a date and time on the booking page.";
+            return `To book an appointment, first complete your details, then choose a date and time for ${selectedHospital}.`;
         }
 
-        if (lower.includes("change")) {
-            return "To change an appointment, go to Manage Appointments and select the Change option.";
+        if (lower.includes("hospital")) {
+            return `Your selected hospital is currently ${selectedHospital}.`;
         }
 
-        if (lower.includes("cancel")) {
-            return "To cancel an appointment, go to Manage Appointments and select the Cancel option.";
+        if (lower.includes("date") || lower.includes("time")) {
+            if (selectedDate && selectedTime) {
+                return `You currently selected ${selectedDate} at ${selectedTime}.`;
+            }
+
+            if (selectedDate) {
+                return `You selected ${selectedDate}. Please choose a time as well.`;
+            }
+
+            return "Please select a date first, then choose an available time slot.";
+        }
+
+        if (lower.includes("how to confirm") || lower.includes("confirm")) {
+            return "After selecting a date and time, click the Confirm button to finish your booking.";
+        }
+
+        if (lower.includes("what should i fill in")) {
+            return "Please fill in your full name, date of birth, reason for booking, and hospital before continuing.";
+        }
+
+        if (lower.includes("booking reason")) {
+            return "Your booking reason can be something like check up, consultation, follow-up, pain, or prescription review.";
+        }
+
+        if (lower.includes("manage appointments")) {
+            return "Open Manage Appointments to review, change, or cancel your existing bookings.";
+        }
+
+        if (lower.includes("change appointment")) {
+            return "To change an appointment, open Manage Appointments and click Change next to the appointment.";
+        }
+
+        if (lower.includes("cancel appointment") || lower.includes("cancel")) {
+            return "To cancel an appointment, open Manage Appointments and click Cancel next to the appointment.";
         }
 
         if (lower.includes("prescription")) {
-            return "You can use the Prescription section from the dashboard to view prescription-related information.";
+            return "You can open the Prescription page from the dashboard to view prescription details or request a repeat prescription.";
         }
 
         if (lower.includes("health record")) {
-            return "You can open the Health Record section from the dashboard to view your health details.";
+            return "You can open the Health Record page from the dashboard to view your saved health details.";
         }
 
-        // Default fallback response
-        return "I can help with registration, login, booking appointments, changing appointments, cancelling appointments, prescriptions, and health records.";
+        if (lower.includes("explain blood group")) {
+            return "Your blood group is part of your health record and can be important for treatment and emergencies.";
+        }
+
+        if (lower.includes("explain allergies")) {
+            return "Your allergy information helps avoid medicines or substances that may cause a reaction.";
+        }
+
+        if (lower.includes("back to dashboard")) {
+            return "You can return to the dashboard using the Back to Home button.";
+        }
+
+        if (lower.includes("thank")) {
+            return "You’re welcome. I’m here whenever you need help.";
+        }
+
+        return "I can help with booking appointments, choosing dates and times, checking your hospital, managing appointments, prescriptions, and health records.";
     }
 }
