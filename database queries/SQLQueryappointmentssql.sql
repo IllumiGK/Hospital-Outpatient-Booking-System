@@ -1,6 +1,0 @@
-SELECT TOP (1000) [AppointmentID]
-      ,[Email]
-      ,[Date]
-      ,[Time]
-      ,[Reason]
-  FROM [HealthcareDB].[dbo].[Appointments]
