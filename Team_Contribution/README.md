@@ -50,8 +50,8 @@ The project was developed collaboratively, with each team member contributing to
   * Helped develop the C# backend along with Costin
   * Helped with SQL database creation
   * Worked on code quality by adding comments to the backend code
-  * Assisted in backend setup
-  * Assisted with testing
+  * Assisted in backend setup and layout
+  * Assisted with system testing using MSTest
 
   ---
 
