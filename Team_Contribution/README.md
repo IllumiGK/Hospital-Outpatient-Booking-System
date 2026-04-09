@@ -17,6 +17,7 @@ The project was developed collaboratively, with each team member contributing to
   * Added some changes to script.js to allow for better calendar function
   * Added some backend booking components and components for getting data from the SQL database for the extra calendar functions
   * Prepped the frontend for backend integration by changing localstorage to HTMLrequests to the backend server.
+  * Lead the video demonstration of the Hospital Outpatient Booking System
 
   ---
 
@@ -30,6 +31,7 @@ The project was developed collaboratively, with each team member contributing to
   * Co-Contributed to the design of the Figma prototype
   * Co-Contributed to the development of the project report
   * Implementing of AI features in the project
+  * Contributed to the video demonstration of the Hospital Outpatient Booking System
 
   ---
 
@@ -42,6 +44,7 @@ The project was developed collaboratively, with each team member contributing to
   * Contributed to the design of the Figma prototype
   * Contributed to the development of the project report
   * Contributed to creating and writing the main GitHub README for clearer project description, Figma Prototype README for better presentation of design work, README for the Team Contribution folder to document individual contributions.
+  * Contributed to the video demonstration of the Hospital Outpatient Booking System
 
   ---
 
@@ -52,6 +55,7 @@ The project was developed collaboratively, with each team member contributing to
   * Worked on code quality by adding comments to the backend code
   * Assisted in backend setup and layout
   * Assisted with system testing using MSTest
+  * Contributed to the planning of the video demonstration of the Hospital Outpatient Booking System
 
   ---
 
@@ -61,6 +65,7 @@ The project was developed collaboratively, with each team member contributing to
   * Added functionality for frontend signin, login, and saving of booking appointment info to localstorage
   * Made the HTML and CSS match the Figma prototype very well
   * Worked on code quality of the frontend by tiding it up and adding code comments
+  * Contributed to the video demonstration of the Hospital Outpatient Booking System
 
   ---
 
@@ -72,6 +77,10 @@ The project was developed collaboratively, with each team member contributing to
   * Assisted in developing booking management functionality
   * Contributed to implementation of core system features
   * Supported overall system development
+  * Added fetch() requests in script.js to enable frontend-backend communication
+  * Provided justification for the chosen backend data structures in the report
+  * Developed pseudocode-based analysis of algorithms for core backend functionality in the report
+  * Contributed to the video demonstration of the Hospital Outpatient Booking System
 
 ---
 
